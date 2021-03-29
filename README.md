@@ -2,7 +2,7 @@
 
 <div align="center">
 
-## :chart_with_upwards_trend: Mobile Stock Market App :chart_with_downwards_trend:
+## :chart_with_upwards_trend::money_with_wings::heavy_dollar_sign: Mobile Stock Market App :heavy_dollar_sign::money_with_wings::chart_with_downwards_trend:
 
 ##### Rachel, Thelma, Vlad, Chris, Jianming
 
