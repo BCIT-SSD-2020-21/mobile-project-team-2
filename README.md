@@ -27,6 +27,9 @@ A minimal implementation of each milestone feature must exist before any team me
     - Register/Login Screen
     - Search/Quote Screen
     - Navigation link to Log Out
+
+[Figma Prototye](https://www.figma.com/file/RSOoEmLT3sZSQatMWqtzGz/DiamondHands?node-id=0%3A1)
+
 ### Milestone 2
 - Create and consume a user “portfolio” API (single currency)
 - Create a user’s “Cash” (each user to start with $50,000)
