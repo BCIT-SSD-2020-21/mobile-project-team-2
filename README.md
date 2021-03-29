@@ -1,4 +1,10 @@
-Mobile Project Team 2
+#### Mobile Project 2021: Team 2
+
+<div align="center">
+
+## :chart_with_upwards_trend: Mobile Stock Market App :chart_with_downwards_trend:
+
+##### Rachel, Thelma, Vlad, Chris, Jianming
 
 ## Overview
 In the groups assigned by your instructor, create a mobile application with as many of the features outlined below as possible. You are free to choose whether your group will create your app with Swift, Kotlin, React-Native, or Flutter…but your team must all agree with the decision. Any conflict with making this decision will default to your instructor’s pick of technology at the end of Day 1 (most likely React-Native).
