@@ -1,14 +1,6 @@
-import React from 'react'
-import {
-	StyleSheet,
-	SafeAreaView,
-	ImageBackground,
-	FlatList,
-	TouchableOpacity,
-	Text,
-	Image,
-	FlatList,
-} from 'react-native';
+import React, { useEffect } from 'react'
+import { StyleSheet, SafeAreaView, ImageBackground, FlatList, TouchableOpacity, Text, Image } from 'react-native';
+import axios from 'axios'
 
 
 
