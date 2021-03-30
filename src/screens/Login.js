@@ -56,7 +56,7 @@ export default function Login({navigation}) {
 			<Text>{error}</Text>
 			
 			<TextInput style={styles.input} placeholder ="email" onChangeText={(email) => setEmail(email)} />
-			<TextInput style={styles.input} placeholder ="password" onChangeText={(password) => setPassword(password)} />
+			<TextInput style={styles.input} secureTextEntry={true} placeholder ="password" onChangeText={(password) => setPassword(password)} />
 
 			<Button style={styles.button} onPress={() => onLogin()} title="Login" />
 			<Text> </Text>
