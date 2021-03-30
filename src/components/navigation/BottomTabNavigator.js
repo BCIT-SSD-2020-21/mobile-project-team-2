@@ -119,7 +119,7 @@ function SearchScreenNavigator() {
 			<SearchScreenStack.Screen
 				name="Search"
 				component={Search}
-				options={{ headerTitle: 'Search Screen' }}
+				options={{ headerTitle: 'Search Stocks' }}
 			/>
 		</SearchScreenStack.Navigator>
 	);
