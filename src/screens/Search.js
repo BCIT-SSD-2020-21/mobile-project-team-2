@@ -4,11 +4,18 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import stockapi from '../api/stockapi'
 import { Ionicons } from '@expo/vector-icons'
 
+function PromptText ({ children }) {
+	return (
+		<Text style={styles.promptText}>{children}</Text>
+	)
+}
+
 function SearchBox({ searchText, handleChangeSearchText }) {
 	return (
 		<View style={styles.searchSection}>
 			<Ionicons style={styles.searchIcon} name="md-search" />
-			<TextInput style={styles.searchInput} placeholder="Search" defaultValue={searchText} onChangeText={(text) => handleChangeSearchText(text)}/>
+			<TextInput style={styles.searchInput} placeholder="Search" defaultValue={searchText} onChangeText={(text) => handleChangeSearchText(text)}
+			/>
 		</View>
 	)
 }
@@ -45,13 +52,16 @@ export default function Search() {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 			<View style={styles.container}>
-				<Text style={styles.hintText}>Type a company name or stock symbol</Text>
+				<PromptText>Type a company name or stock symbol</PromptText>
 
 				<SearchBox 
 				searchText={state.searchText}
 				handleChangeSearchText={handleChangeSearchText}
 				/>
-				<View style={styles.searchSection} name="md-search" />
+				
+				{state.searchText !== "" && 
+				<StockList stocks={state.filteredStocks} addStockToWatchList={handleAddStockToWatchList}
+				/>}
 			</View>
 		</TouchableWithoutFeedback>
     )
@@ -61,8 +71,9 @@ const styles = StyleSheet.create({
 	container: {
         flex: 1,
     },
-	hintText: {
-		marginTop: 5,
+	promptText: {
+		marginTop: 10,
+		marginBottom: 10,
 		textAlign: "center"
 	},
 	searchSection: {
