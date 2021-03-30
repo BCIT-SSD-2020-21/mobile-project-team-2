@@ -17,7 +17,7 @@ function SearchBox({ searchText, handleChangeSearchText }) {
 	return (
 		<View style={styles.searchSection}>
 			<Ionicons style={styles.searchIcon} name="md-search" />
-			<TextInput style={styles.searchInput} placeholder="Search" defaultValue={searchText} onChangeText={(text) => handleChangeSearchText(text)}
+			<TextInput style={styles.searchInput} placeholder="Type a company name or stock symbol" defaultValue={searchText} onChangeText={(text) => handleChangeSearchText(text)}
 			/>
 		</View>
 	)
@@ -27,7 +27,7 @@ function StockListItem({ stock }) {
 	return (
 		<View style={styles.stockListItem}>
 			<Text style={styles.stockSymbol}>{stock.symbol}</Text>
-			<Text style={styles.stockName}>{stock.name}</Text>
+			<Text style={styles.stockName}>{stock.description}</Text>
 		</View>
 	)
 }
@@ -37,11 +37,10 @@ function StockList({ stocks }) {
 	return (
 		<ScrollView styles={styles.stockList}>
 			{stocks.map((stock, i ) => (
-				<Text>{stock.description}</Text>
-				// <TouchableOpacity key={i}// onPress={() => addStockToWatchList(stock)} key={stock.symbol}
-				// >
-				// 	<StockListItem stock={stock} />
-				// </TouchableOpacity>
+				<TouchableOpacity key={i}// onPress={() => addStockToWatchList(stock)} key={stock.symbol}
+				>
+					<StockListItem stock={stock} />
+				</TouchableOpacity>
 			)
 			)}
 		</ScrollView>
@@ -108,9 +107,7 @@ export default function Search({ navigation }) {
 	}
 
     return (
-        <TouchableOpacity onPress={Keyboard.dismiss}>
 			<View style={styles.container}>
-				<PromptText>Type a company name or stock symbol</PromptText>
 
 				<SearchBox 
 				searchText={searchText}
@@ -121,7 +118,6 @@ export default function Search({ navigation }) {
 				<StockList stocks={filteredStocks} // addStockToWatchList={handleAddStockToWatchList}
 				/>}
 			</View>
-		</TouchableOpacity>
     )
 }
 
@@ -139,7 +135,8 @@ const styles = StyleSheet.create({
 	searchSection: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		backgroundColor: 'lightgrey',
+		borderBottomColor: 'grey',
+		borderBottomWidth: 0.5,
 		height: 40,
 		borderRadius: 10,
 		marginHorizontal: 3,
@@ -157,7 +154,7 @@ const styles = StyleSheet.create({
 
 	stockListItem: {
 		paddingBottom: 10,
-		borderBottomColor: "red",
+		borderBottomColor: "grey",
 		borderBottomWidth: 1
 	},
 
