@@ -27,6 +27,13 @@ export default function BottomTabNavigator() {
             name={user ? "Market" : "Login" }
             component={user ? MarketScreenNavigator : AuthScreenNavigator}
             options={{
+                tabBarIcon: () => <EvilIcons name={user ? "chart": "retweet"} size={30} color="black" />,
+            }}
+        />
+				 <BottomTab.Screen
+            name="Trade"
+            component={TradeScreenNavigator}
+            options={{
                 tabBarIcon: () => <EvilIcons name="retweet" size={30} color="black" />,
             }}
         />
@@ -67,6 +74,7 @@ import Market from '../../screens/Market';
 import Portfolio from '../../screens/Portfolio';
 // import Portfolio from '../../screens/Portfolio';
 import Search from '../../screens/Search';
+import Trade from "../../screens/Trade"
 
 const AuthScreenStack = createStackNavigator();
 
@@ -113,6 +121,20 @@ function PortfolioScreenNavigator() {
 		</PortfolioScreenStack.Navigator>
 	);
 }
+
+const TradeScreenStack = createStackNavigator();
+function TradeScreenNavigator() {
+	return (
+		<TradeScreenStack.Navigator>
+			<TradeScreenStack.Screen
+				name="Trade"
+				component={Trade}
+				options={{ headerTitle: 'Trade Screen' }}
+			/>
+		</TradeScreenStack.Navigator>
+	);
+}
+
 const SearchScreenStack = createStackNavigator();
 function SearchScreenNavigator() {
 	return (

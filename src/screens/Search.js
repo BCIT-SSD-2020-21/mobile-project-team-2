@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 export default function Search() {
     return (
         <SafeAreaView style={styles.container}>
-            <Text>Search Screen</Text>
+            <Text>Search Hello</Text>
         </SafeAreaView>
     )
 }

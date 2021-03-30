@@ -2,7 +2,7 @@ import React from 'react'
 import {
 	StyleSheet,
 	SafeAreaView,
-	ImageBackground,
+	Button,
 	FlatList,
 	TouchableOpacity,
 	Text,
@@ -15,10 +15,11 @@ const styles = StyleSheet.create({
     }
 });
 
-export default function Portfolio() {
+export default function Portfolio({navigation}) {
     return (
         <SafeAreaView style={styles.container}>
-            <Text>Trade Screen</Text>
+            <Text>Portfolio Screen</Text>
+						<Button style={styles.button} onPress={() => navigation.navigate('SignOut')} type="outline" title="Sign Out" />
         </SafeAreaView>
     )
 }
