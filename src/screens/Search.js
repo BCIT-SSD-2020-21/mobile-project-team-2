@@ -32,14 +32,18 @@ function StockListItem({ stock }) {
 	)
 }
 
-function StockList({ stocks, addStockToWatchList }) {
+function StockList({ stocks }) {
+	console.log("stocksFromStockList", stocks)
 	return (
-		<ScrollView>
-			{stocks.map(stock => (
-				<TouchableOpacity onPress={() => addStockToWatchList(stock)} key={stock.symbol}>
-					<StockListItem stock={stock} />
-				</TouchableOpacity>
-			))}
+		<ScrollView styles={styles.stockList}>
+			{stocks.map((stock, i ) => (
+				<Text>{stock.description}</Text>
+				// <TouchableOpacity key={i}// onPress={() => addStockToWatchList(stock)} key={stock.symbol}
+				// >
+				// 	<StockListItem stock={stock} />
+				// </TouchableOpacity>
+			)
+			)}
 		</ScrollView>
 	)
 }
@@ -114,7 +118,7 @@ export default function Search({ navigation }) {
 				/>
 				
 				{searchText !== "" && 
-				<StockList stocks={filteredStocks} addStockToWatchList={handleAddStockToWatchList}
+				<StockList stocks={filteredStocks} // addStockToWatchList={handleAddStockToWatchList}
 				/>}
 			</View>
 		</TouchableOpacity>
@@ -173,6 +177,10 @@ const styles = StyleSheet.create({
 		marginTop: 10,
 		borderBottomColor: "grey",
 		borderBottomWidth: 1
+	},
+
+	stockList: {
+		height: 200
 	}
 });
 
