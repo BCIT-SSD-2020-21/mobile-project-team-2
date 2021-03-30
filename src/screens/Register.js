@@ -23,11 +23,9 @@ import * as firebase from 'firebase'
     appId: "1:710212979677:web:f23259bc5f2bb0d317c434"
   };
  
-
   if(firebase.apps.length === 0) {
 	  firebase.initializeApp(firebaseConfig)
   }
-
 
 const styles = StyleSheet.create({
 	container: {
@@ -53,10 +51,10 @@ const styles = StyleSheet.create({
 });
 
 export default function Register({navigation}) {
-	 const [ email, setEmail] = useState( '' );
-	 const [password, setPassword] = useState( '' );
-	 const [name, setName] =  useState( '' );
-	 const [error, setError] =  useState( '' );
+	 const [email, setEmail] = useState("");
+	 const [password, setPassword] = useState("");
+	 const [name, setName] =  useState("");
+	 const [error, setError] =  useState("");
 
 	 useLayoutEffect(() => {
 		 navigation.setOptions({
@@ -65,6 +63,11 @@ export default function Register({navigation}) {
 	 }, [navigation])
 
 	const onSignUp = () => {
+		if (!name)
+		{
+			setError("Please enter a name.")
+			return;
+		}
 		 firebase.auth().createUserWithEmailAndPassword(email, password)
 		 	.then((result) => {setError("sucess")})
 			 .catch((error) => {setError(""+error) })

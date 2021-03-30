@@ -1,9 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Platform, Text, View } from 'react-native';
+import React, {useState, useEffect} from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import AuthStack from './src/components/navigation/AuthStack';
 import BottomTabNavigator from './src/components/navigation/BottomTabNavigator';
 import DrawerNavigator from './src/components/navigation/DrawerNavigator';
 import * as firebase from 'firebase'
@@ -18,12 +17,11 @@ const firebaseConfig = {
     messagingSenderId: config.firebaseConfig.MESSAGINGSENDERID,
     appId: config.firebaseConfig.APPID,
 }
- 
 
-  if(firebase.apps.length === 0) {
-	  firebase.initializeApp(firebaseConfig)
-  }
-  
+if(firebase.apps.length === 0) {
+  firebase.initializeApp(firebaseConfig)
+}
+
 const Stack = createStackNavigator();
 
 // const PlatformNavigator = Platform.select({
@@ -32,11 +30,23 @@ const Stack = createStackNavigator();
 // })();
 
 export default function App() {
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const subscriber = firebase.auth().onAuthStateChanged((authUser) => {
+      setUser(authUser);	 
+    })
+   return subscriber; // unsubscribe on unmount
+  }, []);
+
+  console.log("authUser", user)
+
   return (
     <SafeAreaProvider>
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Root" component={BottomTabNavigator} />
+        <Stack.Screen name="Root" component={user ? BottomTabNavigator : AuthStack } />
       </Stack.Navigator>
     </NavigationContainer>
   </SafeAreaProvider>

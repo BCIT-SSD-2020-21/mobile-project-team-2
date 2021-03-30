@@ -10,11 +10,8 @@ import {
 	TextInput,
 	Input,
 	Button,
-
 } from 'react-native';
-
 import * as firebase from 'firebase'
-
 
 const styles = StyleSheet.create({
 	container: {
@@ -40,27 +37,24 @@ const styles = StyleSheet.create({
 });
 
 export default function Login({navigation}) {
-	 const [ email, setEmail] = useState( '' );
-	 const [password, setPassword] = useState( '' );
-	 const [name, setName] =  useState( '' );
-	const [error, setError] =  useState( '' );
-
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [error, setError] =  useState("");
 
 	const onLogin = () => {
-		
-		console.log("test")
+		firebase.auth().signInWithEmailAndPassword(email, password)
+			.then((result) => {setError("sucess")})
+			.catch((error) => {setError(""+error) })
 
-		 firebase.auth().signInWithEmailAndPassword(email, password)
-		 	.then((result) => {setError("sucess")})
-			 .catch((error) => {setError(""+error) })
-
-			 console.log(email)
-			 console.log(password)
-	  }	  
+			// test
+			console.log(email)
+			console.log(password)
+	  	}	  
 
     return (
         <SafeAreaView style={styles.container}>
 			<Text>{error}</Text>
+			
 			<TextInput style={styles.input} placeholder ="email" onChangeText={(email) => setEmail(email)} />
 			<TextInput style={styles.input} placeholder ="password" onChangeText={(password) => setPassword(password)} />
 
