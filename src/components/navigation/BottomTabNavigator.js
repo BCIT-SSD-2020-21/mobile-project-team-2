@@ -15,7 +15,7 @@ export default function BottomTabNavigator() {
             name={"Market"}
             component={MarketScreenNavigator}
             options={{
-                tabBarIcon: () => <EvilIcons name={user ? "chart": "retweet"} size={30} color="black" />,
+                tabBarIcon: () => <EvilIcons name="chart" size={30} color="black" />,
             }}
         />
 				 <BottomTab.Screen
@@ -40,13 +40,6 @@ export default function BottomTabNavigator() {
             }}
         />
 
-		<BottomTab.Screen
-			name={"SignOut" }
-			component={SignOutScreenNavigator}
-			options={{
-				tabBarIcon: () => <EvilIcons name="star" size={30} color="black" />,
-			}}
-		/>
 		
     </BottomTab.Navigator>
     )
