@@ -7,18 +7,23 @@ import {
 	TouchableOpacity,
 	Text,
 	Image,
+	FlatList,
 } from 'react-native';
 
-const styles = StyleSheet.create({
-	container: {
-        //
-    }
-});
 
-export default function Market() {
-    return (
-        <SafeAreaView style={styles.container}>
-            <Text>Market Screen</Text>
-        </SafeAreaView>
-    )
-}
+
+	function Market() {
+		return (
+			<SafeAreaView style={styles.container}>
+				<Text>Market Screen</Text>
+			</SafeAreaView>
+		)
+	}
+
+	const styles = StyleSheet.create({
+		container: {
+			//
+		}
+	});
+
+export default Market
