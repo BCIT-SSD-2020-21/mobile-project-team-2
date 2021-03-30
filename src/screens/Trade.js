@@ -1,13 +1,7 @@
 import React from 'react'
-import {
-	StyleSheet,
-	SafeAreaView,
-	ImageBackground,
-	FlatList,
-	TouchableOpacity,
-	Text,
-	Image,
-} from 'react-native';
+import {StyleSheet,SafeAreaView,ImageBackground,FlatList,Vibration,TouchableOpacity,Text, Image,} from 'react-native';
+import {useState} from 'react';
+import { Entypo } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
 	container: {
