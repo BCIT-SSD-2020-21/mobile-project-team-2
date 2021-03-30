@@ -43,6 +43,17 @@ export default function BottomTabNavigator() {
                 tabBarIcon: () => <EvilIcons name="star" size={30} color="black" />,
             }}
         />
+
+		{
+			user && 
+			<BottomTab.Screen
+				name={"SignOut" }
+				component={SignOutScreenNavigator}
+				options={{
+					tabBarIcon: () => <EvilIcons name="star" size={30} color="black" />,
+				}}
+			/>
+		}
     </BottomTab.Navigator>
     )
 }
@@ -50,6 +61,7 @@ export default function BottomTabNavigator() {
 import { createStackNavigator } from '@react-navigation/stack';
 import Register from '../../screens/Register';
 import Login from '../../screens/Login';
+import Signout from '../../screens/Signout';
 import Market from '../../screens/Market';
 import Portfolio from '../../screens/Portfolio';
 // import Portfolio from '../../screens/Portfolio';
@@ -110,5 +122,18 @@ function SearchScreenNavigator() {
 				options={{ headerTitle: 'Search Screen' }}
 			/>
 		</SearchScreenStack.Navigator>
+	);
+}
+
+const SignOutScreenStack = createStackNavigator();
+function SignOutScreenNavigator() {
+	return (
+		<SignOutScreenStack.Navigator>
+			<SignOutScreenStack.Screen
+				name="Signout"
+				component={Signout}
+				options={{ headerTitle: 'Signout Screen' }}
+			/>
+		</SignOutScreenStack.Navigator>
 	);
 }
