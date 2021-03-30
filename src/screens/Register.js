@@ -70,18 +70,11 @@ export default function Register({navigation}) {
 			 .catch((error) => {setError(""+error) })
 	  }
 
-	const onSignIn = () => {
-		 firebase.auth().signInWithEmailAndPassword(email, password)
-		 	.then((result) => {console.log(result)})
-			 .catch((error) => {console.log(error)})
-	  }	  
-
     return (
         <SafeAreaView style={styles.container}>
 			<Text>{error}</Text>
-			<TextInput style={styles.input} placeholder ="name" onChangeText={(name) => setName(name)} />
 			<TextInput style={styles.input} placeholder ="email" onChangeText={(email) => setEmail(email)} />
-			<TextInput style={styles.input} placeholder ="password" onChangeText={(password) => setPassword(password)} />
+			<TextInput style={styles.input} secureTextEntry={true} placeholder ="password" onChangeText={(password) => setPassword(password)} />
 
 			<Button style={styles.button} onPress={() => onSignUp()} title="Sign Up" />
         </SafeAreaView>

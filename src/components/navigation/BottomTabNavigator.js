@@ -1,6 +1,7 @@
 import React , {useState, useEffect} from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { EvilIcons } from '@expo/vector-icons';
+import { Foundation } from '@expo/vector-icons'; 
 import * as firebase from 'firebase'
 
 const BottomTab = createBottomTabNavigator();
@@ -26,21 +27,21 @@ export default function BottomTabNavigator() {
             name={user ? "Market" : "Login" }
             component={user ? MarketScreenNavigator : AuthScreenNavigator}
             options={{
-                tabBarIcon: () => <EvilIcons name="star" size={30} color="black" />,
+                tabBarIcon: () => <EvilIcons name="retweet" size={30} color="black" />,
             }}
         />
         <BottomTab.Screen
             name="Portfolio"
             component={PortfolioScreenNavigator}
             options={{
-                tabBarIcon: () => <EvilIcons name="star" size={30} color="black" />,
+                tabBarIcon: () => <EvilIcons name="user" size={30} color="black" />,
             }}
         />
         <BottomTab.Screen
             name="Search"
             component={SearchScreenNavigator}
             options={{
-                tabBarIcon: () => <EvilIcons name="star" size={30} color="black" />,
+                tabBarIcon: () => <EvilIcons name="search" size={30} color="black" />,
             }}
         />
 
