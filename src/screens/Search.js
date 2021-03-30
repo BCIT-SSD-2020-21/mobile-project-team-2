@@ -20,10 +20,33 @@ function SearchBox({ searchText, handleChangeSearchText }) {
 	)
 }
 
+function StockListItem({ stock }) {
+	return (
+		<View style={styles.stockListItem}>
+			<Text style={styles.stockSymbol}>{stock.symbol}</Text>
+			<Text style={styles.stockName}>{stock.name}</Text>
+		</View>
+	)
+}
+
+function StockList({ stocks, addStockToWatchList }) {
+	return (
+		<ScrollView>
+			{stocks.map(stock => (
+				<TouchableOpacity onPress={() => addStockToWatchList(stock)} key={stock.symbol}>
+					<StockListItem stock={stock} />
+				</TouchableOpacity>
+			))}
+		</ScrollView>
+	)
+}
+
 export default function Search() {
-	// const { baseURL, addToWatchList } = useStockContext()
+	const { baseURL, addToWatchList } = useStocksContext()
 	const [state, setState] = useState({
+		stocks: [], // all stocks
 		searchText: "",
+		filteredStocks: [], // stocks filtered by the searchText
 	})
 
 	useEffect(() => {
