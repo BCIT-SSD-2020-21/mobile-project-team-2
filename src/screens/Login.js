@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center",
 		padding: 100,
-		backgroundColor: "Red"
     },
 	input : {
 		width: 300,
@@ -52,7 +51,7 @@ export default function Login({navigation}) {
 		console.log("test")
 
 		 firebase.auth().signInWithEmailAndPassword(email, password)
-		 	.then((result) => {console.log(result)})
+		 	.then((result) => {setError("sucess")})
 			 .catch((error) => {setError(""+error) })
 
 			 console.log(email)
