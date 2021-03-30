@@ -5,8 +5,15 @@ import { EvilIcons } from '@expo/vector-icons';
 const BottomTab = createBottomTabNavigator();
 export default function BottomTabNavigator() {
     return (
-        <BottomTab.Navigator initialRouteName="Market">
+        <BottomTab.Navigator initialRouteName="Auth">
         {/* ScreenOne Stack */}
+		<BottomTab.Screen
+            name="Auth"
+            component={AuthScreenNavigator}
+            options={{
+                tabBarIcon: () => <EvilIcons name="star" size={30} color="black" />,
+            }}
+        />
         <BottomTab.Screen
             name="Market"
             component={MarketScreenNavigator}
@@ -33,10 +40,24 @@ export default function BottomTabNavigator() {
 }
 
 import { createStackNavigator } from '@react-navigation/stack';
+import Auth from '../../screens/Auth';
 import Market from '../../screens/Market';
 import Portfolio from '../../screens/Portfolio';
 // import Portfolio from '../../screens/Portfolio';
 import Search from '../../screens/Search';
+
+const AuthScreenStack = createStackNavigator();
+function AuthScreenNavigator() {
+	return (
+		<AuthScreenStack.Navigator>
+			<AuthScreenStack.Screen
+				name="Auth"
+				component={Auth}
+				options={{ headerTitle: 'Auth Screen' }}
+			/>
+		</AuthScreenStack.Navigator>
+	);
+}
 
 const MarketScreenStack = createStackNavigator();
 function MarketScreenNavigator() {
