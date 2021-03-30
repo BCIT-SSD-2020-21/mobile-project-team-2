@@ -6,34 +6,25 @@ import * as firebase from 'firebase'
 const BottomTab = createBottomTabNavigator();
 export default function BottomTabNavigator() {
 
-	const [loaded, setLoaded] = useState(false);
-	const [loginChanged, setLoginChanged] =  useState(false);
+	 const [user, setUser] = useState(null);
 
 	 useEffect(() => {
-		 firebase.auth().onAuthStateChanged((authUser) => {
-			 if(authUser) 
-				 setLoaded(true)
-			else 
-				setLoaded(false)
-			 
+		 const subscriber = firebase.auth().onAuthStateChanged((authUser) => {
+			 setUser(authUser);	 
 		 })
 
-		 console.log("BottomTabNavigator")
-	 }, [loginChanged]);
+		return subscriber; // unsubscribe on unmount
+	 }, []);
+
+	 console.log("authUser", user)
 
     return (
-        <BottomTab.Navigator initialRouteName= {loaded ? "Market" : "Login"}>
+        <BottomTab.Navigator initialRouteName= {"Market"}>
         {/* ScreenOne Stack */}
-		<BottomTab.Screen
-            name="Login"
-            component={AuthScreenNavigator}
-            options={{
-                tabBarIcon: () => <EvilIcons name="star" size={30} color="black" />,
-            }}
-        />
+
         <BottomTab.Screen
-            name="Market"
-            component={MarketScreenNavigator}
+            name={user ? "Market" : "Login" }
+            component={user ? MarketScreenNavigator : AuthScreenNavigator}
             options={{
                 tabBarIcon: () => <EvilIcons name="star" size={30} color="black" />,
             }}
