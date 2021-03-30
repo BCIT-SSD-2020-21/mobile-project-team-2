@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
 	},
 
 	stockList: {
-		height: 200
+		height: 200,
 	}
 });
 
