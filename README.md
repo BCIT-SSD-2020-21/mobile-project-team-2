@@ -22,6 +22,7 @@ A minimal implementation of each milestone feature must exist before any team me
 ### Milestone 1
 - Authentication (Register, Login, Logout)
     - Consume a Stock Price API (like finnhub.io and/or alphavantage.co)
+      - expo install firebase
     - Search and display the current stock price for a given symbol
 - User Interface
     - Register/Login Screen
