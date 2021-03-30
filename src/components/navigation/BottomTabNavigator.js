@@ -1,15 +1,30 @@
-import React from 'react'
+import React , {useState, useEffect} from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { EvilIcons } from '@expo/vector-icons';
+import * as firebase from 'firebase'
 
 const BottomTab = createBottomTabNavigator();
 export default function BottomTabNavigator() {
+
+	 const [user, setUser] = useState(null);
+
+	 useEffect(() => {
+		 const subscriber = firebase.auth().onAuthStateChanged((authUser) => {
+			 setUser(authUser);	 
+		 })
+
+		return subscriber; // unsubscribe on unmount
+	 }, []);
+
+	 console.log("authUser", user)
+
     return (
-        <BottomTab.Navigator initialRouteName="Market">
+        <BottomTab.Navigator initialRouteName= {"Market"}>
         {/* ScreenOne Stack */}
+
         <BottomTab.Screen
-            name="Market"
-            component={MarketScreenNavigator}
+            name={user ? "Market" : "Login" }
+            component={user ? MarketScreenNavigator : AuthScreenNavigator}
             options={{
                 tabBarIcon: () => <EvilIcons name="star" size={30} color="black" />,
             }}
@@ -28,15 +43,50 @@ export default function BottomTabNavigator() {
                 tabBarIcon: () => <EvilIcons name="star" size={30} color="black" />,
             }}
         />
+
+		{
+			user && 
+			<BottomTab.Screen
+				name={"SignOut" }
+				component={SignOutScreenNavigator}
+				options={{
+					tabBarIcon: () => <EvilIcons name="star" size={30} color="black" />,
+				}}
+			/>
+		}
     </BottomTab.Navigator>
     )
 }
 
 import { createStackNavigator } from '@react-navigation/stack';
+import Register from '../../screens/Register';
+import Login from '../../screens/Login';
+import Signout from '../../screens/Signout';
 import Market from '../../screens/Market';
 import Portfolio from '../../screens/Portfolio';
 // import Portfolio from '../../screens/Portfolio';
 import Search from '../../screens/Search';
+
+const AuthScreenStack = createStackNavigator();
+
+function AuthScreenNavigator() {
+	return (
+		<AuthScreenStack.Navigator>
+			
+			<AuthScreenStack.Screen
+				name="Login"
+				component={Login}
+				options={{ headerTitle: 'Login Screen' }}
+			/>
+			
+			<AuthScreenStack.Screen
+				name="Register"
+				component={Register}
+				options={{ headerTitle: 'Register Screen', headerBackTitle: "Back to Login" }}
+			/>			
+		</AuthScreenStack.Navigator>
+	);
+}
 
 const MarketScreenStack = createStackNavigator();
 function MarketScreenNavigator() {
@@ -72,5 +122,18 @@ function SearchScreenNavigator() {
 				options={{ headerTitle: 'Search Screen' }}
 			/>
 		</SearchScreenStack.Navigator>
+	);
+}
+
+const SignOutScreenStack = createStackNavigator();
+function SignOutScreenNavigator() {
+	return (
+		<SignOutScreenStack.Navigator>
+			<SignOutScreenStack.Screen
+				name="Signout"
+				component={Signout}
+				options={{ headerTitle: 'Signout Screen' }}
+			/>
+		</SignOutScreenStack.Navigator>
 	);
 }
