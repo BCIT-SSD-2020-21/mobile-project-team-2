@@ -12,6 +12,7 @@ import config from './config'
 const firebaseConfig = {
     apiKey: config.firebaseConfig.APIKEY,
     authDomain: config.firebaseConfig.AUTHDOMAIN,
+    databaseURL: config.firebaseConfig.DATABASEURL,
     projectId: config.firebaseConfig.PROJECTID,
     storageBucket: config.firebaseConfig.STORAGEBUCKET,
     messagingSenderId: config.firebaseConfig.MESSAGINGSENDERID,
