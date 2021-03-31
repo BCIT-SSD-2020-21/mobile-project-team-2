@@ -85,16 +85,10 @@ export default function Login({navigation}) {
     return (
         <SafeAreaView style={styles.container}>
 			<Text>{error}</Text>
-			<Image style={styles.image} source={require('../images/Logo.png')} />
-			<Text style = {styles.title} > Register </Text>
-			<View style = {styles.inputContainer}>
-				<Text style = {styles.label} > Email Address </Text>
-				<TextInput style={styles.input} placeholder ="email" onChangeText={(email) => setEmail(email)} />
-			</View>
-			<View style = {styles.inputContainer}>
-				<Text style = {styles.label} > Email Address </Text>
-				<TextInput style={styles.input} placeholder ="password" onChangeText={(password) => setPassword(password)} />
-			</View>
+			
+			<TextInput style={styles.input} placeholder ="email" onChangeText={(email) => setEmail(email)} />
+			<TextInput style={styles.input} secureTextEntry={true} placeholder ="password" onChangeText={(password) => setPassword(password)} />
+
 			<Button style={styles.button} onPress={() => onLogin()} title="Login" />
         </SafeAreaView>
     )
