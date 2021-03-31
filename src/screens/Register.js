@@ -11,21 +11,7 @@ import {
 	Button,
 
 } from 'react-native';
-
-import * as firebase from 'firebase'
-
-  var firebaseConfig = {
-    apiKey: "AIzaSyDFxRRPqBUNisZNWGbNszkMikswNTsjvbw",
-    authDomain: "realstock-4e514.firebaseapp.com",
-    projectId: "realstock-4e514",
-    storageBucket: "realstock-4e514.appspot.com",
-    messagingSenderId: "710212979677",
-    appId: "1:710212979677:web:f23259bc5f2bb0d317c434"
-  };
- 
-  if(firebase.apps.length === 0) {
-	  firebase.initializeApp(firebaseConfig)
-  }
+import { firebase } from '../../firebase/config';
 
 const styles = StyleSheet.create({
 	container: {
@@ -53,7 +39,6 @@ const styles = StyleSheet.create({
 export default function Register({navigation}) {
 	 const [email, setEmail] = useState("");
 	 const [password, setPassword] = useState("");
-	 const [name, setName] =  useState("");
 	 const [error, setError] =  useState("");
 
 	 useLayoutEffect(() => {
@@ -63,16 +48,28 @@ export default function Register({navigation}) {
 	 }, [navigation])
 
 	const onSignUp = () => {
-		if (!name)
-		{
-			setError("Please enter a name.")
-			return;
-		}
-		 firebase.auth().createUserWithEmailAndPassword(email, password)
-		 	.then((result) => {setError("sucess")})
-			 .catch((error) => {setError(""+error) })
+		 firebase
+		 	.auth()
+			.createUserWithEmailAndPassword(email, password)
+		 	.then((response) => {
+				 console.log("SignUp RESULT: ", response);
+				 const uid = response.user.uid
+				 const data = {
+					 id: uid,
+					 email,
+				 };
+				 const usersRef = firebase.firestore().collection('users');
+				 usersRef
+				 	.doc(uid)
+					.set(data)
+					.then(() => {
+						navigation.navigate("Login")
+					})					
+				})
+			 .catch((error) => setError(error.message) )
 	  }
 
+	console.log("Error state is: ", error)
     return (
         <SafeAreaView style={styles.container}>
 			<Text>{error}</Text>
