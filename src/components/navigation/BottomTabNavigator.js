@@ -1,8 +1,10 @@
 import React , {useState, useEffect} from 'react'
+import { Button } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { EvilIcons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons'; 
-import * as firebase from 'firebase'
+import { firebase } from '../../firebase/config';
+import { userSignOut } from '../../firebase/service';
 
 const BottomTab = createBottomTabNavigator();
 export default function BottomTabNavigator() {
@@ -74,7 +76,6 @@ function PortfolioScreenNavigator() {
 				options={{ 
 					headerTitle: 'Your Portfolio',
 					headerStyle: {
-
 						backgroundColor: '#08100a', //darkest-green
 					  },
 					headerTintColor: "#59a66b", //medium-green
@@ -83,6 +84,14 @@ function PortfolioScreenNavigator() {
 						textAlign: 'center',
 						fontWeight: 'bold',
 					  },
+					headerRight: () => (
+						<Button
+							onPress={() => userSignOut()}
+							title="SignOut"
+							color="#59a66b" //medium-green
+							margin="20px"
+						/>
+						),
 				}}
 			/>
 		</PortfolioScreenStack.Navigator>
