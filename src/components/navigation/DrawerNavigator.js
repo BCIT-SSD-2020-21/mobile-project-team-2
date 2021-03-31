@@ -1,6 +1,10 @@
 import React from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { EvilIcons } from '@expo/vector-icons'
+import MarketScreenNavigator from './MarketNavigator'
+import TradeScreenNavigator from './TradeNavigator'
+import PortfolioScreenNavigator from './PortfolioNavigator'
+import SearchScreenNavigator from './SearchNavigator'
 
 const Drawer = createDrawerNavigator()
 export default function DrawerNavigator() {
