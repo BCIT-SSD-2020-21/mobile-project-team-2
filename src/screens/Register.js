@@ -9,23 +9,13 @@ import {
 	Image,
 	TextInput,
 	Button,
+	View,
 
 } from 'react-native';
 
 import * as firebase from 'firebase'
 
-  var firebaseConfig = {
-    apiKey: "AIzaSyDFxRRPqBUNisZNWGbNszkMikswNTsjvbw",
-    authDomain: "realstock-4e514.firebaseapp.com",
-    projectId: "realstock-4e514",
-    storageBucket: "realstock-4e514.appspot.com",
-    messagingSenderId: "710212979677",
-    appId: "1:710212979677:web:f23259bc5f2bb0d317c434"
-  };
- 
-  if(firebase.apps.length === 0) {
-	  firebase.initializeApp(firebaseConfig)
-  }
+import {resetPassword} from './ResetPassword'
 
 const styles = StyleSheet.create({
 	container: {
@@ -33,26 +23,47 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center",
 		padding: 100,
+		fontFamily: 'Roboto',
     },
+	image : {
+		width:400, 
+		height:400, 
+	},
+	inputContainer : {
+		margin: 5,
+	},
+	label : {
+		fontSize: 16,
+		color: '#999999',
+		textShadow: '1px 0px #888888',
+	},
 	input : {
-		width: 300,
-		height: 40,
-		fontSize:20,
-		borderColor: '#9b9b9b',
-		borderBottomWidth: 1,
+		fontFamily: 'Roboto',
+		width: 350,
+		height: '1.6rem',
+		fontSize: '1.5rem',
 		marginTop: 8,
-		marginVertical: 15
-
+		marginVertical: 15,
+		padding: 3,
+		color: '#000000',
+		borderColor: '#9b9b9b',
+		borderBottomWidth: 2,	
+	},
+	forgot : {
+		marginBottom: 15,
+		width: 300,
+		color: '#147DF0'		
 	},
 	button: { 
-		width: 200,
-		margin: 10,
+		display: 'block',
+		width: 300,
+		backgroundColor: '#147DF0',
 	}
 });
-
 export default function Register({navigation}) {
 	 const [email, setEmail] = useState("");
 	 const [password, setPassword] = useState("");
+	 const [confirmPassword, setConfirmPassword] = useState("")
 	 const [name, setName] =  useState("");
 	 const [error, setError] =  useState("");
 
@@ -63,11 +74,18 @@ export default function Register({navigation}) {
 	 }, [navigation])
 
 	const onSignUp = () => {
-		if (!name)
+		if (!email)
 		{
-			setError("Please enter a name.")
+			setError("Please enter an email.")
 			return;
 		}
+
+		if (password !== confirmPassword)
+		{
+			setError("Password and confirm password does not match. Try it again.")
+			return;
+		}
+
 		 firebase.auth().createUserWithEmailAndPassword(email, password)
 		 	.then((result) => {setError("sucess")})
 			 .catch((error) => {setError(""+error) })
@@ -75,11 +93,24 @@ export default function Register({navigation}) {
 
     return (
         <SafeAreaView style={styles.container}>
-			<Text>{error}</Text>
-			<TextInput style={styles.input} placeholder ="email" onChangeText={(email) => setEmail(email)} />
-			<TextInput style={styles.input} secureTextEntry={true} placeholder ="password" onChangeText={(password) => setPassword(password)} />
-
-			<Button style={styles.button} onPress={() => onSignUp()} title="Sign Up" />
+			<Image style={styles.image} source={require('../images/Logo.png')} />
+			<View>
+				<Text>{error}</Text>
+				<View style = {styles.inputContainer}>
+					<Text style = {styles.label} > Email Address </Text>
+					<TextInput style={styles.input} placeholderTextColor="#000000" placeholder ="email" onChangeText={(email) => setEmail(email)} />
+				</View>
+				<View style = {styles.inputContainer}>
+					<Text style = {styles.label} > Password </Text>
+					<TextInput style={styles.input} placeholderTextColor="#000000" secureTextEntry={true} placeholder ="password" onChangeText={(password) => setPassword(password)} />
+				</View>	
+				<View style = {styles.inputContainer}>
+					<Text style = {styles.label} > Confirm Password </Text>
+					<TextInput style={styles.input} placeholderTextColor="#000000" secureTextEntry={true} placeholder ="password" onChangeText={(password) => setConfirmPassword(password)} />
+				</View>				
+				<Text style = {styles.forgot} onPress={() => {resetPassword(email)}} > Forgot password or email?</Text>	
+				<Button style={styles.button} onPress={() => onSignUp()} title="Sign Up" />
+			</View>								
         </SafeAreaView>
     )
 }

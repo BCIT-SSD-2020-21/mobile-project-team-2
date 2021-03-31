@@ -46,7 +46,6 @@ export default function BottomTabNavigator() {
 }
 
 import { createStackNavigator } from '@react-navigation/stack';
-import Signout from '../../screens/Signout';
 import Market from '../../screens/Market';
 import Portfolio from '../../screens/Portfolio';
 // import Portfolio from '../../screens/Portfolio';
@@ -101,18 +100,5 @@ function SearchScreenNavigator() {
 				options={{ headerTitle: 'Search Stocks' }}
 			/>
 		</SearchScreenStack.Navigator>
-	);
-}
-
-const SignOutScreenStack = createStackNavigator();
-function SignOutScreenNavigator() {
-	return (
-		<SignOutScreenStack.Navigator>
-			<SignOutScreenStack.Screen
-				name="Signout"
-				component={Signout}
-				options={{ headerTitle: 'Signout Screen' }}
-			/>
-		</SignOutScreenStack.Navigator>
 	);
 }
