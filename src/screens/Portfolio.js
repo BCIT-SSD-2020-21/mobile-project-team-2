@@ -50,11 +50,6 @@ export default function Portfolio({navigation}) {
     return (
         <SafeAreaView style={styles.container}>
 		<View>
-			<Button 
-				style={styles.button} 
-				onPress={onSignout}
-				color="#59a66b" 
-				title="Sign Out" />
 			<Text style={styles.greeting}>{}</Text>
 			<EvilIcons style={styles.icon} name="chart" size={30} color="black" />
 			{/* an image placeholder for TODO task */}
