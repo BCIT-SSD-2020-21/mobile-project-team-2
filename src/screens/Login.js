@@ -31,9 +31,6 @@ const styles = StyleSheet.create({
 		width:400, 
 		height:400, 
 	},
-	title : {
-		marginVertical: 20
-	},
 	inputContainer : {
 		margin: 5,
 	},
@@ -52,14 +49,17 @@ const styles = StyleSheet.create({
 		padding: 3,
 		color: '#000000',
 		borderColor: '#9b9b9b',
-		borderBottomWidth: 1,	
 		borderBottomWidth: 2,	
+	},
+	forgot : {
+		marginBottom: 15,
+		width: 300,
+		color: '#147DF0'		
 	},
 	button: { 
 		display: 'block',
 		width: 300,
 		backgroundColor: '#147DF0',
-		paddingLeft: 22,
 	}
 });
 
@@ -84,12 +84,20 @@ export default function Login({navigation}) {
 
     return (
         <SafeAreaView style={styles.container}>
+		<Image style={styles.image} source={require('../images/Logo.png')} />
+		<View>
 			<Text>{error}</Text>
-			
-			<TextInput style={styles.input} placeholder ="email" onChangeText={(email) => setEmail(email)} />
-			<TextInput style={styles.input} secureTextEntry={true} placeholder ="password" onChangeText={(password) => setPassword(password)} />
-
+			<View style = {styles.inputContainer}>
+				<Text style = {styles.label} > Email Address </Text>
+				<TextInput style={styles.input} placeholder ="email" onChangeText={(email) => setEmail(email)} />
+			</View>
+			<View style = {styles.inputContainer}>
+				<Text style = {styles.label} > Password </Text>
+				<TextInput style={styles.input} secureTextEntry={true} placeholder ="password" onChangeText={(password) => setPassword(password)} />
+			</View>	
+			<Text style = {styles.forgot} onPress={() => {alert("dd")}} > Forgot password or email?</Text>		
 			<Button style={styles.button} onPress={() => onLogin()} title="Login" />
+			</View>
         </SafeAreaView>
     )
 }
