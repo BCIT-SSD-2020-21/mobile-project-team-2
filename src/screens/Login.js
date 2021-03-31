@@ -31,7 +31,7 @@ export default function Login({navigation}) {
 						<Text style={styles.label}>Password</Text>
 						<TextInput style={styles.input} secureTextEntry={true} placeholder="Enter password" onChangeText={(password) => setPassword(password)} />
 					</View>	
-					<Text style={styles.forgot} onPress={() => { resetPassword(email) }}>Forgot password or email?</Text>
+					<Text style={styles.forgot} onPress={() => resetPassword(email)}>Forgot password or email?</Text>
 					<Text style={{paddingBottom: 5, color: 'red'}}>{error}</Text>
 					<Button style={styles.button} onPress={() => onLogin()} title="Login" />
 				</View>
