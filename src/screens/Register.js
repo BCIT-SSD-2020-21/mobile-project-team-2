@@ -32,8 +32,8 @@ const styles = StyleSheet.create({
 	},
 	label : {
 		fontSize: 16,
-		color: '#444444',
-		textShadow: '1px 1px #555555',
+		color: '#999999',
+		textShadow: '1px 0px #888888',
 	},
 	input : {
 		fontFamily: 'Roboto',
@@ -72,11 +72,18 @@ export default function Register({navigation}) {
 	 }, [navigation])
 
 	const onSignUp = () => {
-		if (!name)
+		if (!email)
 		{
-			setError("Please enter a name.")
+			setError("Please enter an email.")
 			return;
 		}
+
+		if (password !== confirmPassword)
+		{
+			setError("Password and confirm password does not match. Try it again.")
+			return;
+		}
+
 		 firebase.auth().createUserWithEmailAndPassword(email, password)
 		 	.then((result) => {setError("sucess")})
 			 .catch((error) => {setError(""+error) })
@@ -89,15 +96,15 @@ export default function Register({navigation}) {
 				<Text>{error}</Text>
 				<View style = {styles.inputContainer}>
 					<Text style = {styles.label} > Email Address </Text>
-					<TextInput style={styles.input} placeholder ="email" onChangeText={(email) => setEmail(email)} />
+					<TextInput style={styles.input} placeholderTextColor="#000000" placeholder ="email" onChangeText={(email) => setEmail(email)} />
 				</View>
 				<View style = {styles.inputContainer}>
 					<Text style = {styles.label} > Password </Text>
-					<TextInput style={styles.input} secureTextEntry={true} placeholder ="password" onChangeText={(password) => setPassword(password)} />
+					<TextInput style={styles.input} placeholderTextColor="#000000" secureTextEntry={true} placeholder ="password" onChangeText={(password) => setPassword(password)} />
 				</View>	
 				<View style = {styles.inputContainer}>
 					<Text style = {styles.label} > Confirm Password </Text>
-					<TextInput style={styles.input} secureTextEntry={true} placeholder ="password" onChangeText={(password) => setConfirmPassword(password)} />
+					<TextInput style={styles.input} placeholderTextColor="#000000" secureTextEntry={true} placeholder ="password" onChangeText={(password) => setConfirmPassword(password)} />
 				</View>				
 				<Text style = {styles.forgot} onPress={() => {alert("dd")}} > Forgot password or email?</Text>	
 				<Button style={styles.button} onPress={() => onSignUp()} title="Sign Up" />

@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 
 import * as firebase from 'firebase'
-import { block } from 'react-native-reanimated';
+import {resetPassword} from './ResetPassword'
 
 
 const styles = StyleSheet.create({
@@ -36,8 +36,8 @@ const styles = StyleSheet.create({
 	},
 	label : {
 		fontSize: 16,
-		color: '#444444',
-		textShadow: '1px 1px #555555',
+		color: '#999999',
+		textShadow: '1px 0px #888888',
 	},
 	input : {
 		fontFamily: 'Roboto',
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
 		fontSize: '1.5rem',
 		marginTop: 8,
 		marginVertical: 15,
-		padding: 3,
+		padding: 5,
 		color: '#000000',
 		borderColor: '#9b9b9b',
 		borderBottomWidth: 2,	
@@ -89,13 +89,13 @@ export default function Login({navigation}) {
 			<Text>{error}</Text>
 			<View style = {styles.inputContainer}>
 				<Text style = {styles.label} > Email Address </Text>
-				<TextInput style={styles.input} placeholder ="email" onChangeText={(email) => setEmail(email)} />
+				<TextInput style={styles.input} placeholderTextColor="#000000" placeholder ="email" onChangeText={(email) => setEmail(email)} />
 			</View>
 			<View style = {styles.inputContainer}>
 				<Text style = {styles.label} > Password </Text>
-				<TextInput style={styles.input} secureTextEntry={true} placeholder ="password" onChangeText={(password) => setPassword(password)} />
+				<TextInput style={styles.input} placeholderTextColor="#000000" secureTextEntry={true} placeholder ="password" onChangeText={(password) => setPassword(password)} />
 			</View>	
-			<Text style = {styles.forgot} onPress={() => {alert("dd")}} > Forgot password or email?</Text>		
+			<Text style = {styles.forgot} onPress={() => { resetPassword(email) }} > Forgot password or email?</Text>		
 			<Button style={styles.button} onPress={() => onLogin()} title="Login" />
 			</View>
         </SafeAreaView>
