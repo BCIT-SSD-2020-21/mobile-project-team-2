@@ -8,7 +8,7 @@ const BottomTab = createBottomTabNavigator();
 export default function BottomTabNavigator() {
 
     return (
-        <BottomTab.Navigator initialRouteName= {"Market"}>
+        <BottomTab.Navigator initialRouteName= {"Portfolio"}>
         {/* ScreenOne Stack */}
 
         <BottomTab.Screen
@@ -71,7 +71,19 @@ function PortfolioScreenNavigator() {
 			<PortfolioScreenStack.Screen
 				name="Portfolio"
 				component={Portfolio}
-				options={{ headerTitle: 'Portfolio Screen' }}
+				options={{ 
+					headerTitle: 'Your Portfolio',
+					headerStyle: {
+
+						backgroundColor: '#08100a', //darkest-green
+					  },
+					headerTintColor: "#59a66b", //medium-green
+					headerTitleStyle: {
+						fontFamily: 'Garamond',
+						textAlign: 'center',
+						fontWeight: 'bold',
+					  },
+				}}
 			/>
 		</PortfolioScreenStack.Navigator>
 	);
