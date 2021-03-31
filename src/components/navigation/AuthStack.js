@@ -33,11 +33,13 @@ import Login from '../../screens/Login';
 const LoginScreenStack = createStackNavigator();
 function LoginScreenNavigator() {
 	return (
-		<LoginScreenStack.Navigator>
+		<LoginScreenStack.Navigator screenOptions={{
+            headerShown: false
+          }}>
 			<LoginScreenStack.Screen
 				name="Login"
 				component={Login}
-				options={{ headerTitle: 'Login Screen' }}
+				//options={{ headerTitle: 'Login Screen' }}
 			/>
 		</LoginScreenStack.Navigator>
 	);
@@ -46,11 +48,13 @@ function LoginScreenNavigator() {
 const RegisterScreenStack = createStackNavigator();
 function RegisterScreenNavigator() {
 	return (
-		<RegisterScreenStack.Navigator>
+		<RegisterScreenStack.Navigator  screenOptions={{
+            headerShown: false
+          }}>
 			<RegisterScreenStack.Screen
 				name="Register"
 				component={Register}
-				options={{ headerTitle: 'Register Screen' }}
+				//options={{ headerTitle: 'Register Screen' }}
 			/>
 		</RegisterScreenStack.Navigator>
 	);
