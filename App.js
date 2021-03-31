@@ -9,7 +9,7 @@ import { firebase } from './src/firebase/config';
 
 const Stack = createStackNavigator()
 
-const PlatformSpecificNavigator = Platform.select({
+const PlatformNavigator = Platform.select({
 	ios: () => BottomTabNavigator,
 	android: () => DrawerNavigator
 })()
@@ -31,7 +31,7 @@ export default function App() {
     <SafeAreaProvider>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Root" component={PlatformSpecificNavigator} />
+          <Stack.Screen name="Root" component={PlatformNavigator} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
