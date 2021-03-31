@@ -106,7 +106,7 @@ export default function Register({navigation}) {
 	console.log("Error state is: ", error)
     return (
         <SafeAreaView style={styles.container}>
-			<Image style={styles.image} source={require('../images/Logo.png')} />
+			<Image style={styles.image} source={require('../../assets/images/logo.png')} />
 			<View>
 				<Text>{error}</Text>
 				<View style = {styles.inputContainer}>
