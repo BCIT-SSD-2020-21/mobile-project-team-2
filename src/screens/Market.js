@@ -2,13 +2,13 @@ import React, { useEffect } from 'react'
 import { StyleSheet, SafeAreaView, ImageBackground, FlatList, TouchableOpacity, Text, Image } from 'react-native';
 import axios from 'axios'
 import stockapi from '../api/stockapi'
-
+	
 
 	function Market() {
 		const watchListStocks = ['GME', 'AAPL']
 
 		useEffect(() => {
-			console.log("in market get effect")
+			// console.log("in market get effect")
 			(watchListStocks.map(async stock => {
 				var stockInfo = await getOneStock()
 				console.log("stockInfo for", stock, "\n----", stockInfo)
@@ -66,8 +66,6 @@ import stockapi from '../api/stockapi'
 			</View>
 		)
 	}
-	
-
 	
 	const styles = StyleSheet.create({
 			container: {

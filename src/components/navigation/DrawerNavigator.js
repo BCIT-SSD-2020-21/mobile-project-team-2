@@ -41,9 +41,9 @@ export default function DrawerNavigator() {
 
 import { createStackNavigator } from '@react-navigation/stack';
 import Market from '../../screens/Market';
+import Trade from '../../screens/Trade';
 import Portfolio from '../../screens/Portfolio';
 import Search from '../../screens/Search';
-import Trade from '../../screens/Trade';
 
 const MarketScreenStack = createStackNavigator();
 function MarketScreenNavigator() {

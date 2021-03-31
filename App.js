@@ -7,12 +7,12 @@ import BottomTabNavigator from './src/components/navigation/BottomTabNavigator';
 import DrawerNavigator from './src/components/navigation/DrawerNavigator';
 import { firebase } from './src/firebase/config';
 
-// const PlatformNavigator = Platform.select({
-// 	ios: () => BottomTabNavigator,
-// 	android: () => DrawerNavigator,
-// })();
-
 const Stack = createStackNavigator();
+
+const PlatformSpecificNavigator = Platform.select({
+	ios: () => BottomTabNavigator,
+	android: () => DrawerNavigator,
+})();
 
 export default function App() {
 
@@ -29,11 +29,11 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Root" component={user ? BottomTabNavigator : AuthStack } />
-      </Stack.Navigator>
-    </NavigationContainer>
-  </SafeAreaProvider>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Root" component={PlatformSpecificNavigator} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }

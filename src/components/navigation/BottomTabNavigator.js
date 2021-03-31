@@ -20,7 +20,7 @@ export default function BottomTabNavigator() {
                 tabBarIcon: () => <EvilIcons name="chart" size={30} color="black" />,
             }}
         />
-				 <BottomTab.Screen
+		<BottomTab.Screen
             name="Trade"
             component={TradeScreenNavigator}
             options={{
@@ -41,8 +41,6 @@ export default function BottomTabNavigator() {
                 tabBarIcon: () => <EvilIcons name="search" size={30} color="black" />,
             }}
         />
-
-		
     </BottomTab.Navigator>
     )
 }
@@ -50,7 +48,6 @@ export default function BottomTabNavigator() {
 import { createStackNavigator } from '@react-navigation/stack';
 import Market from '../../screens/Market';
 import Portfolio from '../../screens/Portfolio';
-// import Portfolio from '../../screens/Portfolio';
 import Search from '../../screens/Search';
 import Trade from "../../screens/Trade"
 
