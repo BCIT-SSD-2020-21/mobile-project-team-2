@@ -1,8 +1,8 @@
 import React from 'react'
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { EvilIcons } from '@expo/vector-icons';
+import { createDrawerNavigator } from '@react-navigation/drawer'
+import { EvilIcons } from '@expo/vector-icons'
 
-const Drawer = createDrawerNavigator();
+const Drawer = createDrawerNavigator()
 export default function DrawerNavigator() {
     return (
 		<Drawer.Navigator initialRouteName="Market">
@@ -39,13 +39,13 @@ export default function DrawerNavigator() {
     )
 }
 
-import { createStackNavigator } from '@react-navigation/stack';
-import Market from '../../screens/Market';
-import Trade from '../../screens/Trade';
-import Portfolio from '../../screens/Portfolio';
-import Search from '../../screens/Search';
+import { createStackNavigator } from '@react-navigation/stack'
+import Market from '../../screens/Market'
+import Trade from '../../screens/Trade'
+import Portfolio from '../../screens/Portfolio'
+import Search from '../../screens/Search'
 
-const MarketScreenStack = createStackNavigator();
+const MarketScreenStack = createStackNavigator()
 function MarketScreenNavigator() {
 	return (
 		<MarketScreenStack.Navigator>
@@ -55,10 +55,10 @@ function MarketScreenNavigator() {
 				options={{ headerTitle: 'Market' }}
 			/>
 		</MarketScreenStack.Navigator>
-	);
+	)
 }
 
-const TradeScreenStack = createStackNavigator();
+const TradeScreenStack = createStackNavigator()
 function TradeScreenNavigator() {
 	return (
 		<TradeScreenStack.Navigator>
@@ -68,10 +68,10 @@ function TradeScreenNavigator() {
 				options={{ headerTitle: 'Trade' }}
 			/>
 		</TradeScreenStack.Navigator>
-	);
+	)
 }
 
-const PortfolioScreenStack = createStackNavigator();
+const PortfolioScreenStack = createStackNavigator()
 function PortfolioScreenNavigator() {
 	return (
 		<PortfolioScreenStack.Navigator>
@@ -81,10 +81,10 @@ function PortfolioScreenNavigator() {
 				options={{ headerTitle: 'Portfolio' }}
 			/>
 		</PortfolioScreenStack.Navigator>
-	);
+	)
 }
 
-const SearchScreenStack = createStackNavigator();
+const SearchScreenStack = createStackNavigator()
 function SearchScreenNavigator() {
 	return (
 		<SearchScreenStack.Navigator>
@@ -94,5 +94,5 @@ function SearchScreenNavigator() {
 				options={{ headerTitle: 'Search' }}
 			/>
 		</SearchScreenStack.Navigator>
-	);
+	)
 }

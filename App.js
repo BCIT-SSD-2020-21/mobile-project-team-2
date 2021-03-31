@@ -7,7 +7,7 @@ import BottomTabNavigator from './src/components/navigation/BottomTabNavigator';
 import DrawerNavigator from './src/components/navigation/DrawerNavigator';
 import { firebase } from './src/firebase/config';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator()
 
 const PlatformSpecificNavigator = Platform.select({
 	ios: () => BottomTabNavigator,
