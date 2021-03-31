@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
 	},
 	label : {
 		fontSize: 16,
-		color: '#999999',
-		textShadow: '1px 0px #888888',
+		// color: '#999999',
+		// textShadow: '1px 0px #888888',
 	},
 	input : {
 		fontFamily: 'Roboto',
@@ -82,7 +82,7 @@ export default function Login({navigation}) {
 
     return (
         <SafeAreaView style={styles.container}>
-		<Image style={styles.image} source={require('../images/Logo.png')} />
+		<Image style={styles.image} source={require('../../assets/images/logo.png')} />
 		<View>
 			<Text>{error}</Text>
 			<View style = {styles.inputContainer}>
