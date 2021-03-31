@@ -106,7 +106,7 @@ export default function Register({navigation}) {
 					<Text style = {styles.label} > Confirm Password </Text>
 					<TextInput style={styles.input} placeholderTextColor="#000000" secureTextEntry={true} placeholder ="password" onChangeText={(password) => setConfirmPassword(password)} />
 				</View>				
-				<Text style = {styles.forgot} onPress={() => {alert("dd")}} > Forgot password or email?</Text>	
+				<Text style = {styles.forgot} onPress={() => {resetPassword(email)}} > Forgot password or email?</Text>	
 				<Button style={styles.button} onPress={() => onSignUp()} title="Sign Up" />
 			</View>								
         </SafeAreaView>
