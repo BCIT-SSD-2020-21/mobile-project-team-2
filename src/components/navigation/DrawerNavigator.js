@@ -40,7 +40,7 @@ import Search from '../../screens/Search';
 import MenuIcon from '../navigation/MenuIcon'
 
 const TradeScreenStack = createStackNavigator()
-export default function TradeScreenNavigator() {
+function TradeScreenNavigator() {
 	return (
 		<TradeScreenStack.Navigator>
 			<TradeScreenStack.Screen
