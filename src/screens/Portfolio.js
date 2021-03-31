@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#182f1d',
 	},
 	chartContainer: {
-		border: '1px solid #59a66b',
+		// border: '1px solid #59a66b',
 		borderRadius: 5,
 	},
 	chartIcon: {
@@ -81,14 +81,14 @@ const styles = StyleSheet.create({
 	fundingButton: {
 		width: 100,
 		height: 100,
-		borderRadius: '50%',
+	//	borderRadius: '50%',
 		margin: 10,
 		fontSize: 42,
 		color: '#abd4b4', // lightGreen
 		backgroundColor: '#59a66b', // medium-green
 	},
 	listingContainer: {
-		border: '1px solid #59a66b',
+		// border: '1px solid #59a66b',
 		borderRadius: 5,
 		width: '100%',
 	},
