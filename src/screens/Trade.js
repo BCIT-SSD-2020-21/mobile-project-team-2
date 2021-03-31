@@ -1,154 +1,175 @@
 import React from 'react'
-import {StyleSheet,SafeAreaView,ImageBackground,FlatList,Vibration,TouchableOpacity,Text, Image,} from 'react-native';
+import {StyleSheet,Button, SafeAreaView,View, ImageBackground,FlatList,Vibration,TouchableOpacity,Text, Image,} from 'react-native';
+
 import {useState} from 'react';
-import { Entypo } from '@expo/vector-icons';
+
 
 const styles = StyleSheet.create({
+
 	container: {
-        //
-    }
-});
+		flex: 1,
+		justifyContent: 'center',
+    },
+
+    results: {
+      backgroundColor:  '#147DF0',
+      maxWidth: '100%',
+      alignItems: 'center',
+      justifyContent: 'center',
+	 
+    },
+	renderValues: {
+		backgroundColor:  '#147DF0',
+	},
+
+	historyText: {
+		color: '#fff',
+		margin: 15,
+		fontSize: 35,
+	},
+
+    resultText: {
+      maxHeight: 45,
+      color: '#fff',
+      margin: 15,
+      fontSize: 45,
+    },
+
+	companyName: {
+		color: '#fff',
+		fontSize: 40,
+		fontWeight: 'bold'
+	  },
+
+	howMany: {
+		maxHeight: 45,
+		color: '#fff',
+		margin: 15,
+		fontSize: 28,
+		alignItems: 'center',
+		justifyContent: 'center'
+	  },
+
+    buttons: {
+      width: '100%',
+      height: '55%',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+	  //paddingLeft: 40,
+	  //paddingRight: 40,
+	  alignItems: 'center',
+	  justifyContent: 'center'
+    },
+
+    button: {
+      borderColor: '#fff',
+	  backgroundColor: '#fff',
+      alignItems: 'center',
+      justifyContent: 'center',
+      minWidth: '31%',
+      minHeight: '20%',
+     
+    },
+
+    textButton: {
+      color: '#000',
+      fontSize: 32,
+    },
+
+	buttonContinue: {
+		textAlign: 'center',
+    	marginVertical: 15,
+		minWidth: '60%',
+    	minHeight: '20%',
+		flexDirection: 'row',
+	},
+
+	renderValues: {
+		maxHeight: 45,
+		color: '#fff',
+		fontSize: 25,
+		paddingLeft: 20,
+		justifyContent: 'center',
+		flexDirection: 'row',
+	},
+	wallet: {
+		width: '100%',
+		flexDirection: 'row',
+		backgroundColor:  '#147DF0',
+	}
+
+  })
 
 export default function Trade() {
 	
 
-const [darkMode, setDarkMode] = useState(false);
-const [currentNumber, setCurrentNumber] = useState('');
-const [lastNumber, setLastNumber] = useState('')
+const [currentNumber, setCurrentNumber] = useState(0);
 
-const buttons = ['C', 'DEL', '/', 7,8,9, '*', 4,5,6, '-', 1,2,3, '+', 0, '.', '=']
 
-function calculator() {
-    
-    let lastArr = currentNumber[currentNumber.length-1];
-    
-    if(lastArr === '/' || lastArr === '*' || lastArr === '-' || lastArr === '+' || lastArr === '.') {
-      setCurrentNumber(currentNumber)
-      return
-    }
-    else {
-      let result = eval(currentNumber).toString();
-      setCurrentNumber(result)
-      return
-    }
-  }
+
+const buttons = [,1,2,3, 4,5,6, 7,8,9, '', 0,'X']
 
   function handleInput(buttonPressed) {
-    if(buttonPressed  === '+' || buttonPressed === '-' || buttonPressed === '*' || buttonPressed === '/') {
-      Vibration.vibrate(35);
+    if(buttonPressed === 1 || buttonPressed === 2 || buttonPressed === 3 || buttonPressed === 4 || buttonPressed === 5 ||
+		buttonPressed === 6 || buttonPressed === 7 || buttonPressed === 8 || buttonPressed === 9 || buttonPressed === 0  ) {
+  Vibration.vibrate(35);
       setCurrentNumber(currentNumber + buttonPressed)
       return
     }
-    else if (buttonPressed === 1 || buttonPressed === 2 || buttonPressed === 3 || buttonPressed === 4 || buttonPressed === 5 ||
-            buttonPressed === 6 || buttonPressed === 7 || buttonPressed === 8 || buttonPressed === 9 || buttonPressed === 0 || buttonPressed === '.' ) {
-      Vibration.vibrate(35);
-    }
+   
     switch(buttonPressed) {
-      case 'DEL':
+    case 'X':
         Vibration.vibrate(35);
-        setCurrentNumber(currentNumber.substring(0, (currentNumber.length - 1)))
-        return
-      case 'C':
-        Vibration.vibrate(35);
-        setLastNumber('')
-        setCurrentNumber('')
-        return
-      case '=':
-        Vibration.vibrate(35);
-        setLastNumber(currentNumber + '=')
-        calculator()
+        setCurrentNumber (  currentNumber.length > 1 ? currentNumber.substring(0, (currentNumber.length - 1)): 0 )
         return
     }
     setCurrentNumber(currentNumber + buttonPressed)
   }
 
-  const styles = StyleSheet.create({
-    results: {
-      backgroundColor: darkMode ? '#282f3b' : '#147DF0',
-      maxWidth: '100%',
-      minHeight: '35%',
-      alignItems: 'flex-end',
-      justifyContent: 'flex-end',
-    },
-    resultText: {
-      maxHeight: 45,
-      color: '#00b9d6',
-      margin: 15,
-      fontSize: 35,
-    },
-    historyText: {
-      color: darkMode ? '#B5B7BB' : '#7c7c7c',
-      fontSize: 20,
-      marginRight: 10,
-      alignSelf: 'flex-end',
-    },
-    themeButton: {
-      alignSelf: 'flex-start',
-      bottom: '5%',
-      margin: 15,
-      backgroundColor: darkMode ? '#7b8084' : '#e5e5e5',
-      alignItems: 'center',
-      justifyContent: 'center',
-      width: 50,
-      height: 50,
-      borderRadius: 25,
-    },
-    buttons: {
-      width: '100%',
-      height: '35%',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-    },
-    button: {
-      borderColor: darkMode ? '#3f4d5b' : '#e5e5e5',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minWidth: '24%',
-      minHeight: '54%',
-      flex: 2,
-    },
-    textButton: {
-      color: darkMode ? '#b5b7bb' : '#7c7c7c',
-      fontSize: 28,
-    }
-  })
+  
 
     return (
-        <SafeAreaView style={styles.container}>
-           <SafeAreaView style={styles.results}>
-        <TouchableOpacity style={styles.themeButton}>
-          <Entypo name={darkMode ? 'light-up' : 'moon'} size={24} color={darkMode ? 'white' : 'black'} onPress={() => darkMode ? setDarkMode(false) : setDarkMode(true)}/>
-        </TouchableOpacity>
-        <Text style={styles.historyText}>{lastNumber}</Text>
+    <SafeAreaView style={styles.container}>
+
+        <View style={styles.results}>
+		<Text style={styles.companyName}>DogeCoin, Inc.</Text>
+		<Text style={styles.howMany}>How many shares do you want to buy/[sell]?</Text>
+		
         <Text style={styles.resultText}>{currentNumber}</Text>
-      </SafeAreaView>
-      <SafeAreaView style={styles.buttons}>
+		
+		</View>
+		<View style={styles.wallet} >
+		<Text style={styles.renderValues}>DogCoin Price</Text> 
+		<Text style={styles.renderValues}>50.65 CAD</Text>
+		</View>
+
+
+      	<View style={styles.buttons}>
         {buttons.map((button) =>
-          button === '=' || button === '/' || button === '*' || button === '-' || button === '+' ?
-          <TouchableOpacity key={button} style={[styles.button, {backgroundColor: '#00b9d6'} ]} onPress={() => handleInput(button)}>
-            <Text style={[styles.textButton, {color: 'white', fontSize: 28} ]}>{button}</Text>
-          </TouchableOpacity>
-          :
           button === 0 ?
-          <TouchableOpacity key={button} style={[styles.button, {backgroundColor: typeof(button) === 'number' ? darkMode ? '#303946' : '#fff' : darkMode === true ? '#414853' : '#ededed', minWidth: '36%'} ]} onPress={() => handleInput(button)}>
+          <TouchableOpacity key={button} style={[styles.button, ]} onPress={() => handleInput(button)}>
             <Text style={styles.textButton}>{button}</Text>
           </TouchableOpacity>
           :
-          button === '.' || button === 'DEL' ?
-          <TouchableOpacity key={button} style={[styles.button, {backgroundColor: button === '.' ? darkMode ? '#303946' : '#fff' : darkMode === true ? '#414853' : '#ededed', minWidth: '37%'} ]} onPress={() => handleInput(button)}>
+        	button === 'x' ?
+          <TouchableOpacity key={button} style={[styles.button, ]} onPress={() => handleInput(button)}>
             <Text style={styles.textButton}>{button}</Text>
           </TouchableOpacity>
           :
-          button === 'C' ?
-          <TouchableOpacity key={button} style={[styles.button, {backgroundColor: typeof(button) === 'number' ? darkMode ? '#303946' : '#fff' : darkMode === true ? '#414853' : '#ededed', minWidth: '36%'} ]} onPress={() => handleInput(button)}>
+      
+          <TouchableOpacity key={button} style={[styles.button ]} onPress={() => handleInput(button)}>
             <Text style={styles.textButton}>{button}</Text>
           </TouchableOpacity>
-          :
-          <TouchableOpacity key={button} style={[styles.button, {backgroundColor: typeof(button) === 'number' ? darkMode ? '#303946' : '#fff' : darkMode === true ? '#414853' : '#ededed' } ]} onPress={() => handleInput(button)}>
-            <Text style={styles.textButton}>{button}</Text>
-          </TouchableOpacity>
+		  
         )}
-      </SafeAreaView>
+		<Button style={styles.buttonContinue}
+          title="Continue"
+          onPress={() => Alert.alert('button continue pressed')}
+        />
+		
+      	</View>
+
+			  
         </SafeAreaView>
     )
 }
