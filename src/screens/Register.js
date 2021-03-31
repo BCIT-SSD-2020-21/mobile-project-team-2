@@ -32,13 +32,13 @@ const styles = StyleSheet.create({
 	label : {
 		fontSize: 16,
 		color: '#999999',
-		textShadow: '1px 0px #888888',
+		// textShadow: '1px 0px #888888',
 	},
 	input : {
 		fontFamily: 'Roboto',
 		width: 350,
-		height: '1.6rem',
-		fontSize: '1.5rem',
+		height: 56,
+		fontSize: 20,
 		marginTop: 8,
 		marginVertical: 15,
 		padding: 3,
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 		color: '#147DF0'		
 	},
 	button: { 
-		display: 'block',
+	//	display: 'block',
 		width: 300,
 		backgroundColor: '#147DF0',
 	}
@@ -106,22 +106,22 @@ export default function Register({navigation}) {
 	console.log("Error state is: ", error)
     return (
         <SafeAreaView style={styles.container}>
-			<Image style={styles.image} source={require('../images/Logo.png')} />
+			<Image style={styles.image} source={require('../../assets/images/logo.png')} />
 			<View>
 				<Text>{error}</Text>
-				<View style = {styles.inputContainer}>
-					<Text style = {styles.label} > Email Address </Text>
+				<View style={styles.inputContainer}>
+					<Text style={styles.label}> Email Address </Text>
 					<TextInput style={styles.input} placeholderTextColor="#000000" placeholder ="email" onChangeText={(email) => setEmail(email)} />
 				</View>
-				<View style = {styles.inputContainer}>
-					<Text style = {styles.label} > Password </Text>
-					<TextInput style={styles.input} placeholderTextColor="#000000" secureTextEntry={true} placeholder ="password" onChangeText={(password) => setPassword(password)} />
+				<View style={styles.inputContainer}>
+					<Text style={styles.label}> Password </Text>
+					<TextInput style={styles.input} placeholderTextColor="#000000" secureTextEntry={true} placeholder="password" onChangeText={(password) => setPassword(password)} />
 				</View>	
-				<View style = {styles.inputContainer}>
-					<Text style = {styles.label} > Confirm Password </Text>
-					<TextInput style={styles.input} placeholderTextColor="#000000" secureTextEntry={true} placeholder ="password" onChangeText={(password) => setConfirmPassword(password)} />
+				<View style={styles.inputContainer}>
+					<Text style={styles.label}> Confirm Password </Text>
+					<TextInput style={styles.input} placeholderTextColor="#000000" secureTextEntry={true} placeholder="password" onChangeText={(password) => setConfirmPassword(password)} />
 				</View>				
-				<Text style = {styles.forgot} onPress={() => {resetPassword(email)}} > Forgot password or email?</Text>	
+				<Text style={styles.forgot} onPress={() => {resetPassword(email)}}> Forgot password or email?</Text>	
 				<Button style={styles.button} onPress={() => onSignUp()} title="Sign Up" />
 			</View>								
         </SafeAreaView>
