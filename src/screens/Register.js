@@ -15,6 +15,8 @@ import {
 
 import * as firebase from 'firebase'
 
+import {resetPassword} from './ResetPassword'
+
 const styles = StyleSheet.create({
 	container: {
         flex: 1,
