@@ -9,7 +9,7 @@ import {
 	Image,
 	View
 } from 'react-native';
-import { firebase } from '../../firebase/config';
+import { firebase } from '../firebase/config';
 import { EvilIcons } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({

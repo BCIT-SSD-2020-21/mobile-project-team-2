@@ -10,9 +10,8 @@ import {
 	TextInput,
 	Button,
 	View,
-
 } from 'react-native';
-import { firebase } from '../../firebase/config';
+import { firebase } from '../firebase/config';
 import {resetPassword} from './ResetPassword'
 
 const styles = StyleSheet.create({
