@@ -11,8 +11,8 @@ const Stack = createStackNavigator();
 
 const PlatformSpecificNavigator = Platform.select({
 	ios: () => BottomTabNavigator,
-	android: () => DrawerNavigator,
-})();
+	android: () => DrawerNavigator
+})()
 
 export default function App() {
 
