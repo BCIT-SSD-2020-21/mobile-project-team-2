@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
 	StyleSheet,
 	SafeAreaView,
+	ScrollView,
 	Button,
 	FlatList,
 	TouchableOpacity,
@@ -14,36 +15,102 @@ import { EvilIcons } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
 	container: {
-        flex: 1,
+		maxWidth: 650,
+    },
+	scrollContainer: {
+		flex: 1,
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
-		// padding: 100,
 		fontFamily: 'Roboto',
 		backgroundColor: '#0f1d12', //dark-green
-    },
+		minWidth: 320,
+		width: '100%',
+	},
+	greetContainer: {
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+	},
+	greetLabel: {
+		fontSize: 24,
+		color: '#abd4b4', // lightGreen
+	},
+	greetValue: {
+		fontSize: 32,
+		color: '#abd4b4', // lightGreen
+	},
+	greetDetails: {
+		fontSize: 20,
+		color: '#59a66b', // medium-green
+	},
 	chartContainer: {
 		width: '90%',
 		minHeight: 300,
-		height: '60%',
+		height: '30%',
 		maxHeight: 450,
 		backgroundColor: '#182f1d',
 	},
+	chartContainer: {
+		border: '1px solid #59a66b',
+	},
 	chartIcon: {
 		margin: 'auto',
-		fontSize: 328,
+		fontSize: 620,
 		color: '#59a66b',
-	},	
-	image: {
-		width:400, 
-		height:400, 
+	},
+	fundingContainer: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+	},
+	fundingLabel: {
+		fontSize: 26,
+		color: '#abd4b4', // lightGreen
+	},
+	fundingAmount: {
+		fontSize: 32,
+		color: '#abd4b4', // lightGreen
+	},
+	fundingButton: {
+		width: 100,
+		height: 100,
+		borderRadius: '50%',
+		margin: 10,
+		fontSize: 42,
+		color: '#abd4b4', // lightGreen
+		backgroundColor: '#59a66b', // medium-green
+	},
+	listingContainer: {
+		border: '1px solid #59a66b',
+	},
+	listingHeader: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+	},
+	listingTitle: {
+		fontSize: 26,
+		color: '#59a66b', // medium-green
+	},
+	listingButton: {
+
+	},
+	listingItem: {
+		fontSize: 22,
+		color: '#abd4b4', // lightGreen
 	},
 	button: { 
 		display: 'block',
 		width: '32%',
-		margin: '0',
-		// backgroundColor: '#147DF0',
+		margin: 10,
+		fontSize: 42,
+		color: '#abd4b4', // lightGreen
 		backgroundColor: '#59a66b', // medium-green
+		// backgroundColor: '#147DF0',
 	}
 });
 
@@ -52,15 +119,30 @@ export default function Portfolio({navigation}) {
 	const entityRef = firebase.firestore().collection('entities')
 	console.log('entityRef', entityRef)
 
+	const [portfolioValue, setPortfolioValue] = useState(123.50);
+	useEffect(() => {
+		// GET value from DB (sum aggregate qtyOwned x currPrice from finnhub)
+	}, [])
+
+	const [portfolioValueDifference, setPortfolioValueDifference] = useState(-34.25);
+	useEffect(() => {
+		// GET value from DB (sum aggregate portfolioValue (qtyOwned x currPrice from finnhub) LESS (qtyOwned x purchPrice) from firestoreDB )
+	}, [portfolioValue])
+	
+	
+
     return (
-        <SafeAreaView style={styles.container}>
+		<ScrollView contentContainerStyle={styles.scrollContainer}>
+	        <SafeAreaView style={styles.container}>
 
 				{/* Greeting */}
 				<View style={styles.greetContainer}>
 						{/* some indo from firebaseAuth */}
-					<Text style={styles.greetHeader}>{``}</Text>
+					<Text style={styles.greetLabel}>{'Your portfolio is valued at'}</Text>
 						{/* some info from firestoreDB */}
-					<Text style={styles.greetSubheader}>{}</Text> 
+					<Text style={styles.greetValue}>{`${portfolioValue}`}</Text>
+						{/* some info from firestoreDB */}
+					<Text style={styles.greetDetails}>{`${portfolioValueDifference > 0 ? "UP" : "DOWN"} ${portfolioValueDifference} in the past week`}</Text> 
 				</View>
 	
 				{/* Chart (Vector??) - Timeline, Changes over last period (1 week? multiple options?)*/}
@@ -74,7 +156,7 @@ export default function Portfolio({navigation}) {
 					<Text style={styles.fundingAmount}>{'$100,000'}</Text>
 					{/* INITIALLY: 		Add $50,000 CASH 
 							LATER: 		navigate() to new page?  */}
-					<Button style={styles.fundingAction}></Button>
+					<TouchableOpacity style={styles.fundingButton} title="+" />
 
 				</View>
 
@@ -84,7 +166,7 @@ export default function Portfolio({navigation}) {
 					<View style={styles.listingHeader}>
 						<Text style={styles.listingTitle}>{'Portfolio'}</Text>
 						{/* ->Click 'See All' --> navigate() to large FlatList (StockListScreen - takes as prop any list of Stocks ))  */}
-						<Button style={styles.listingButton}>{'FULL LIST'}</Button>
+						<TouchableOpacity style={styles.listingButton} title="FULL LIST" /> 
 					</View>
 					  {/* List Item Placeholders: */}
 					  <Text style={styles.listingItem}>{'AAAA - OwnedStock1'}</Text>
@@ -99,14 +181,20 @@ export default function Portfolio({navigation}) {
 					<View style={styles.listingHeader}>
 						<Text style={styles.listingTitle}>{'Watchlist'}</Text>
 						{/* ->Click 'See All' --> navigate() to large FlatList (StockListScreen) */}
-						<Button style={styles.listingButton}>{'FULL LIST'}</Button>
+						<TouchableOpacity style={styles.listingButton} title="FULL LIST" /> 
 					</View>
 					<Text style={styles.listingItem}>{'AAA1 - WatchlistStock1'}</Text>
 					<Text style={styles.listingItem}>{'BBB2 - WatchlistStock2'}</Text>
 					<Text style={styles.listingItem}>{'CCC3 - WatchlistStock3'}</Text>
 					<Text style={styles.listingItem}>{'DDD4 - WatchlistStock4'}</Text>
-				</View>	
+				</View>
 
-        </SafeAreaView>
+				{/* Footer ?  */}
+				<View style={styles.footerContainer}>
+					<Text style={styles.footerTextitem}>{'DiamondHands believes that ape together strong.'}</Text>
+					<Text style={styles.footerTextitem}>{"Jump in, foo', we're going to the moon!"}</Text>
+				</View>
+	        </SafeAreaView>
+		</ScrollView>
     )
 }
