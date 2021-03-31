@@ -1,7 +1,7 @@
 import React from 'react'
-import {createStackNavigator} from '@react-navigation/stack'
-import Market from '../../screens/Market'
 import MenuIcon from './MenuIcon'
+import Market from '../../screens/Market'
+import {createStackNavigator} from '@react-navigation/stack'
 
 	const MarketScreenStack = createStackNavigator()
 	export default function MarketScreenNavigator() {
@@ -13,5 +13,5 @@ import MenuIcon from './MenuIcon'
                 options={Platform.OS === "android" ? {headerTitle: 'Market', headerRight: () => <MenuIcon />} : {headerTitle: 'Market'}} 
                 />
             </MarketScreenStack.Navigator>
-        );
+        )
 	}

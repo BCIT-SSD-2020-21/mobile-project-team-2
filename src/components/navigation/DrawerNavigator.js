@@ -11,28 +11,28 @@ export default function DrawerNavigator() {
 				name="Market"
 				component={MarketScreenNavigator}
 				options={{
-					tabBarIcon: () => <EvilIcons name="star" size={30} color="black" />,
+					tabBarIcon: () => <EvilIcons name="cart" size={30} color="black" />,
 				}}
 			/>
 			<Drawer.Screen
 				name="Trade"
 				component={TradeScreenNavigator}
 				options={{
-					tabBarIcon: () => <EvilIcons name="star" size={30} color="black" />,
+					tabBarIcon: () => <EvilIcons name="bell" size={30} color="black" />,
 				}}
 			/>
 			<Drawer.Screen
 				name="Portfolio"
 				component={PortfolioScreenNavigator}
 				options={{
-					tabBarIcon: () => <EvilIcons name="star" size={30} color="black" />,
+					tabBarIcon: () => <EvilIcons name="archive" size={30} color="black" />,
 				}}
 			/>
             <Drawer.Screen
 				name="Search"
 				component={SearchScreenNavigator}
 				options={{
-					tabBarIcon: () => <EvilIcons name="star" size={30} color="black" />,
+					tabBarIcon: () => <EvilIcons name="search" size={30} color="black" />,
 				}}
 			/>
 		</Drawer.Navigator>
