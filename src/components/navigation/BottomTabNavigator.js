@@ -1,14 +1,16 @@
 import React , {useState, useEffect} from 'react'
+import { Button } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { EvilIcons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons'; 
-import * as firebase from 'firebase'
+import { firebase } from '../../firebase/config';
+import { userSignOut } from '../../firebase/service';
 
 const BottomTab = createBottomTabNavigator();
 export default function BottomTabNavigator() {
 
     return (
-        <BottomTab.Navigator initialRouteName= {"Market"}>
+        <BottomTab.Navigator initialRouteName= {"Portfolio"}>
         {/* ScreenOne Stack */}
 
         <BottomTab.Screen
@@ -46,7 +48,6 @@ export default function BottomTabNavigator() {
 }
 
 import { createStackNavigator } from '@react-navigation/stack';
-import Signout from '../../screens/Signout';
 import Market from '../../screens/Market';
 import Portfolio from '../../screens/Portfolio';
 // import Portfolio from '../../screens/Portfolio';
@@ -72,7 +73,26 @@ function PortfolioScreenNavigator() {
 			<PortfolioScreenStack.Screen
 				name="Portfolio"
 				component={Portfolio}
-				options={{ headerTitle: 'Portfolio Screen' }}
+				options={{ 
+					headerTitle: 'Your Portfolio',
+					headerStyle: {
+						backgroundColor: '#08100a', //darkest-green
+					  },
+					headerTintColor: "#59a66b", //medium-green
+					headerTitleStyle: {
+						fontFamily: 'Garamond',
+						textAlign: 'center',
+						fontWeight: 'bold',
+					  },
+					headerRight: () => (
+						<Button
+							onPress={() => userSignOut()}
+							title="SignOut"
+							color="#59a66b" //medium-green
+							margin="20px"
+						/>
+						),
+				}}
 			/>
 		</PortfolioScreenStack.Navigator>
 	);
@@ -101,18 +121,5 @@ function SearchScreenNavigator() {
 				options={{ headerTitle: 'Search Stocks' }}
 			/>
 		</SearchScreenStack.Navigator>
-	);
-}
-
-const SignOutScreenStack = createStackNavigator();
-function SignOutScreenNavigator() {
-	return (
-		<SignOutScreenStack.Navigator>
-			<SignOutScreenStack.Screen
-				name="Signout"
-				component={Signout}
-				options={{ headerTitle: 'Signout Screen' }}
-			/>
-		</SignOutScreenStack.Navigator>
 	);
 }
