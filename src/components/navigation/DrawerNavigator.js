@@ -15,6 +15,13 @@ export default function DrawerNavigator() {
 				}}
 			/>
 			<Drawer.Screen
+				name="Trade"
+				component={TradeScreenNavigator}
+				options={{
+					tabBarIcon: () => <EvilIcons name="star" size={30} color="black" />,
+				}}
+			/>
+			<Drawer.Screen
 				name="Portfolio"
 				component={PortfolioScreenNavigator}
 				options={{
@@ -35,8 +42,9 @@ export default function DrawerNavigator() {
 import { createStackNavigator } from '@react-navigation/stack';
 import Market from '../../screens/Market';
 import Portfolio from '../../screens/Portfolio';
-// import Portfolio from '../../screens/Portfolio';
 import Search from '../../screens/Search';
+import Trade from '../../screens/Trade';
+
 const MarketScreenStack = createStackNavigator();
 function MarketScreenNavigator() {
 	return (
@@ -49,6 +57,20 @@ function MarketScreenNavigator() {
 		</MarketScreenStack.Navigator>
 	);
 }
+
+const TradeScreenStack = createStackNavigator();
+function TradeScreenNavigator() {
+	return (
+		<TradeScreenStack.Navigator>
+			<TradeScreenStack.Screen
+				name="TradeScreen"
+				component={Trade}
+				options={{ headerTitle: 'Trade' }}
+			/>
+		</TradeScreenStack.Navigator>
+	);
+}
+
 const PortfolioScreenStack = createStackNavigator();
 function PortfolioScreenNavigator() {
 	return (
@@ -61,6 +83,7 @@ function PortfolioScreenNavigator() {
 		</PortfolioScreenStack.Navigator>
 	);
 }
+
 const SearchScreenStack = createStackNavigator();
 function SearchScreenNavigator() {
 	return (
