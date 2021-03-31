@@ -92,7 +92,7 @@ export default function Search({ navigation }) {
 
 	const searchStocks = async ( text ) => {
 		try {
-			console.log("searchTerm", text, stockapi)
+			console.log("searchTerm", text)
 			const response = await axios.get(`${BASE_URL}/search?q=${text}&token=${API_KEY}`)// await stockapi.get(`/search?q=${text}&token=${API_KEY}`)
 			console.log(response.data.result)
 			setFilteredStocks(response.data.result)
@@ -123,8 +123,8 @@ export default function Search({ navigation }) {
 
 const styles = StyleSheet.create({
 	container: {
-        flex: 1,
-    },
+		flex: 1,
+	},
 
 	promptText: {
 		marginTop: 10,
