@@ -8,11 +8,10 @@ import stockapi from '../api/stockapi'
 		const watchListStocks = ['GME', 'AAPL']
 
 		useEffect(() => {
-			console.log("in market get effect")
-			(watchListStocks.map(async stock => {
+			watchListStocks.map(async stock => {
 				var stockInfo = await getOneStock()
 				console.log("stockInfo for", stock, "\n----", stockInfo)
-			}))()
+			})
 			
 		},[])
 

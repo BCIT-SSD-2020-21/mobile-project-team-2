@@ -74,21 +74,21 @@ function PortfolioScreenNavigator() {
 				name="Portfolio"
 				component={Portfolio}
 				options={{ 
-					headerTitle: 'Your Portfolio',
-					headerStyle: {
-						backgroundColor: '#08100a', //darkest-green
-					  },
-					headerTintColor: "#59a66b", //medium-green
+					headerTitle: 'Portfolio',
+					// headerStyle: {
+					// 	backgroundColor: '#08100a', //darkest-green
+					//   },
+					// headerTintColor: "#59a66b", //medium-green
 					headerTitleStyle: {
-						fontFamily: 'Garamond',
+						// fontFamily: 'Garamond',
 						textAlign: 'center',
 						fontWeight: 'bold',
 					  },
 					headerRight: () => (
 						<Button
 							onPress={() => userSignOut()}
-							title="SignOut"
-							color="#59a66b" //medium-green
+							title="Log out"
+							color="#147DF0"
 							margin="20px"
 						/>
 						),
