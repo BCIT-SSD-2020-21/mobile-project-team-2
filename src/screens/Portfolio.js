@@ -14,19 +14,21 @@ import { firebase } from '../firebase/config';
 import { EvilIcons } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
-	container: {
-		maxWidth: 650,
-    },
 	scrollContainer: {
-		flex: 1,
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
-		fontFamily: 'Roboto',
 		backgroundColor: '#0f1d12', //dark-green
 		minWidth: 320,
 		width: '100%',
 	},
+	container: {
+		flex: 1,
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		maxWidth: 650,
+    },
 	greetContainer: {
 		display: 'flex',
 		flexDirection: 'column',
@@ -48,12 +50,13 @@ const styles = StyleSheet.create({
 	chartContainer: {
 		width: '90%',
 		minHeight: 300,
-		height: '30%',
+		// height: '30%',
 		maxHeight: 450,
 		backgroundColor: '#182f1d',
 	},
 	chartContainer: {
 		border: '1px solid #59a66b',
+		borderRadius: 5,
 	},
 	chartIcon: {
 		margin: 'auto',
@@ -65,6 +68,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
+		width: '100%',
 	},
 	fundingLabel: {
 		fontSize: 26,
@@ -85,6 +89,8 @@ const styles = StyleSheet.create({
 	},
 	listingContainer: {
 		border: '1px solid #59a66b',
+		borderRadius: 5,
+		width: '100%',
 	},
 	listingHeader: {
 		display: 'flex',
@@ -97,21 +103,16 @@ const styles = StyleSheet.create({
 		color: '#59a66b', // medium-green
 	},
 	listingButton: {
-
+		width: 80,
+		height: 30,
+		borderRadius: 5,
+		backgroundColor: '#59a66b', // medium-green
+		// backgroundColor: '#147DF0',
 	},
 	listingItem: {
 		fontSize: 22,
 		color: '#abd4b4', // lightGreen
 	},
-	button: { 
-		display: 'block',
-		width: '32%',
-		margin: 10,
-		fontSize: 42,
-		color: '#abd4b4', // lightGreen
-		backgroundColor: '#59a66b', // medium-green
-		// backgroundColor: '#147DF0',
-	}
 });
 
 export default function Portfolio({navigation}) {
@@ -123,14 +124,25 @@ export default function Portfolio({navigation}) {
 	useEffect(() => {
 		// GET value from DB (sum aggregate qtyOwned x currPrice from finnhub)
 	}, [])
-
 	const [portfolioValueDifference, setPortfolioValueDifference] = useState(-34.25);
 	useEffect(() => {
 		// GET value from DB (sum aggregate portfolioValue (qtyOwned x currPrice from finnhub) LESS (qtyOwned x purchPrice) from firestoreDB )
 	}, [portfolioValue])
 	
+	const fundingActionPressed = () => {
+		// INITIAL: 	POST method, Add $100.00 to firestoneDB
+		// LATER:   	navigate() to Funding Screen 
+		console.log("fundingActionPressed clicked")
+	}
+	const displayPortfolioList = () => {
+		//  navigate() to FullListScreen (takes props as any stock list) 
+		console.log("displayPortfolioList clicked")
+	}
+	const displayWatchList = () => {
+		//  navigate() to FullListScreen (takes props as any stock list) 
+		console.log("displayWatchList clicked")
+	}
 	
-
     return (
 		<ScrollView contentContainerStyle={styles.scrollContainer}>
 	        <SafeAreaView style={styles.container}>
@@ -156,7 +168,11 @@ export default function Portfolio({navigation}) {
 					<Text style={styles.fundingAmount}>{'$100,000'}</Text>
 					{/* INITIALLY: 		Add $50,000 CASH 
 							LATER: 		navigate() to new page?  */}
-					<TouchableOpacity style={styles.fundingButton} title="+" />
+					<TouchableOpacity 
+						style={styles.fundingButton} 
+						title="+"
+						onPress={() => fundingActionPressed()} 
+					/>
 
 				</View>
 
@@ -166,7 +182,11 @@ export default function Portfolio({navigation}) {
 					<View style={styles.listingHeader}>
 						<Text style={styles.listingTitle}>{'Portfolio'}</Text>
 						{/* ->Click 'See All' --> navigate() to large FlatList (StockListScreen - takes as prop any list of Stocks ))  */}
-						<TouchableOpacity style={styles.listingButton} title="FULL LIST" /> 
+						<TouchableOpacity 
+							style={styles.listingButton} 
+							title="FULL LIST"
+							onPress={() => displayPortfolioList()} 
+						/> 
 					</View>
 					  {/* List Item Placeholders: */}
 					  <Text style={styles.listingItem}>{'AAAA - OwnedStock1'}</Text>
@@ -181,7 +201,11 @@ export default function Portfolio({navigation}) {
 					<View style={styles.listingHeader}>
 						<Text style={styles.listingTitle}>{'Watchlist'}</Text>
 						{/* ->Click 'See All' --> navigate() to large FlatList (StockListScreen) */}
-						<TouchableOpacity style={styles.listingButton} title="FULL LIST" /> 
+						<TouchableOpacity 
+							style={styles.listingButton} 
+							title="FULL LIST"
+							onPress={() => displayWatchList()} 
+						/> 
 					</View>
 					<Text style={styles.listingItem}>{'AAA1 - WatchlistStock1'}</Text>
 					<Text style={styles.listingItem}>{'BBB2 - WatchlistStock2'}</Text>
