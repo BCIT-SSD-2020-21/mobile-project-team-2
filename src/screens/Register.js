@@ -10,11 +10,8 @@ import {
 	TextInput,
 	Button,
 	View,
-
 } from 'react-native';
-
-import * as firebase from 'firebase'
-
+import { firebase } from '../firebase/config';
 import {resetPassword} from './ResetPassword'
 
 const styles = StyleSheet.create({
@@ -64,7 +61,6 @@ export default function Register({navigation}) {
 	 const [email, setEmail] = useState("");
 	 const [password, setPassword] = useState("");
 	 const [confirmPassword, setConfirmPassword] = useState("")
-	 const [name, setName] =  useState("");
 	 const [error, setError] =  useState("");
 
 	 useLayoutEffect(() => {
@@ -79,18 +75,35 @@ export default function Register({navigation}) {
 			setError("Please enter an email.")
 			return;
 		}
-
 		if (password !== confirmPassword)
 		{
 			setError("Password and confirm password does not match. Try it again.")
 			return;
 		}
+		 firebase
+		 	.auth()
+			.createUserWithEmailAndPassword(email, password)
+		 	.then((response) => {
+				 console.log("SignUp RESULT: ", response);
+				 const uid = response.user.uid
+				 const data = {
+					 id: uid,
+					 email,
+				 };
+				 const usersRef = firebase.firestore().collection('users');
+				 usersRef
+				 	.doc(uid)
+					.set(data)
+					.then(() => {
+						navigation.navigate("Login")
+					})					
+				})
+			 .catch((error) => setError(error.message) )
 
-		 firebase.auth().createUserWithEmailAndPassword(email, password)
-		 	.then((result) => {setError("sucess")})
-			 .catch((error) => {setError(""+error) })
+
 	  }
 
+	console.log("Error state is: ", error)
     return (
         <SafeAreaView style={styles.container}>
 			<Image style={styles.image} source={require('../images/Logo.png')} />

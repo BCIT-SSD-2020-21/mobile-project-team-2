@@ -12,10 +12,8 @@ import {
 	Button,
 	LogBox,
 	View
-
 } from 'react-native';
-
-import * as firebase from 'firebase'
+import {firebase} from '../firebase/config';
 import {resetPassword} from './ResetPassword'
 
 
