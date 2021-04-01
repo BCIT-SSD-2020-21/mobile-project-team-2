@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     results: {
       backgroundColor:  '#147DF0',
       maxWidth: '100%',
+	  minHeight: '35%',
       alignItems: 'center',
       justifyContent: 'center',
 	 
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
 		maxHeight: 45,
 		color: '#fff',
 		fontSize: 25,
-		paddingLeft: 20,
+		paddingLeft: 40,
 		justifyContent: 'center',
 		flexDirection: 'row',
 	},
@@ -96,6 +97,8 @@ const styles = StyleSheet.create({
 		width: '100%',
 		flexDirection: 'row',
 		backgroundColor:  '#147DF0',
+		//paddingTop: 10,
+		//paddingBottom: 10,
 	}
 
   })
