@@ -7,17 +7,17 @@ import BottomTabNavigator from './src/components/navigation/BottomTabNavigator';
 import DrawerNavigator from './src/components/navigation/DrawerNavigator';
 import { firebase } from './src/firebase/config';
 
-const PlatformNavigator = Platform.select({
-	ios: () => BottomTabNavigator,
-	android: () => DrawerNavigator,
-})();
+const Stack = createStackNavigator()
 
 const AuthNavigator = Platform.select({
 	ios: () => AuthStack,
 	android: () => AuthStack,
 })();
 
-const Stack = createStackNavigator();
+const PlatformNavigator = Platform.select({
+	ios: () => BottomTabNavigator,
+	android: () => DrawerNavigator
+})()
 
 export default function App() {
 
@@ -34,11 +34,11 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Root" component={user ? PlatformNavigator : AuthNavigator } />
-      </Stack.Navigator>
-    </NavigationContainer>
-  </SafeAreaProvider>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Root" component={user ? PlatformNavigator : AuthNavigator } />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
