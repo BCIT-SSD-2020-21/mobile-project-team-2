@@ -5,29 +5,19 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AuthStack from './src/components/navigation/AuthStack';
 import BottomTabNavigator from './src/components/navigation/BottomTabNavigator';
 import DrawerNavigator from './src/components/navigation/DrawerNavigator';
-import * as firebase from 'firebase'
-import config from './config'
+import { firebase } from './src/firebase/config';
 
+const Stack = createStackNavigator()
 
-const firebaseConfig = {
-    apiKey: config.firebaseConfig.APIKEY,
-    authDomain: config.firebaseConfig.AUTHDOMAIN,
-    projectId: config.firebaseConfig.PROJECTID,
-    storageBucket: config.firebaseConfig.STORAGEBUCKET,
-    messagingSenderId: config.firebaseConfig.MESSAGINGSENDERID,
-    appId: config.firebaseConfig.APPID,
-}
+const AuthNavigator = Platform.select({
+	ios: () => AuthStack,
+	android: () => AuthStack,
+})();
 
-if(firebase.apps.length === 0) {
-  firebase.initializeApp(firebaseConfig)
-}
-
-const Stack = createStackNavigator();
-
-// const PlatformNavigator = Platform.select({
-// 	ios: () => BottomTabNavigator,
-// 	android: () => DrawerNavigator,
-// })();
+const PlatformNavigator = Platform.select({
+	ios: () => BottomTabNavigator,
+	android: () => DrawerNavigator
+})()
 
 export default function App() {
 
@@ -44,11 +34,11 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Root" component={user ? BottomTabNavigator : AuthStack } />
-      </Stack.Navigator>
-    </NavigationContainer>
-  </SafeAreaProvider>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Root" component={user ? PlatformNavigator : AuthNavigator } />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
