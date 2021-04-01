@@ -16,10 +16,13 @@ const styles = StyleSheet.create({
 });
 
 
-export default function StockDetail() {
+const StockDetail = ({ route, navigation}) => {
+	const { symbol } = route.params  
     return (
         <SafeAreaView style={styles.container}>
-            <Text>Stock Detail Screen</Text>
+            <Text>{symbol}</Text>
         </SafeAreaView>
     )
 }
+
+export default StockDetail

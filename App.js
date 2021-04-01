@@ -6,6 +6,7 @@ import AuthStack from './src/components/navigation/AuthStack';
 import BottomTabNavigator from './src/components/navigation/BottomTabNavigator';
 import DrawerNavigator from './src/components/navigation/DrawerNavigator';
 import { firebase } from './src/firebase/config';
+import StockDetail from './src/screens/StockDetail'
 
 // const PlatformNavigator = Platform.select({
 // 	ios: () => BottomTabNavigator,
@@ -30,8 +31,9 @@ export default function App() {
   return (
     <SafeAreaProvider>
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator>
         <Stack.Screen name="Root" component={user ? BottomTabNavigator : AuthStack } />
+        <Stack.Screen name="StockDetail" component={StockDetail } />
       </Stack.Navigator>
     </NavigationContainer>
   </SafeAreaProvider>
