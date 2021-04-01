@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
 
 	howMany: {
 		maxHeight: 45,
+		minWidth: 40,
 		color: '#fff',
 		margin: 15,
 		fontSize: 28,
@@ -80,9 +81,10 @@ const styles = StyleSheet.create({
 	buttonContinue: {
 		textAlign: 'center',
     	marginVertical: 15,
-		minWidth: '60%',
+		width: '60%',
     	minHeight: '20%',
 		flexDirection: 'row',
+		fontSize: 32,
 	},
 
 	renderValues: {
