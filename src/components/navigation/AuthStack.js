@@ -6,8 +6,7 @@ const BottomTab = createBottomTabNavigator();
 
 export default function AuthStack() {
     return (
-        <BottomTab.Navigator initialRouteName= {"Login"}>
-
+        <BottomTab.Navigator initialRouteName={"Login"}>
             <BottomTab.Screen
                 name={"Login"}
                 component={LoginScreenNavigator}

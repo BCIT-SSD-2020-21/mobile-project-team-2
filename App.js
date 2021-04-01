@@ -8,12 +8,17 @@ import DrawerNavigator from './src/components/navigation/DrawerNavigator';
 import { firebase } from './src/firebase/config';
 import StockDetail from './src/screens/StockDetail'
 
-// const PlatformNavigator = Platform.select({
-// 	ios: () => BottomTabNavigator,
-// 	android: () => DrawerNavigator,
-// })();
+const Stack = createStackNavigator()
 
-const Stack = createStackNavigator();
+const AuthNavigator = Platform.select({
+	ios: () => AuthStack,
+	android: () => AuthStack,
+})();
+
+const PlatformNavigator = Platform.select({
+	ios: () => BottomTabNavigator,
+	android: () => DrawerNavigator
+})()
 
 export default function App() {
 
@@ -31,7 +36,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Root" component={user ? BottomTabNavigator : AuthStack } />
         <Stack.Screen name="StockDetail" component={StockDetail } />
       </Stack.Navigator>

@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Text, TextInput, Keyboard, ScrollView, TouchableOpacity } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import stockapi from '../api/stockapi'
 import { Ionicons } from '@expo/vector-icons'
-// import { useStockContext } from '../context/stockContext'
 import { API_KEY, BASE_URL } from 'dotenv'
 import axios from 'axios';
+<<<<<<< HEAD
 import StockDetail from './StockDetail'
+=======
+// import { useStockContext } from '../context/stockContext'
+>>>>>>> main
 
-function PromptText ({ children }) {
-	return (
-		<Text style={styles.promptText}>{children}</Text>
-	)
-}
+// function PromptText ({ children }) {
+// 	return (
+// 		<Text style={styles.promptText}>{children}</Text>
+// 	)
+// }
 
 function SearchBox({ searchText, handleChangeSearchText }) {
 	return (
@@ -24,8 +26,22 @@ function SearchBox({ searchText, handleChangeSearchText }) {
 	)
 }
 
+<<<<<<< HEAD
 function StockList({ navigation, stocks }) {
 	console.log("stocksFromStockList", stocks)
+=======
+function StockListItem({ stock }) {
+	return (
+		<View style={styles.stockListItem}>
+			<Text style={styles.stockSymbol}>{stock.symbol}</Text>
+			<Text style={styles.stockName}>{stock.description}</Text>
+		</View>
+	)
+}
+
+function StockList({ stocks }) {
+	console.log("+++++StocksFromStockList+++++", stocks)
+>>>>>>> main
 	return (
 		<ScrollView styles={styles.stockList}>
 			{stocks.map((stock, i ) => (
@@ -63,15 +79,8 @@ export default function Search({ navigation }) {
 	// 	getOneStock("GME")
 	// },[])
 
-	// useEffect(() => {
-	// 	fetch(`${baseURL}/all`)
-	// 	.then(res => res.json())
-	// 	.then(stockData => {setState(prev => ({ ...prev, stocks: stockData })) })
-	// 	.catch(err => console.error(err))
-	// }, [])
-
 	const handleChangeSearchText = (text) => {
-		text = text.replace(/[.*+\-?^${}()|[\]\\]/g, ''); //prevent the error caused by entering special characters
+		text = text.replace(/[.*+\-?^${}()|[\]\\]/g, ''); // prevents the error caused by the user entering special characters
 		const regex = RegExp(text, "i")
 		// setState(prev => ({
 		// 	...prev,
@@ -92,18 +101,18 @@ export default function Search({ navigation }) {
 			const response = await stockapi.get(`/quote?symbol=${symbol}`)
 			console.log(response)
 		} catch (err) {
-			console.error('API Call error:', err)
+			console.error('+++++API Call error+++++', err)
 		}
 	}
 
 	const searchStocks = async ( text ) => {
 		try {
-			console.log("searchTerm", text, stockapi)
+			console.log("searchTerm", text)
 			const response = await axios.get(`${BASE_URL}/search?q=${text}&token=${API_KEY}`)// await stockapi.get(`/search?q=${text}&token=${API_KEY}`)
 			console.log(response.data.result)
 			setFilteredStocks(response.data.result)
 		} catch (err) {
-			console.error('API Call error:', err)
+			console.error('+++++API Call error+++++', err)
 		} 
 	}
 
@@ -113,24 +122,24 @@ export default function Search({ navigation }) {
 	}
 
     return (
-			<View style={styles.container}>
-
-				<SearchBox 
+		<View style={styles.container}>
+			
+			<SearchBox 
 				searchText={searchText}
 				handleChangeSearchText={handleChangeSearchText}
 				/>
-				
+
 				{searchText !== "" && 
 				<StockList navigation={nav} stocks={filteredStocks} // addStockToWatchList={handleAddStockToWatchList}
 				/>}
-			</View>
+		</View>
     )
 }
 
 const styles = StyleSheet.create({
 	container: {
-        flex: 1,
-    },
+		flex: 1,
+	},
 
 	promptText: {
 		marginTop: 10,
@@ -161,7 +170,7 @@ const styles = StyleSheet.create({
 	stockListItem: {
 		paddingBottom: 10,
 		borderBottomColor: "grey",
-		borderBottomWidth: 1
+		borderBottomWidth: 0.3
 	},
 
 	stockSymbol: {
@@ -176,16 +185,10 @@ const styles = StyleSheet.create({
 		color: "black"
 	},
 
-	divider: {
-		marginTop: 10,
-		borderBottomColor: "grey",
-		borderBottomWidth: 1
-	},
-
 	stockList: {
 		height: 200,
-	}
-});
+	},
+})
 
 
 
