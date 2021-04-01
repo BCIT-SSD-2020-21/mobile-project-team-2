@@ -2,6 +2,7 @@ import React from 'react'
 import { Button } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { EvilIcons } from '@expo/vector-icons';
+import { userSignOut } from '../../firebase/service';
 
 const Drawer = createDrawerNavigator();
 
