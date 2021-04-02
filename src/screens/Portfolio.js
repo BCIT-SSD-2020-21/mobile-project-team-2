@@ -4,6 +4,7 @@ import { firebase } from '../firebase/config';
 import { EvilIcons } from '@expo/vector-icons';
 import { API_KEY, BASE_URL } from 'dotenv'
 import axios from 'axios';
+// import { fetchUser } from '../firebase/service';
 
 function StockListItem({ stock }) {
 	return (
@@ -15,7 +16,7 @@ function StockListItem({ stock }) {
 }
 
 function StockList({ stocks }) {
-	console.log("stocksFromStockList", stocks)
+	// console.log("stocksFromStockList", stocks)
 	return (
 		<ScrollView styles={styles.stockList}>
 			{stocks.map((stock, i ) => (
@@ -31,11 +32,29 @@ function StockList({ stocks }) {
 
 
 export default function Portfolio({navigation}) {
+
+	const [userFunds, setUserFunds] = useState(0);
+	const [user, setUser] = useState(0);
+	// GET THE USER OBJECT (contains cashOnHand, Watchlist, OwnedStocksList)
+	function fetchUser() {
+		// (firebaseAuth) current user's UUID
+		const userUID = firebase.auth().currentUser.uid
+		// (firestoreDB) ref=collection, get user obj via onSnapshot, where id=userUID
+		const ref = firebase.firestore().collection('users')
+		ref.where("id", "==", userUID)
+			.onSnapshot((querySnapshot) => {
+				const items = []
+				querySnapshot.docs.map((doc) => items.push(doc.data()));
+				setUser(items[0])
+			})
+	}
+	useEffect(() => {
+		fetchUser();
+	}, [])
+	console.log("Portfolio, user stateVar: ", user)
+
 	const [filteredStocks, setFilteredStocks] = useState(['GME', 'APPL'])
 	const [portfolioValueDifference, setPortfolioValueDifference] = useState(-34.25);
-
-	const entityRef = firebase.firestore().collection('entities')
-	console.log('entityRef', entityRef)
 
 	const [portfolioValue, setPortfolioValue] = useState(123.50);
 	useEffect(() => {
@@ -43,14 +62,13 @@ export default function Portfolio({navigation}) {
 		filteredStocks.map(stock => {
 			getStocks(stock)
 		})
-		
 	}, [])
 
 	const getStocks = async (text) => {
 		try {
-			console.log("searchTerm", text)
+			// console.log("searchTerm", text)
 			const response = await axios.get(`${BASE_URL}/search?q=${text}&token=${API_KEY}`)// await stockapi.get(`/search?q=${text}&token=${API_KEY}`)
-			console.log("getStocks", response.data.result)
+			// console.log("getStocks", response.data.result)
 			setFilteredStocks(response.data.result)
 		} catch (err) {
 			console.error('API Call error:', err)
@@ -97,7 +115,7 @@ export default function Portfolio({navigation}) {
 
 				<View style={styles.fundingContainer}>
 					<Text style={styles.fundingLabel}>{'Available funding: '}</Text>
-					<Text style={styles.fundingAmount}>{'$100,000'}</Text>
+					<Text style={styles.fundingAmount}>{user.cashOnHand}</Text>
 					{/* INITIALLY: 		Add $50,000 CASH 
 							LATER: 		navigate() to new page?  */}
 					<TouchableOpacity 
