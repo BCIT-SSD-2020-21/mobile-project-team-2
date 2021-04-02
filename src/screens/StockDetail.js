@@ -40,13 +40,13 @@ const styles = StyleSheet.create({
 	},		
 	bodyContainer: {
 		flexDirection: 'column',
-		justifyContent: 'start',
+		justifyContent: 'flex-start',
 		width: "80%",
 		marginHorizontal : "auto",
-		alignItems: 'start',
+		alignItems: 'flex-start',
 	},
 	activities : {
-		fontSize: "2rem",
+		fontSize: 36,
 		marginVertical: 10,
 	},
 	activity: {
@@ -57,17 +57,17 @@ const styles = StyleSheet.create({
 		marginVertical: 5,
 	},	
 	activityLeft : {
-		fontSize: "1.2rem",
+		fontSize: 20,
 	},
 	activityRight : {
-		fontSize: "1.2rem",
+		fontSize: 20,
 	},
 	company : {
-		fontSize: "2rem",
+		fontSize: 36,
 		marginVertical: 10,
 	},
 	description : {
-		fontSize: "1rem",
+		fontSize: 16,
 		marginVertical: 5,
 	},
 	buttons : {
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
 		width: '40%',
 		marginLeft: 0,
 		color: 'white',
-		fontSize: '1.5rem', 
+		fontSize: 24, 
 		height: 40, 
     },	
 
