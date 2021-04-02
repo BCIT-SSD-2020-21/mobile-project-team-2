@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 	},
 
     resultText: {
-      maxHeight: 45,
+      maxHeight: 50,
       color: '#fff',
       margin: 15,
       fontSize: 45,
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 	  },
 
 	howMany: {
-		maxHeight: 45,
+		
 		minWidth: 40,
 		color: '#fff',
 		margin: 15,
