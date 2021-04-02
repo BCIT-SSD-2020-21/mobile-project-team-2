@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
 	  },
 
 	howMany: {
-		
 		minWidth: 40,
 		color: '#fff',
 		margin: 15,
@@ -108,30 +107,31 @@ const styles = StyleSheet.create({
 export default function Trade() {
 	
 
-const [currentNumber, setCurrentNumber] = useState(0);
+const [currentNumber, setCurrentNumber] = useState('');
 
 
 
-const buttons = [,1,2,3, 4,5,6, 7,8,9, '', 0,'X']
+const buttons = [1,2,3, 4,5,6, 7,8,9, '', 0,'X']
 
   function handleInput(buttonPressed) {
     if(buttonPressed === 1 || buttonPressed === 2 || buttonPressed === 3 || buttonPressed === 4 || buttonPressed === 5 ||
 		buttonPressed === 6 || buttonPressed === 7 || buttonPressed === 8 || buttonPressed === 9 || buttonPressed === 0  ) {
   Vibration.vibrate(35);
-      setCurrentNumber(currentNumber + buttonPressed)
+  setCurrentNumber(currentNumber + buttonPressed)
       return
     }
    
     switch(buttonPressed) {
     case 'X':
         Vibration.vibrate(35);
-        setCurrentNumber (  currentNumber.length > 1 ? currentNumber.substring(0, (currentNumber.length - 1)): 0 )
+        setCurrentNumber('')
         return
-    }
+	
+	}
     setCurrentNumber(currentNumber + buttonPressed)
   }
 
-  
+
 
     return (
     <SafeAreaView style={styles.container}>
@@ -139,9 +139,10 @@ const buttons = [,1,2,3, 4,5,6, 7,8,9, '', 0,'X']
         <View style={styles.results}>
 		<Text style={styles.companyName}>DogeCoin, Inc.</Text>
 		<Text style={styles.howMany}>How many shares do you want to buy/[sell]?</Text>
-		
+
         <Text style={styles.resultText}>{currentNumber}</Text>
 		
+
 		</View>
 		<View style={styles.wallet} >
 		<Text style={styles.renderValues}>DogCoin Price</Text> 
@@ -153,6 +154,7 @@ const buttons = [,1,2,3, 4,5,6, 7,8,9, '', 0,'X']
         {buttons.map((button) =>
           button === 0 ?
           <TouchableOpacity key={button} style={[styles.button, ]} onPress={() => handleInput(button)}>
+			
             <Text style={styles.textButton}>{button}</Text>
           </TouchableOpacity>
           :
@@ -173,8 +175,6 @@ const buttons = [,1,2,3, 4,5,6, 7,8,9, '', 0,'X']
         />
 		
       	</View>
-
-			  
         </SafeAreaView>
     )
 }
