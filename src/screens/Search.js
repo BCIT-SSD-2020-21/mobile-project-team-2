@@ -4,11 +4,7 @@ import stockapi from '../api/stockapi'
 import { Ionicons } from '@expo/vector-icons'
 import { API_KEY, BASE_URL } from 'dotenv'
 import axios from 'axios';
-<<<<<<< HEAD
 import StockDetail from './StockDetail'
-=======
-// import { useStockContext } from '../context/stockContext'
->>>>>>> main
 
 // function PromptText ({ children }) {
 // 	return (
@@ -26,22 +22,8 @@ function SearchBox({ searchText, handleChangeSearchText }) {
 	)
 }
 
-<<<<<<< HEAD
 function StockList({ navigation, stocks }) {
 	console.log("stocksFromStockList", stocks)
-=======
-function StockListItem({ stock }) {
-	return (
-		<View style={styles.stockListItem}>
-			<Text style={styles.stockSymbol}>{stock.symbol}</Text>
-			<Text style={styles.stockName}>{stock.description}</Text>
-		</View>
-	)
-}
-
-function StockList({ stocks }) {
-	console.log("+++++StocksFromStockList+++++", stocks)
->>>>>>> main
 	return (
 		<ScrollView styles={styles.stockList}>
 			{stocks.map((stock, i ) => (
