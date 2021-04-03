@@ -77,12 +77,13 @@ const styles = StyleSheet.create({
 	},
 	activity: {
 		display: 'flex',
+		width: '100%',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		marginVertical: 5,
 	},	
 	activityLeft : {
-		width: '70%',
+		width: '60%',
 		fontSize: 20,
 	},
 	activityRight : {
@@ -183,18 +184,18 @@ const StockDetail = ({ route, navigation}) => {
 							<Text style={styles.companyLogoName}>DC</Text>
 						</View>
 						<Text style={styles.companyName}>DogeCoin, Inc.</Text>
-						<Text style={styles.portfolio}>{'$324'}</Text>
+						<Text style={styles.portfolio}>{'$xxx'}</Text>
 						<EvilIcons name='chart' size={300} color='white' />
 					</View>
 					<View style={styles.bodyContainer}>
 						<View><Text style={styles.activities}>Activities</Text></View>
 						<View style={styles.activity}> 
 							<Text style={styles.activityLeft}>{'Buy '}</Text>
-							<Text style={styles.activityRight}>{currentPrice}</Text>
+							<Text style={styles.activityRight}>{`${currentPrice?.toFixed(2)}`}</Text>
 						</View>
 						<View style={styles.activity}> 
-							<Text style={styles.activityLeft}>{'Sell '}</Text>
-							<Text style={styles.activityRight}>{currentPrice}</Text>
+							<Text style={styles.activityLeft}>${'Sell '}</Text>
+							<Text style={styles.activityRight}>${`${currentPrice?.toFixed(2)}`}</Text>
 						</View>						
 						<Text style={styles.company}>Company Info</Text>
 						

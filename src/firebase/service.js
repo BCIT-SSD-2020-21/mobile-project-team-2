@@ -8,7 +8,7 @@ export const userSignOut = () => {
  }
 
 // export const getStockQuantity = async({email, symbol}) => {
-
+//
 //     const users = firebase.firestore().collection('users')
 //     users.where('email', '==', email)
 //     .get()
