@@ -93,6 +93,30 @@ function PortfolioScreenNavigator() {
 					),
 					headerLeft: () => <MenuIcon /> } : {headerTitle: 'Portfolio'}}
 			/>
+			<PortfolioScreenStack.Screen 
+				name="StockDetail" 
+				component={StockDetail} 
+				options={{ 
+				headerTitle: 'Stock Detail',
+				headerTitleStyle: {
+					textAlign: 'center',
+					fontWeight: 'bold',
+				},
+				headerRight: () => (
+					<Button
+						onPress={() => userSignOut()}
+						title="Log out"
+						color="#147DF0"
+						margin="20px"
+					/>
+				),
+			}}				
+			/>
+			<PortfolioScreenStack.Screen
+				name="Trade"
+				component={Trade}
+				options={{ headerTitle: 'Trade Screen' }}
+			/>
 		</PortfolioScreenStack.Navigator>
 	);
 }
@@ -140,7 +164,8 @@ function SearchScreenNavigator() {
 						/>
 					),
 				}}				
-				/>			
+			/>
+				
 		</SearchScreenStack.Navigator>
 	)
 }
