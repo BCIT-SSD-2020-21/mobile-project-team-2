@@ -6,44 +6,20 @@ import { EvilIcons } from '@expo/vector-icons';
 // import { API_KEY, BASE_URL } from 'dotenv'
 // import axios from 'axios';
 import StockList from '../components/atoms/StockList';
-// import { StockListItem } from '../api/stockapi';
-// import { fetchUser } from '../firebase/service';
-
-// function StockListItem({ stock }) {
-// 	return (
-// 		<View style={styles.stockListItem}>
-// 			<Text style={styles.stockSymbol}>{stock.symbol}</Text>
-// 			<Text style={styles.stockName}>{stock.description}</Text>
-// 		</View>
-// 	)
-// }
-
-// function StockList({ stocks }) {
-// 	// console.log("stocksFromStockList", stocks)
-// 	return (
-// 		<ScrollView styles={styles.stockList}>
-// 			{stocks.map((stock, i ) => (
-// 				<TouchableOpacity key={i}// onPress={() => addStockToWatchList(stock)} key={stock.symbol}
-// 				>
-// 					<StockListItem stock={stock} />
-// 				</TouchableOpacity>
-// 			)
-// 			)}
-// 		</ScrollView>
-// 	)
-// }
-
+import PositionList from '../components/atoms/PositionList';
 
 export default function Portfolio({navigation}) {
 
 	const [depositing, setDepositing] = useState(false)
 	const [depositAmount, setDepositAmount] = useState(0)
 	const [user, setUser] = useState(0);
+	
 
 	// GET THE USER OBJECT (contains cashOnHand, Watchlist, OwnedStocksList)
 	function fetchUser() {
 		// (firebaseAuth) current user's UUID
 		const userUID = firebase.auth().currentUser.uid
+		// console.log("userUID: ", userUID)
 		// (firestoreDB) ref=collection, get user obj via onSnapshot, where id=userUID
 		const ref = firebase.firestore().collection('users')
 		ref.where("id", "==", userUID)
@@ -56,7 +32,7 @@ export default function Portfolio({navigation}) {
 	useEffect(() => {
 		fetchUser();
 	}, [])
-	console.log("Portfolio, user watchlist stateVar: ", user.watchlist)
+	console.log("Portfolio, user.positions: ", user.positions)
 
 
 
@@ -120,6 +96,7 @@ export default function Portfolio({navigation}) {
 		console.log("displayWatchList clicked")
 	}
 	
+	
     return (
 		<ScrollView contentContainerStyle={styles.scrollContainer}>
 			<SafeAreaView style={styles.container}>
@@ -178,9 +155,9 @@ export default function Portfolio({navigation}) {
 							onPress={() => displayPortfolioList()} 
 						/> 
 					</View>
-					  {/* List Item Placeholders: */}
-					  {/* <StockList stockArray={user.positions}/> */}
-					  {/* <Text>{user?.watchlist[0]}</Text> */}
+
+					{ user?.positions && <PositionList positionsArray={user.positions}/> }
+					
 				</View>	
 
 				{/* Watchlist Stocks
@@ -294,7 +271,9 @@ const styles = StyleSheet.create({
 	},
 	listingContainer: {
 		// borderRadius: 5,
+		minWidth: 320,
 		width: '100%',
+		maxWidth: 400,
 		paddingLeft: 1
 	},
 	listingHeader: {
