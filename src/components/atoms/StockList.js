@@ -8,12 +8,8 @@ import { View } from 'react-native'; // StyleSheet, SafeAreaView, ScrollView, To
 import StockListItem from './StockListItem';
 
 export default function StockList({ stockArray }) {
-    const [stockList, setStockList] = useState([])
-    useEffect(() => {
 
-    }, [])
-    
-    console.log("stockArray", stockArray)
+    // console.log("stockArray", stockArray)
     return (
         <View> 
             {
@@ -23,16 +19,6 @@ export default function StockList({ stockArray }) {
                     )
                 })
             }
-
-            {/* {
-                stockArray?.filter(stockSymbol => {
-                    if (stockSymbol) {
-                        return (
-                            <StockListItem symbol={stockSymbol} />
-                        )
-                    }
-                })
-            } */}
         </View>
     )
 }
