@@ -4,7 +4,6 @@ import stockapi from '../api/stockapi'
 import { Ionicons } from '@expo/vector-icons'
 import { API_KEY, BASE_URL } from 'dotenv'
 import axios from 'axios';
-// import { useStockContext } from '../context/stockContext'
 
 // function PromptText ({ children }) {
 // 	return (
@@ -22,6 +21,24 @@ function SearchBox({ searchText, handleChangeSearchText }) {
 	)
 }
 
+function StockList({ navigation, stocks }) {
+	console.log("stocksFromStockList", stocks)
+	return (
+		<ScrollView styles={styles.stockList}>
+			{stocks.map((stock, i ) => (
+				<TouchableOpacity key={i} onPress={() => {
+					
+					navigation.navigate('StockDetail', stock); 
+					
+					}} >
+					<StockListItem stock={stock} />
+				</TouchableOpacity>
+			)
+			)}
+		</ScrollView>
+	)
+}	
+
 function StockListItem({ stock }) {
 	return (
 		<View style={styles.stockListItem}>
@@ -31,23 +48,10 @@ function StockListItem({ stock }) {
 	)
 }
 
-function StockList({ stocks }) {
-	console.log("+++++StocksFromStockList+++++", stocks)
-	return (
-		<ScrollView styles={styles.stockList}>
-			{stocks.map((stock, i ) => (
-				<TouchableOpacity key={i}// onPress={() => addStockToWatchList(stock)} key={stock.symbol}
-				>
-					<StockListItem stock={stock} />
-				</TouchableOpacity>
-			)
-			)}
-		</ScrollView>
-	)
-}
 
 export default function Search({ navigation }) {
 	// const { baseURL, addToWatchList } = useStockContext()
+	const [nav, setNav] = useState(navigation)
 
 	const [searchText, setSearchText] = useState("")
 	const [filteredStocks, setFilteredStocks] = useState([])
@@ -66,9 +70,9 @@ export default function Search({ navigation }) {
 		setSearchText(text)
 	}
 
-	useEffect(() => {
+	useEffect( () => {
 		if (searchText.length > 1) {
-			searchStocks(searchText)
+			 searchStocks(searchText)
 		}
 	}, [searchText])
 
@@ -107,7 +111,7 @@ export default function Search({ navigation }) {
 				/>
 
 				{searchText !== "" && 
-				<StockList stocks={filteredStocks} // addStockToWatchList={handleAddStockToWatchList}
+				<StockList navigation={nav} stocks={filteredStocks} // addStockToWatchList={handleAddStockToWatchList}
 				/>}
 		</View>
     )
