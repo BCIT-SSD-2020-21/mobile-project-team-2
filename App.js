@@ -37,7 +37,7 @@ export default function App() {
     <SafeAreaProvider>
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Root" component={user ? BottomTabNavigator : AuthStack } />
+        <Stack.Screen name="Root" component={user ? PlatformNavigator : AuthNavigator } />
       </Stack.Navigator>
     </NavigationContainer>
   </SafeAreaProvider>
