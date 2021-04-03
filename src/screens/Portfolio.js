@@ -2,33 +2,36 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Text, TextInput, View } from 'react-native';
 import { firebase } from '../firebase/config';
 import { EvilIcons } from '@expo/vector-icons';
-import { API_KEY, BASE_URL } from 'dotenv'
-import axios from 'axios';
+// import { getStockQuote } from '../api/stockapi';
+// import { API_KEY, BASE_URL } from 'dotenv'
+// import axios from 'axios';
+import StockList from '../components/atoms/StockList';
+// import { StockListItem } from '../api/stockapi';
 // import { fetchUser } from '../firebase/service';
 
-function StockListItem({ stock }) {
-	return (
-		<View style={styles.stockListItem}>
-			<Text style={styles.stockSymbol}>{stock.symbol}</Text>
-			<Text style={styles.stockName}>{stock.description}</Text>
-		</View>
-	)
-}
+// function StockListItem({ stock }) {
+// 	return (
+// 		<View style={styles.stockListItem}>
+// 			<Text style={styles.stockSymbol}>{stock.symbol}</Text>
+// 			<Text style={styles.stockName}>{stock.description}</Text>
+// 		</View>
+// 	)
+// }
 
-function StockList({ stocks }) {
-	// console.log("stocksFromStockList", stocks)
-	return (
-		<ScrollView styles={styles.stockList}>
-			{stocks.map((stock, i ) => (
-				<TouchableOpacity key={i}// onPress={() => addStockToWatchList(stock)} key={stock.symbol}
-				>
-					<StockListItem stock={stock} />
-				</TouchableOpacity>
-			)
-			)}
-		</ScrollView>
-	)
-}
+// function StockList({ stocks }) {
+// 	// console.log("stocksFromStockList", stocks)
+// 	return (
+// 		<ScrollView styles={styles.stockList}>
+// 			{stocks.map((stock, i ) => (
+// 				<TouchableOpacity key={i}// onPress={() => addStockToWatchList(stock)} key={stock.symbol}
+// 				>
+// 					<StockListItem stock={stock} />
+// 				</TouchableOpacity>
+// 			)
+// 			)}
+// 		</ScrollView>
+// 	)
+// }
 
 
 export default function Portfolio({navigation}) {
@@ -53,7 +56,10 @@ export default function Portfolio({navigation}) {
 	useEffect(() => {
 		fetchUser();
 	}, [])
-	console.log("Portfolio, user stateVar: ", user)
+	console.log("Portfolio, user watchlist stateVar: ", user.watchlist)
+
+
+
 
 	// TOGGLE ADD FUNDS FORM
 	function toggleAddFunds() {
@@ -73,12 +79,12 @@ export default function Portfolio({navigation}) {
 		toggleAddFunds();
 	}
 
-	const [filteredStocks, setFilteredStocks] = useState(['GME', 'APPL'])
+	const [watchList, setWatchList] = useState(['GME', 'APPL'])
 	const [portfolioValueDifference, setPortfolioValueDifference] = useState(-34.25);
 	const [portfolioValue, setPortfolioValue] = useState(123.50);
 	useEffect(() => {
 		// GET value from DB (sum aggregate qtyOwned x currPrice from finnhub)
-		// filteredStocks.map(stock => {
+		// watchList.map(stock => {
 		// 	getStocks(stock)
 		// })
 	}, [])
@@ -88,7 +94,7 @@ export default function Portfolio({navigation}) {
 			// console.log("searchTerm", text)
 			// const response = await axios.get(`${BASE_URL}/search?q=${text}&token=${API_KEY}`)// await stockapi.get(`/search?q=${text}&token=${API_KEY}`)
 			// console.log("getStocks", response.data.result)
-			// setFilteredStocks(response.data.result)
+			// setwatchList(response.data.result)
 		} catch (err) {
 			console.error('API Call error:', err)
 		} 
@@ -173,32 +179,24 @@ export default function Portfolio({navigation}) {
 						/> 
 					</View>
 					  {/* List Item Placeholders: */}
-					  <Text style={styles.listingItem}>{'AAAA - OwnedStock1'}</Text>
-					  <Text style={styles.listingItem}>{'BBBB - OwnedStock2'}</Text>
-					  <Text style={styles.listingItem}>{'CCCC - OwnedStock3'}</Text>
-					  <Text style={styles.listingItem}>{'DDDD - OwnedStock4'}</Text>
+					  {/* <StockList stockArray={user.positions}/> */}
+					  {/* <Text>{user?.watchlist[0]}</Text> */}
 				</View>	
 
 				{/* Watchlist Stocks
 				-- FlatList, limit 10, top change in value */}
-				{/* <View style={styles.listingContainer}>
+				<View style={styles.listingContainer}>
 					 <View style={styles.listingHeader}>
 						<Text style={styles.listingTitle}>Watchlist</Text>
 						{/* ->Click 'See All' --> navigate() to large FlatList (StockListScreen) */}
-						{/* <TouchableOpacity 
+						<TouchableOpacity 
 							style={styles.listingButton} 
 							title="FULL LIST"
 							onPress={() => displayWatchList()} 
 						/>
-					</View> 
-					<Text style={styles.listingItem}>{'AAA1 - WatchlistStock1'}</Text>
-					<Text style={styles.listingItem}>{'BBB2 - WatchlistStock2'}</Text>
-					<Text style={styles.listingItem}>{'CCC3 - WatchlistStock3'}</Text>
-					<Text style={styles.listingItem}>{'DDD4 - WatchlistStock4'}</Text>
-					<StockList stocks={filteredStocks}/>
-				</View> */}
-				<Text style={styles.listingTitle}>Watchlist</Text>
-				<StockList stocks={filteredStocks}/>
+					</View>
+					<StockList stockArray={user?.watchlist}/>
+				</View>
 
 				{/* Footer ?  */}
 				<View style={styles.footerContainer}>
@@ -295,9 +293,8 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 2,	
 	},
 	listingContainer: {
-		// border: '1px solid #59a66b',
 		// borderRadius: 5,
-		// width: '100%',
+		width: '100%',
 		paddingLeft: 1
 	},
 	listingHeader: {
@@ -308,7 +305,7 @@ const styles = StyleSheet.create({
 	},
 	listingTitle: {
 		fontSize: 26,
-		// color: '#59a66b', // medium-green
+		color: '#59a66b', // medium-green
 	},
 	listingButton: {
 		width: 80,
