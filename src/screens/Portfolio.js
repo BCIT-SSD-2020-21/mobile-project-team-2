@@ -10,6 +10,7 @@ import PositionList from '../components/atoms/PositionList';
 
 export default function Portfolio({navigation}) {
 
+	const [nav, setNav] = useState(navigation)
 	const [depositing, setDepositing] = useState(false)
 	const [depositAmount, setDepositAmount] = useState(0)
 	const [user, setUser] = useState(0);
@@ -156,7 +157,7 @@ export default function Portfolio({navigation}) {
 						/> 
 					</View>
 
-					{ user?.positions && <PositionList positionsArray={user.positions}/> }
+					{ user?.positions && <PositionList navigation={nav} positionsArray={user.positions}/> }
 					
 				</View>	
 
@@ -172,7 +173,7 @@ export default function Portfolio({navigation}) {
 							onPress={() => displayWatchList()} 
 						/>
 					</View>
-					<StockList stockArray={user?.watchlist}/>
+					<StockList navigation={nav} stockArray={user?.watchlist}/>
 				</View>
 
 				{/* Footer ?  */}

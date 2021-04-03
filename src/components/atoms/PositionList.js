@@ -5,9 +5,9 @@ import { View } from 'react-native'; // StyleSheet, SafeAreaView, ScrollView, To
 // import { getStockProfile, getStockQuote } from '../../api/stockapi';
 // import { API_KEY, BASE_URL } from 'dotenv'
 // import axios from 'axios';
-import Position from './Position';
+import PositionListItem from './PositionListItem';
 
-export default function PositionList({ positionsArray }) {
+export default function PositionList({ navigation, positionsArray }) {
 
     console.log("positionsArray: ", positionsArray)
     return (
@@ -15,7 +15,7 @@ export default function PositionList({ positionsArray }) {
             {
                 positionsArray?.map((prop, index) => {
                     return (
-                        <Position key={index} positionId={prop} />
+                        <PositionListItem key={index} positionId={prop} navigation={navigation} />
                     )
                 })
             }
