@@ -7,7 +7,7 @@ import { View } from 'react-native'; // StyleSheet, SafeAreaView, ScrollView, To
 // import axios from 'axios';
 import StockListItem from './StockListItem';
 
-export default function StockList({ stockArray }) {
+export default function StockList({ navigation, stockArray }) {
 
     // console.log("stockArray", stockArray)
     return (
@@ -15,7 +15,7 @@ export default function StockList({ stockArray }) {
             {
                 stockArray?.map((prop, index) => {
                     return (
-                        <StockListItem key={index} symbol={prop} />
+                        <StockListItem key={index} symbol={prop} navigation={navigation} />
                     )
                 })
             }

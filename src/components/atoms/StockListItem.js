@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 // import { useEffect } from 'react/cjs/react.development';
 import { getStockProfile, getStockQuote } from '../../api/stockapi';
 
-export default function StockListItem({onPress, symbol}) {
+export default function StockListItem({onPress, symbol, navigation}) {
 
     const [loaded, setLoaded] = useState(false)
     // const [stockSymbol, setStockSymbol] = useState(symbol)
@@ -29,9 +29,15 @@ export default function StockListItem({onPress, symbol}) {
       }
     }, [])
 
+    function toStockDetail() {
+      if (symbol) {
+        navigation.navigate('StockDetail', symbol)
+      }
+    }
+
     return (
         // REVIEW API Response Data
-    <TouchableOpacity style={styles.itemContainer}>
+    <TouchableOpacity style={styles.itemContainer} onPress={() => toStockDetail()}>
         <View style={styles.itemInfoSection}>
             <Text style={styles.itemSymbol}>{symbol}</Text>
             <Text style={styles.itemDescription}>{description}</Text>
