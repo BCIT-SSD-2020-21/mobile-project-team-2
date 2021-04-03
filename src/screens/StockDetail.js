@@ -142,10 +142,10 @@ const StockDetail = ({ route, navigation}) => {
 	const [stock, setStock] = useState({})
 	const [error, setError] = useState('')
 	const [inited, setInited] = useState(false)
-
+	const [currentPrice, setCurrentPrice] = useState(null)
 	
 
-	const getOneStock = async ({ symbolVal }) => {
+	const getProfile = async ({ symbolVal }) => {
 		try {
 			const response = await axios.get(`${BASE_URL}/stock/profile?symbol=${symbolVal}&token=${API_KEY}`)
 			setStock(response.data)
@@ -154,8 +154,18 @@ const StockDetail = ({ route, navigation}) => {
 		}
 	}
 
+	const getCurrentPrice = async () => {
+		try {
+			const response = await axios.get(`${BASE_URL}/quote?symbol=${symbolVal}&token=${API_KEY}`)
+			setCurrentPrice(response.data.c)
+		} catch (err) {
+			console.error('API Call error:', err)
+		}
+	}	
+
 	useEffect( async () => {
-		getOneStock({symbolVal})
+		await getProfile({symbolVal})
+		await getCurrentPrice({symbolVal})
 
 		var {email} = firebase.auth().currentUser
 		const quantity = await getStockQuantity({email, symbol: symbolVal})
@@ -180,11 +190,11 @@ const StockDetail = ({ route, navigation}) => {
 						<View><Text style={styles.activities}>Activities</Text></View>
 						<View style={styles.activity}> 
 							<Text style={styles.activityLeft}>{'Buy '}</Text>
-							<Text style={styles.activityRight}>{'$100 '}</Text>
+							<Text style={styles.activityRight}>{currentPrice}</Text>
 						</View>
 						<View style={styles.activity}> 
 							<Text style={styles.activityLeft}>{'Sell '}</Text>
-							<Text style={styles.activityRight}>{'$100 '}</Text>
+							<Text style={styles.activityRight}>{currentPrice}</Text>
 						</View>						
 						<Text style={styles.company}>Company Info</Text>
 						
