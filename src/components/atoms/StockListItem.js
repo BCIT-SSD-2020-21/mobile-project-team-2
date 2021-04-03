@@ -38,7 +38,7 @@ export default function StockListItem({onPress, symbol}) {
         </View>
         {/* <View> */}
             {/* { currentPrice &&  */}
-              <Text style={styles.currentPrice}>{currentPrice}</Text>
+              <Text style={styles.currentPrice}>{`$${Math.round(currentPrice*100/100).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
             {/* } */}
         {/* </View> */}
     </TouchableOpacity>
