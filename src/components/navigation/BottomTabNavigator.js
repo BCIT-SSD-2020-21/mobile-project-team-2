@@ -94,12 +94,8 @@ function SearchScreenNavigator() {
 				component={StockDetail} 
 				options={{ 
 					headerTitle: 'Stock Detail',
-					// headerStyle: {
-					// 	backgroundColor: '#08100a', //darkest-green
-					//   },
-					// headerTintColor: "#59a66b", //medium-green
+
 					headerTitleStyle: {
-						// fontFamily: 'Garamond',
 						textAlign: 'center',
 						fontWeight: 'bold',
 					  },

@@ -3,6 +3,7 @@ import { Button } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { EvilIcons } from '@expo/vector-icons';
 import { userSignOut } from '../../firebase/service';
+import StockDetail from '../../screens/StockDetail'
 
 const Drawer = createDrawerNavigator();
 
@@ -120,6 +121,26 @@ function SearchScreenNavigator() {
 					),
 					headerLeft: () => <MenuIcon /> } : {headerTitle: 'Search'}}
 			/>
+
+			<SearchScreenStack.Screen 
+				name="StockDetail" 
+				component={StockDetail} 
+				options={{ 
+					headerTitle: 'Stock Detail',
+					headerTitleStyle: {
+						textAlign: 'center',
+						fontWeight: 'bold',
+					  },
+					headerRight: () => (
+						<Button
+							onPress={() => userSignOut()}
+							title="Log out"
+							color="#147DF0"
+							margin="20px"
+						/>
+					),
+				}}				
+				/>			
 		</SearchScreenStack.Navigator>
 	)
 }
