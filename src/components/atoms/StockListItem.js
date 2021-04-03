@@ -13,7 +13,7 @@ export default function StockListItem({onPress, symbol}) {
       if (symbol) {
         (async () => {
           const profileResult = await getStockProfile(symbol);
-          console.log('profileResult: ', profileResult)
+          // console.log('profileResult: ', profileResult)
           setDescription(profileResult.name)
         })();
       }
@@ -23,7 +23,7 @@ export default function StockListItem({onPress, symbol}) {
       if (symbol) {
         (async () => {
           const quoteResult = await getStockQuote(symbol);
-          console.log('quoteResult: ', quoteResult)
+          // console.log('quoteResult: ', quoteResult)
           setCurrentPrice(quoteResult.c)
         })();
       }
