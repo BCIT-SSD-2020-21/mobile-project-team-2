@@ -38,7 +38,6 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Root" component={user ? BottomTabNavigator : AuthStack } />
-        <Stack.Screen name="StockDetail" component={StockDetail } />
       </Stack.Navigator>
     </NavigationContainer>
   </SafeAreaProvider>

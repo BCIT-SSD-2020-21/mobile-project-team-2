@@ -4,7 +4,6 @@ import stockapi from '../api/stockapi'
 import { Ionicons } from '@expo/vector-icons'
 import { API_KEY, BASE_URL } from 'dotenv'
 import axios from 'axios';
-import StockDetail from './StockDetail'
 
 // function PromptText ({ children }) {
 // 	return (

@@ -18,31 +18,55 @@ import { EvilIcons } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
 	safeAreaContainer: {
-		display: 'flex',
+		flex: 1,
+		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
     },
-	scrollContainer: {
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	container: {
+	container: {	
+		width: '100%',
+		flexDirection: 'column',	
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: '#F5FCFF',
+	},		
+	titleContainer: {	
+		width: '100%',
 		flexDirection: 'column',
-	},		
-	titleContainer: {
-		width: "100%",
-		textAlign: "center",
-		backgroundColor: "#0876EE",
-	},		
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor:  '#147DF0',
+	},	
+	companyLogo : {
+		width: 60,
+		height: 60,
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',		
+		borderRadius: 50,
+		marginTop: 20,
+		marginBottom: 10,
+		backgroundColor:  '#606060',
+	},
+	companyLogoName: {
+		color: '#fff',
+		fontSize: 20,
+
+		fontWeight: 'bold'
+	  },	
+	companyName: {
+		color: '#fff',
+		fontSize: 20,
+		fontWeight: 'bold'
+	  },	
+	  portfolio : {
+		color: '#fff',
+		fontSize: 30,
+		fontWeight: 'bold'
+	  },	
 	bodyContainer: {
+		width: '80%',	
 		flexDirection: 'column',
 		justifyContent: 'flex-start',
-		width: "80%",
-		marginHorizontal : "auto",
 		alignItems: 'flex-start',
 	},
 	activities : {
@@ -51,12 +75,12 @@ const styles = StyleSheet.create({
 	},
 	activity: {
 		display: 'flex',
-		width: "70%",
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		marginVertical: 5,
 	},	
 	activityLeft : {
+		width: '70%',
 		fontSize: 20,
 	},
 	activityRight : {
@@ -69,25 +93,41 @@ const styles = StyleSheet.create({
 	description : {
 		fontSize: 16,
 		marginVertical: 5,
-	},
+	},	
 	buttons : {
+		flex: 1,
 		display: 'flex',
 		width: "100%",
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		marginVertical: 5,
 	},	
-    button: {
-		borderColor: "#0876EE",
-		backgroundColor: "#0876EE",
+    buttonLeft: {
+		backgroundColor:  '#147DF0',
 		alignItems: 'center',
 		justifyContent: 'center',
-		width: '40%',
+		width: '50%',
+		padding: 5,
 		marginLeft: 0,
+		marginHorizontal: 10,
+    },	
+    buttonRight: {
+		backgroundColor:  '#147DF0',
+		alignItems: 'center',
+		justifyContent: 'center',
+		width: '50%',
+		padding: 5,
+		marginRight: 0,
+		marginHorizontal: 10,		
+    },	
+    buttonText: {
+
 		color: 'white',
 		fontSize: 24, 
 		height: 40, 
-    },	
+    },		
+
+
 
 });
 
@@ -121,11 +161,15 @@ const StockDetail = ({ route, navigation}) => {
 			<SafeAreaView style={styles.safeAreaContainer}>
 				<View style={styles.container}>
 					<View style={styles.titleContainer}>
-						{/* Placeholder: */}
-						<EvilIcons name='chart' size={400} color='white' />
+						<View style={styles.companyLogo}>
+							<Text style={styles.companyLogoName}>DC</Text>
+						</View>
+						<Text style={styles.companyName}>DogeCoin, Inc.</Text>
+						<Text style={styles.portfolio}>{'$324'}</Text>
+						<EvilIcons name='chart' size={300} color='white' />
 					</View>
 					<View style={styles.bodyContainer}>
-						<Text style={styles.activities}>Activities</Text>
+						<View><Text style={styles.activities}>Activities</Text></View>
 						<View style={styles.activity}> 
 							<Text style={styles.activityLeft}>{'Buy '}</Text>
 							<Text style={styles.activityRight}>{'$100 '}</Text>
@@ -134,23 +178,18 @@ const StockDetail = ({ route, navigation}) => {
 							<Text style={styles.activityLeft}>{'Sell '}</Text>
 							<Text style={styles.activityRight}>{'$100 '}</Text>
 						</View>						
-						<Text style={styles.company}> Company </Text>
+						<Text style={styles.company}>Company Info</Text>
 						
-						<Text style={styles.description}>{stock.description}</Text>
-							
-
-						<View style={styles.activity}> 
-							<Text style={styles.activityLeft}>{'Sell '}</Text>
-							<Text style={styles.activityRight}>{'$100 '}</Text>
-						</View>						
+						<View style={styles.description}><Text>{stock.description}</Text></View>							
+					
 						<View style={styles.buttons}>			
-							<TouchableOpacity style={styles.button}	onPress={() => {navigation.navigate('Search')}}>
-								Buy 
+							<TouchableOpacity style={styles.buttonLeft}	onPress={() => {navigation.navigate('Trade')}}>
+								<Text style={styles.buttonText}	>Buy</Text> 
 							</TouchableOpacity>
-							<TouchableOpacity style={styles.button}	onPress={() => {
-								navigation.navigate('TradeScreen', stock)
+							<TouchableOpacity style={styles.buttonRight}	onPress={() => {
+								navigation.navigate('Trade', stock)
 								}}>
-								Sell
+								<Text style={styles.buttonText}	>Sell</Text>
 							</TouchableOpacity>		
 						</View>			
 					</View>

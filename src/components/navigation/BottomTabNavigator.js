@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import Portfolio from '../../screens/Portfolio'
 import Search from '../../screens/Search';
 import Trade from "../../screens/Trade"
+import StockDetail from '../../screens/StockDetail'
 
 import { userSignOut } from '../../firebase/service';
 
@@ -86,6 +87,37 @@ function SearchScreenNavigator() {
 				name="Search"
 				component={Search}
 				options={{ headerTitle: 'Search Stocks' }}
+			/>
+
+			<SearchScreenStack.Screen 
+				name="StockDetail" 
+				component={StockDetail} 
+				options={{ 
+					headerTitle: 'Stock Detail',
+					// headerStyle: {
+					// 	backgroundColor: '#08100a', //darkest-green
+					//   },
+					// headerTintColor: "#59a66b", //medium-green
+					headerTitleStyle: {
+						// fontFamily: 'Garamond',
+						textAlign: 'center',
+						fontWeight: 'bold',
+					  },
+					headerRight: () => (
+						<Button
+							onPress={() => userSignOut()}
+							title="Log out"
+							color="#147DF0"
+							margin="20px"
+						/>
+					),
+				}}				
+				/>
+
+			<TradeScreenStack.Screen
+				name="Trade"
+				component={Trade}
+				options={{ headerTitle: 'Trade Screen' }}
 			/>
 		</SearchScreenStack.Navigator>
 	);
