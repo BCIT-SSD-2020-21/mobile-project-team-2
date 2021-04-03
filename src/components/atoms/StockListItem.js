@@ -1,18 +1,46 @@
-import React from 'react'
-import { View, Button, StyleSheet, TouchableOpacity, Text } from "react-native";
+import React, {useState, useEffect} from 'react'
+import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
+// import { useEffect } from 'react/cjs/react.development';
+import { getStockProfile, getStockQuote } from '../../api/stockapi';
 
-export default function StockListItem({onPress, item}) {
+export default function StockListItem({onPress, symbol}) {
+
+    const [loaded, setLoaded] = useState(false)
+    // const [stockSymbol, setStockSymbol] = useState(symbol)
+    const [description, setDescription] = useState("")
+    const [currentPrice, setCurrentPrice] = useState("")
+    useEffect(() => {
+      if (symbol) {
+        (async () => {
+          const profileResult = await getStockProfile(symbol);
+          console.log('profileResult: ', profileResult)
+          setDescription(profileResult.name)
+        })();
+      }
+    }, [])
+
+    useEffect(() => {
+      if (symbol) {
+        (async () => {
+          const quoteResult = await getStockQuote(symbol);
+          console.log('quoteResult: ', quoteResult)
+          setCurrentPrice(quoteResult.c)
+        })();
+      }
+    }, [])
+
     return (
         // REVIEW API Response Data
-    <TouchableOpacity onPress={onPress} style={styles.itemContainer}>
+    <TouchableOpacity style={styles.itemContainer}>
         <View style={styles.itemInfoSection}>
-            <Text style={styles.itemSymbol}>{item.symbol}</Text>
-            <Text style={styles.itemDescription}>{item.description}</Text>        
+            <Text style={styles.itemSymbol}>{symbol}</Text>
+            <Text style={styles.itemDescription}>{description}</Text>
         </View>
-        <View>
-            <Text style={styles.currentPrice}>{item.price}</Text>
-            <Text style={styles.priceDetail}>{item.price}</Text>
-        </View>
+        {/* <View> */}
+            {/* { currentPrice &&  */}
+              <Text style={styles.currentPrice}>{currentPrice}</Text>
+            {/* } */}
+        {/* </View> */}
     </TouchableOpacity>
     )
 }
@@ -20,11 +48,14 @@ export default function StockListItem({onPress, item}) {
 const styles = StyleSheet.create({
     // ...
     itemContainer: {
+      // marginTop: 5,
       display: 'flex',
       flexDirection: 'row',
+      justifyContent: 'space-between',
     },
     itemInfoSection: {
         flexDirection: 'column',
+        justifyContent: 'space-around',
     },
     itemSymbol: {
       fontSize: 32,
@@ -34,12 +65,12 @@ const styles = StyleSheet.create({
     },
     itemDescription: {
         fontSize: 24,
-        color: "#fff",
+        color: "#000",
         // alignSelf: "flex-start",
     },
     currentPrice: {
         fontSize: 36,
-        color: "#fff",
+        color: "#000",
         fontWeight: "bold",
         // alignSelf: "flex-end",
         textTransform: "uppercase"
