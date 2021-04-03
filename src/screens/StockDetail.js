@@ -14,6 +14,8 @@ import { API_KEY, BASE_URL } from 'dotenv'
 import axios from 'axios';
 import stockapi from '../api/stockapi'
 import { EvilIcons } from '@expo/vector-icons';
+import { firebase } from '../firebase/config';
+import { getStockQuantity } from '../firebase/service';
 
 
 const styles = StyleSheet.create({
@@ -141,6 +143,8 @@ const StockDetail = ({ route, navigation}) => {
 	const [error, setError] = useState('')
 	const [inited, setInited] = useState(false)
 
+	
+
 	const getOneStock = async ({ symbolVal }) => {
 		try {
 			const response = await axios.get(`${BASE_URL}/stock/profile?symbol=${symbolVal}&token=${API_KEY}`)
@@ -150,8 +154,12 @@ const StockDetail = ({ route, navigation}) => {
 		}
 	}
 
-	useEffect(() => {
+	useEffect( async () => {
 		getOneStock({symbolVal})
+
+		var {email} = firebase.auth().currentUser
+		const quantity = await getStockQuantity({email, symbol: symbolVal})
+		console.log('quantity', quantity);
 	},[])
 
     return (
