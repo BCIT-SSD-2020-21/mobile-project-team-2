@@ -53,6 +53,18 @@ export default function Portfolio({navigation}) {
 	}, [])
 	console.log("Portfolio, user stateVar: ", user)
 
+	// ADD FUNDS
+	function addFunds() {
+		console.log("addFunds function");
+		const userUID = firebase.auth().currentUser.uid;
+		const db = firebase.firestore();
+		console.log("userUID: ", userUID);
+		const increment = firebase.firestore.FieldValue.increment(100);
+		const userRef = db.collection('users').doc(userUID);
+
+		userRef.update({ cashOnHand: increment });
+	}
+
 	const [filteredStocks, setFilteredStocks] = useState(['GME', 'APPL'])
 	const [portfolioValueDifference, setPortfolioValueDifference] = useState(-34.25);
 
@@ -79,11 +91,13 @@ export default function Portfolio({navigation}) {
 		// GET value from DB (sum aggregate portfolioValue (qtyOwned x currPrice from finnhub) LESS (qtyOwned x purchPrice) from firestoreDB )
 	}, [portfolioValue])
 	
-	const fundingActionPressed = () => {
-		// INITIAL: 	POST method, Add $100.00 to firestoneDB
-		// LATER:   	navigate() to Funding Screen 
-		console.log("fundingActionPressed clicked")
-	}
+	// const fundingActionPressed = () => {
+	// 	console.log("fundingActionPressed clicked");
+	// 	// INITIAL: 	POST method, Add $100.00 to firestoneDB
+	// 	// LATER:   	navigate() to Funding Screen 
+	// 	addFunds();
+		
+	// }
 	const displayPortfolioList = () => {
 		//  navigate() to FullListScreen (takes props as any stock list) 
 		console.log("displayPortfolioList clicked")
@@ -120,9 +134,10 @@ export default function Portfolio({navigation}) {
 							LATER: 		navigate() to new page?  */}
 					<TouchableOpacity 
 						style={styles.fundingButton} 
-						title="+"
-						onPress={() => fundingActionPressed()} 
-					/>
+						onPress={() => addFunds()} 
+					>
+						<Text style={styles.fundingButtonText}>{'+$100'}</Text>
+					</TouchableOpacity>
 				</View>
 				{/* Owned Stocks 
 				  	-- FlatList, limit 6, top change in value */}
@@ -225,15 +240,18 @@ const styles = StyleSheet.create({
 		fontSize: 32,
 		// color: '#abd4b4', // lightGreen
 	},
-	// fundingButton: {
-	// 	width: 100,
-	// 	height: 100,
-	// //	borderRadius: '50%',
-	// 	margin: 10,
-	// 	fontSize: 42,
-	// 	color: '#abd4b4', // lightGreen
-	// 	backgroundColor: '#59a66b', // medium-green
-	// },
+	fundingButton: {
+		width: 100,
+		height: 100,
+		margin: 10,		
+		backgroundColor: "#0876EE", // blue
+	},
+	fundingButtonText: {
+		textAlign: 'center',
+		textAlignVertical: 'center',
+		fontSize: 20,
+		color: '#abd4b4', // lightGreen
+	},	
 	listingContainer: {
 		// border: '1px solid #59a66b',
 		// borderRadius: 5,
