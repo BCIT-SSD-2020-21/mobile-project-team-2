@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Text, View } from 'react-native';
+import { StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Text, TextInput, View } from 'react-native';
 import { firebase } from '../firebase/config';
 import { EvilIcons } from '@expo/vector-icons';
 import { API_KEY, BASE_URL } from 'dotenv'
@@ -33,8 +33,10 @@ function StockList({ stocks }) {
 
 export default function Portfolio({navigation}) {
 
-	const [userFunds, setUserFunds] = useState(0);
+	const [depositing, setDepositing] = useState(false)
+	const [depositAmount, setDepositAmount] = useState(0)
 	const [user, setUser] = useState(0);
+
 	// GET THE USER OBJECT (contains cashOnHand, Watchlist, OwnedStocksList)
 	function fetchUser() {
 		// (firebaseAuth) current user's UUID
@@ -53,35 +55,40 @@ export default function Portfolio({navigation}) {
 	}, [])
 	console.log("Portfolio, user stateVar: ", user)
 
+	// TOGGLE ADD FUNDS FORM
+	function toggleAddFunds() {
+		setDepositing(!depositing)
+	}
+
 	// ADD FUNDS
 	function addFunds() {
-		console.log("addFunds function");
+		// get current user's UID
 		const userUID = firebase.auth().currentUser.uid;
 		const db = firebase.firestore();
-		console.log("userUID: ", userUID);
-		const increment = firebase.firestore.FieldValue.increment(100);
+		console.log("depositAmount", parseFloat(depositAmount))
+		const increment = firebase.firestore.FieldValue.increment(parseFloat(depositAmount));
 		const userRef = db.collection('users').doc(userUID);
 
 		userRef.update({ cashOnHand: increment });
+		toggleAddFunds();
 	}
 
 	const [filteredStocks, setFilteredStocks] = useState(['GME', 'APPL'])
 	const [portfolioValueDifference, setPortfolioValueDifference] = useState(-34.25);
-
 	const [portfolioValue, setPortfolioValue] = useState(123.50);
 	useEffect(() => {
 		// GET value from DB (sum aggregate qtyOwned x currPrice from finnhub)
-		filteredStocks.map(stock => {
-			getStocks(stock)
-		})
+		// filteredStocks.map(stock => {
+		// 	getStocks(stock)
+		// })
 	}, [])
 
 	const getStocks = async (text) => {
 		try {
 			// console.log("searchTerm", text)
-			const response = await axios.get(`${BASE_URL}/search?q=${text}&token=${API_KEY}`)// await stockapi.get(`/search?q=${text}&token=${API_KEY}`)
+			// const response = await axios.get(`${BASE_URL}/search?q=${text}&token=${API_KEY}`)// await stockapi.get(`/search?q=${text}&token=${API_KEY}`)
 			// console.log("getStocks", response.data.result)
-			setFilteredStocks(response.data.result)
+			// setFilteredStocks(response.data.result)
 		} catch (err) {
 			console.error('API Call error:', err)
 		} 
@@ -134,11 +141,25 @@ export default function Portfolio({navigation}) {
 							LATER: 		navigate() to new page?  */}
 					<TouchableOpacity 
 						style={styles.fundingButton} 
-						onPress={() => addFunds()} 
+						onPress={toggleAddFunds} 
 					>
-						<Text style={styles.fundingButtonText}>{'+$100'}</Text>
+						<Text style={styles.fundingButtonText}>{depositing ? 'CANCEL' : 'ADD $'}</Text>
 					</TouchableOpacity>
 				</View>
+
+				{ depositing && 
+					<View style={styles.fundingForm}>
+						<Text style={styles.fundingLabel}>{'Enter an amount: '}</Text>
+						<TextInput style={styles.fundingFormField} placeholder ="$" onChangeText={(amount) => setDepositAmount(amount)} />
+						<TouchableOpacity 
+							style={styles.fundingButton} 
+							onPress={() => addFunds()} 
+						>
+							<Text style={styles.fundingButtonText}>{'Submit'}</Text>
+						</TouchableOpacity>
+					</View>
+				}
+
 				{/* Owned Stocks 
 				  	-- FlatList, limit 6, top change in value */}
 				<View style={styles.listingContainer}>
@@ -233,25 +254,46 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	fundingLabel: {
-		fontSize: 26,
+		fontSize: 20,
 		// color: '#abd4b4', // lightGreen
 	},
 	fundingAmount: {
-		fontSize: 32,
+		fontSize: 24,
 		// color: '#abd4b4', // lightGreen
 	},
 	fundingButton: {
-		width: 100,
-		height: 100,
-		margin: 10,		
+		width: 60,
+		height: 60,
+		margin: 20,	
+		padding: 10,
+		borderRadius: 100,
+		alignItems: 'center',
 		backgroundColor: "#0876EE", // blue
 	},
 	fundingButtonText: {
 		textAlign: 'center',
 		textAlignVertical: 'center',
-		fontSize: 20,
+		fontSize: 10,
 		color: '#abd4b4', // lightGreen
-	},	
+	},
+	fundingForm: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+	},
+	fundingFormField: {
+		// fontFamily: 'Roboto',
+		height: 40,
+		fontSize: 24,
+		// marginTop: 8,
+		marginVertical: 10,
+		paddingLeft: 3,
+		paddingRight: 3,
+		color: '#000000',
+		borderColor: '#9b9b9b',
+		borderBottomWidth: 2,	
+	},
 	listingContainer: {
 		// border: '1px solid #59a66b',
 		// borderRadius: 5,
