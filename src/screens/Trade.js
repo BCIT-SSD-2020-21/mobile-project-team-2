@@ -1,7 +1,6 @@
-import React from 'react'
-import {StyleSheet,Button, SafeAreaView,View, ImageBackground,FlatList,Vibration,TouchableOpacity,Text, Image,} from 'react-native';
-import {useState} from 'react';
-
+import React, {useState, useEffect} from 'react'
+import {StyleSheet,Button, SafeAreaView,View, Vibration, TouchableOpacity, Text } from 'react-native';
+import {getStockProfile, getStockQuote} from '../api/stockapi';
 
 const styles = StyleSheet.create({
 
@@ -127,20 +126,42 @@ export default function Trade({ route, navigation }) {
     setCurrentNumber(currentNumber + buttonPressed)
   }
 
+  useEffect(() => {
+    if (symbol) {
+      (async () => {
+        const profileResult = await getStockProfile(symbol);
+        console.log('profileResult: ', profileResult)
+        setStockProfile(profileResult)
+      })();
+    }
+  }, [symbol])
+  useEffect(() => {
+    if (symbol) {
+      (async () => {
+        const quoteResult = await getStockQuote(symbol);
+        console.log('quoteResult: ', quoteResult)
+        setStockQuote(quoteResult)
+      })();
+    }
+  }, [symbol])
+
+
   console.log("Trade, symbol: ", route.params)
+  console.log('Trade, stockProfile: ', stockProfile)
+  console.log('Trade, stockQuote: ', stockQuote)
   return (
     <SafeAreaView style={styles.container}>
 
       {/* Heading */}
       <View style={styles.results}>
-		    <Text style={styles.companyName}>DogeCoin, Inc.</Text>
+		    <Text style={styles.companyName}>{stockProfile.name}</Text>
 		    <Text style={styles.howMany}>How many shares do you want to buy/[sell]?</Text>
         <Text style={styles.resultText}>{currentNumber}</Text>
 	    </View>
       {/* Transaction Info */}
 		  <View style={styles.wallet} >
-        <Text style={styles.renderValues}>DogCoin Price</Text> 
-        <Text style={styles.renderValues}>50.65 CAD</Text>
+        <Text style={styles.renderValues}>Current price: </Text> 
+        <Text style={styles.renderValues}>{`$${Math.round(stockQuote.c).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
 	  	</View>
 
       {/* Keypad */}
