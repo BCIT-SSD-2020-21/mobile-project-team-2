@@ -12,10 +12,11 @@ import {
 } from 'react-native';
 import { API_KEY, BASE_URL } from 'dotenv'
 import axios from 'axios';
-import stockapi from '../api/stockapi'
+// import stockapi from '../api/stockapi'
 import { EvilIcons } from '@expo/vector-icons';
 import { firebase } from '../firebase/config';
 import { getStockQuantity } from '../firebase/service';
+import { getStockProfile, getStockQuote } from '../api/stockapi';
 
 
 const styles = StyleSheet.create({
@@ -138,22 +139,22 @@ const styles = StyleSheet.create({
 
 
 const StockDetail = ({ route, navigation}) => {
-	 const {symbol} = route.params
-	 const [symbolVal, setSymbol] = useState(symbol??'' )
+	//  const {symbol} = route.params
+	 const [symbol, setSymbol] = useState(route.params)
 	const [stock, setStock] = useState({})
 	const [error, setError] = useState('')
 	const [inited, setInited] = useState(false)
 	const [currentPrice, setCurrentPrice] = useState(null)
-	
+	const [stockProfile, setStockProfile] = useState({})
 
-	const getProfile = async ({ symbolVal }) => {
-		try {
-			const response = await axios.get(`${BASE_URL}/stock/profile?symbol=${symbolVal}&token=${API_KEY}`)
-			setStock(response.data)
-		} catch (err) {
-			console.error('API Call error:', err)
-		}
-	}
+	// const getProfile = async ({ symbolVal }) => {
+	// 	try {
+	// 		const response = await axios.get(`${BASE_URL}/stock/profile?symbol=${symbolVal}&token=${API_KEY}`)
+	// 		setStock(response.data)
+	// 	} catch (err) {
+	// 		console.error('API Call error:', err)
+	// 	}
+	// }
 
 	const getCurrentPrice = async () => {
 		try {
@@ -164,15 +165,27 @@ const StockDetail = ({ route, navigation}) => {
 		}
 	}	
 
-	useEffect( async () => {
-		await getProfile({symbolVal})
-		await getCurrentPrice({symbolVal})
+	// useEffect( async () => {
+	// 	await getProfile({symbolVal})
+	// 	await getCurrentPrice({symbolVal})
 
-		var {email} = firebase.auth().currentUser
-		const quantity = await getStockQuantity({email, symbol: symbolVal})
-		console.log('quantity', quantity);
-	},[])
+	// 	var {email} = firebase.auth().currentUser
+	// 	const quantity = await getStockQuantity({email, symbol: symbolVal})
+	// 	console.log('quantity', quantity);
+	// },[])
+    useEffect(() => {
+		if (symbol) {
+		  (async () => {
+			const profileResult = await getStockProfile(symbol);
+			console.log('StockDetail, profileResult: ', profileResult)
+			setStockProfile(profileResult)
+		  })();
+		}
+	  }, [symbol])
 
+	console.log("StocKDetial, route: ", route.params)
+	console.log("StocKDetial, symbol: ", symbol)
+	console.log("StocKDetial, stockProfile: ", stockProfile)
     return (
 		<ScrollView contentContainerStyle ={styles.scrollContainer}>
 		
