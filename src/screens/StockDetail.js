@@ -12,10 +12,11 @@ import {
 } from 'react-native';
 import { API_KEY, BASE_URL } from 'dotenv'
 import axios from 'axios';
-import stockapi from '../api/stockapi'
+// import stockapi from '../api/stockapi'
 import { EvilIcons } from '@expo/vector-icons';
 import { firebase } from '../firebase/config';
 import { getStockQuantity } from '../firebase/service';
+import { getStockProfile, getStockQuote } from '../api/stockapi';
 
 
 const styles = StyleSheet.create({
@@ -134,45 +135,89 @@ const styles = StyleSheet.create({
 
 });
 
-
-
-
 const StockDetail = ({ route, navigation}) => {
-	 const {symbol} = route.params
-	 const [symbolVal, setSymbol] = useState(symbol??'' )
+	//  const {symbol} = route.params
+	const [symbol, setSymbol] = useState(route.params)
 	const [stock, setStock] = useState({})
 	const [error, setError] = useState('')
 	const [inited, setInited] = useState(false)
 	const [currentPrice, setCurrentPrice] = useState(null)
-	
+	const [stockProfile, setStockProfile] = useState({})
+	const [stockQuote, setStockQuote] = useState({})
 
-	const getProfile = async ({ symbolVal }) => {
-		try {
-			const response = await axios.get(`${BASE_URL}/stock/profile?symbol=${symbolVal}&token=${API_KEY}`)
-			setStock(response.data)
-		} catch (err) {
-			console.error('API Call error:', err)
+	// const getProfile = async ({ symbolVal }) => {
+	// 	try {
+	// 		const response = await axios.get(`${BASE_URL}/stock/profile?symbol=${symbolVal}&token=${API_KEY}`)
+	// 		setStock(response.data)
+	// 	} catch (err) {
+	// 		console.error('API Call error:', err)
+	// 	}
+	// }
+
+	// const getCurrentPrice = async () => {
+	// 	try {
+	// 		const response = await axios.get(`${BASE_URL}/quote?symbol=${symbolVal}&token=${API_KEY}`)
+	// 		setCurrentPrice(response.data.c)
+	// 	} catch (err) {
+	// 		console.error('API Call error:', err)
+	// 	}
+	// }	
+
+	// useEffect( async () => {
+	// 	await getProfile({symbolVal})
+	// 	await getCurrentPrice({symbolVal})
+
+	// 	var {email} = firebase.auth().currentUser
+	// 	const quantity = await getStockQuantity({email, symbol: symbolVal})
+	// 	console.log('quantity', quantity);
+	// },[])
+    useEffect(() => {
+		if (symbol) {
+		  (async () => {
+			const profileResult = await getStockProfile(symbol);
+			console.log('StockDetail, profileResult: ', profileResult)
+			setStockProfile(profileResult)
+		  })();
 		}
-	}
-
-	const getCurrentPrice = async () => {
-		try {
-			const response = await axios.get(`${BASE_URL}/quote?symbol=${symbolVal}&token=${API_KEY}`)
-			setCurrentPrice(response.data.c)
-		} catch (err) {
-			console.error('API Call error:', err)
+	  }, [symbol])
+	  useEffect(() => {
+		if (symbol) {
+		  (async () => {
+			const quoteResult = await getStockQuote(symbol);
+			console.log('StockDetail, quoteResult: ', quoteResult)
+			setStockQuote(quoteResult)
+		  })();
 		}
-	}	
+	  }, [symbol])
 
-	useEffect( async () => {
-		await getProfile({symbolVal})
-		await getCurrentPrice({symbolVal})
+	  function toTrade() {
+		  if (symbol) {
+			navigation.navigate('Trade', symbol)
+		  }
+	  }
+	  	function toTradeBuyStock() {
+			if (symbol) {
+				const params = {
+					symbol: symbol,
+					type: 'buy',
+				}
+				navigation.navigate('Trade', params)
+			}
+		}
+		function toTradeSaleStock() {
+			if (symbol) {
+				const params = {
+					symbol: symbol,
+					type: 'sell',
+				}
+				navigation.navigate('Trade', params)
+			}
+		}	
 
-		var {email} = firebase.auth().currentUser
-		const quantity = await getStockQuantity({email, symbol: symbolVal})
-		console.log('quantity', quantity);
-	},[])
-
+	// console.log("StocKDetial, route: ", route.params)
+	console.log("StocKDetial, symbol: ", symbol)
+	// console.log("StocKDetial, stockProfile: ", stockProfile)
+	// console.log("StocKDetial, stockQuote: ", stockQuote)
     return (
 		<ScrollView contentContainerStyle ={styles.scrollContainer}>
 		
@@ -181,10 +226,10 @@ const StockDetail = ({ route, navigation}) => {
 				<View style={styles.container}>
 					<View style={styles.titleContainer}>
 						<View style={styles.companyLogo}>
-							<Text style={styles.companyLogoName}>DC</Text>
+							<Text style={styles.companyLogoName}>{symbol}</Text>
 						</View>
-						<Text style={styles.companyName}>DogeCoin, Inc.</Text>
-						<Text style={styles.portfolio}>{'$xxx'}</Text>
+						<Text style={styles.companyName}>{stockProfile.name}</Text>
+						<Text style={styles.portfolio}>{`$${Math.round(stockQuote.c).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
 						<EvilIcons name='chart' size={300} color='white' />
 					</View>
 					<View style={styles.bodyContainer}>
@@ -202,13 +247,11 @@ const StockDetail = ({ route, navigation}) => {
 						<View style={styles.description}><Text>{stock.description}</Text></View>							
 					
 						<View style={styles.buttons}>			
-							<TouchableOpacity style={styles.buttonLeft}	onPress={() => {navigation.navigate('Trade')}}>
-								<Text style={styles.buttonText}	>Buy</Text> 
+							<TouchableOpacity style={styles.buttonLeft}	onPress={() => toTradeBuyStock()}>
+								<Text style={styles.buttonText}	>{'Buy'}</Text> 
 							</TouchableOpacity>
-							<TouchableOpacity style={styles.buttonRight}	onPress={() => {
-								navigation.navigate('Trade', stock)
-								}}>
-								<Text style={styles.buttonText}	>Sell</Text>
+							<TouchableOpacity style={styles.buttonRight} onPress={() => toTradeSaleStock()} >
+								<Text style={styles.buttonText}>{'Sell'}</Text>
 							</TouchableOpacity>		
 						</View>			
 					</View>
