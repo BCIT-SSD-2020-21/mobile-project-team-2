@@ -57,12 +57,12 @@ const styles = StyleSheet.create({
 	  },	
 	companyName: {
 		color: '#fff',
-		fontSize: 20,
+		fontSize: 22,
 		fontWeight: 'bold'
 	  },	
 	  portfolio : {
 		color: '#fff',
-		fontSize: 30,
+		fontSize: 26,
 		fontWeight: 'bold'
 	  },	
 	bodyContainer: {
@@ -142,9 +142,9 @@ const StockDetail = ({ route, navigation}) => {
 	 const [symbolVal, setSymbol] = useState(symbol??'' )
 	const [stock, setStock] = useState({})
 	const [error, setError] = useState('')
-	const [inited, setInited] = useState(false)
 	const [currentPrice, setCurrentPrice] = useState(null)
-	
+	const [quantity, setQuantity] = useState(null)
+	const [portfolio, setPortfolio] = useState(null)	
 
 	const getProfile = async ({ symbolVal }) => {
 		try {
@@ -164,14 +164,50 @@ const StockDetail = ({ route, navigation}) => {
 		}
 	}	
 
-	useEffect( async () => {
-		await getProfile({symbolVal})
-		await getCurrentPrice({symbolVal})
+	useEffect(  () => {
+		 getProfile({symbolVal})
+		 getCurrentPrice({symbolVal})
 
 		var {email} = firebase.auth().currentUser
-		const quantity = await getStockQuantity({email, symbol: symbolVal})
+		const quantity =  getStockQuantity({email, symbol: symbolVal})
 		console.log('quantity', quantity);
+
+		const users = firebase.firestore().collection('users')
+		users.where('email', '==', email)
+		.get()
+		.then((snapShot) => {
+			snapShot.forEach((doc) => {
+				console.log(doc.id, " => ", doc.data());
+
+				const {positions } = doc?.data()
+				positions?.map( pos => {  
+					const positions = firebase.firestore().collection('positions')
+					positions.where(firebase.firestore.FieldPath.documentId(), "==", pos)
+							.where("symbol", "==", symbol)
+							.get()
+							.then((snapShot) => {
+								snapShot.forEach((doc) => {
+									if(doc) {
+										// console.log("good news", doc.data())
+										const {quantity} = doc.data()
+										// console.log("quantity", quantity)
+										setQuantity(quantity)
+									}
+							})
+						})									
+
+					}) 			
+			
+			})
+		})		
 	},[])
+
+	useEffect( () => {
+			if(quantity && currentPrice) {
+				const portfolio = quantity * currentPrice
+				setPortfolio(portfolio)
+			}
+		},[currentPrice, quantity])									
 
     return (
 		<ScrollView contentContainerStyle ={styles.scrollContainer}>
@@ -184,17 +220,17 @@ const StockDetail = ({ route, navigation}) => {
 							<Text style={styles.companyLogoName}>DC</Text>
 						</View>
 						<Text style={styles.companyName}>DogeCoin, Inc.</Text>
-						<Text style={styles.portfolio}>{'$xxx'}</Text>
+						<Text style={styles.portfolio}>$ {portfolio?.toFixed(2)}</Text>
 						<EvilIcons name='chart' size={300} color='white' />
 					</View>
 					<View style={styles.bodyContainer}>
 						<View><Text style={styles.activities}>Activities</Text></View>
 						<View style={styles.activity}> 
 							<Text style={styles.activityLeft}>{'Buy '}</Text>
-							<Text style={styles.activityRight}>{`${currentPrice?.toFixed(2)}`}</Text>
+							<Text style={styles.activityRight}>${`${currentPrice?.toFixed(2)}`}</Text>
 						</View>
 						<View style={styles.activity}> 
-							<Text style={styles.activityLeft}>${'Sell '}</Text>
+							<Text style={styles.activityLeft}>{'Sell '}</Text>
 							<Text style={styles.activityRight}>${`${currentPrice?.toFixed(2)}`}</Text>
 						</View>						
 						<Text style={styles.company}>Company Info</Text>
