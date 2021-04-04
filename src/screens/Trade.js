@@ -104,9 +104,11 @@ const styles = StyleSheet.create({
 
   })
 
-export default function Trade() {
+export default function Trade({ route, navigation }) {
 	
-
+const [symbol, setSymbol] = useState(route.params)
+const [stockProfile, setStockProfile] = useState({})
+const [stockQuote, setStockQuote] = useState({})
 const [currentNumber, setCurrentNumber] = useState('');
 
 
@@ -132,7 +134,7 @@ const buttons = [1,2,3, 4,5,6, 7,8,9, '', 0,'X']
   }
 
 
-
+    console.log("Trade, symbol: ", route)
     return (
     <SafeAreaView style={styles.container}>
 

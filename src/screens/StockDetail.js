@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
 
 const StockDetail = ({ route, navigation}) => {
 	//  const {symbol} = route.params
-	 const [symbol, setSymbol] = useState(route.params)
+	const [symbol, setSymbol] = useState(route.params)
 	const [stock, setStock] = useState({})
 	const [error, setError] = useState('')
 	const [inited, setInited] = useState(false)
@@ -190,10 +190,16 @@ const StockDetail = ({ route, navigation}) => {
 		}
 	  }, [symbol])
 
-	console.log("StocKDetial, route: ", route.params)
+	  function toTrade() {
+		  if (symbol) {
+			navigation.navigate('Trade', symbol)
+		  }
+	  }
+
+	// console.log("StocKDetial, route: ", route.params)
 	console.log("StocKDetial, symbol: ", symbol)
-	console.log("StocKDetial, stockProfile: ", stockProfile)
-	console.log("StocKDetial, stockQuote: ", stockQuote)
+	// console.log("StocKDetial, stockProfile: ", stockProfile)
+	// console.log("StocKDetial, stockQuote: ", stockQuote)
     return (
 		<ScrollView contentContainerStyle ={styles.scrollContainer}>
 		
@@ -223,12 +229,10 @@ const StockDetail = ({ route, navigation}) => {
 						<View style={styles.description}><Text>{stock.description}</Text></View>							
 					
 						<View style={styles.buttons}>			
-							<TouchableOpacity style={styles.buttonLeft}	onPress={() => {navigation.navigate('Trade')}}>
+							<TouchableOpacity style={styles.buttonLeft}	onPress={() => toTrade()}>
 								<Text style={styles.buttonText}	>Buy</Text> 
 							</TouchableOpacity>
-							<TouchableOpacity style={styles.buttonRight}	onPress={() => {
-								navigation.navigate('Trade', stock)
-								}}>
+							<TouchableOpacity style={styles.buttonRight} onPress={() => toTrade()} >
 								<Text style={styles.buttonText}	>Sell</Text>
 							</TouchableOpacity>		
 						</View>			
