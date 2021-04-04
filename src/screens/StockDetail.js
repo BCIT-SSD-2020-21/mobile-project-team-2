@@ -202,10 +202,10 @@ const StockDetail = ({ route, navigation}) => {
 				<View style={styles.container}>
 					<View style={styles.titleContainer}>
 						<View style={styles.companyLogo}>
-							<Text style={styles.companyLogoName}>DC</Text>
+							<Text style={styles.companyLogoName}>{symbol}</Text>
 						</View>
-						<Text style={styles.companyName}>DogeCoin, Inc.</Text>
-						<Text style={styles.portfolio}>{'$xxx'}</Text>
+						<Text style={styles.companyName}>{stockProfile.name}</Text>
+						<Text style={styles.portfolio}>{`$${Math.round(stockQuote.c).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
 						<EvilIcons name='chart' size={300} color='white' />
 					</View>
 					<View style={styles.bodyContainer}>
