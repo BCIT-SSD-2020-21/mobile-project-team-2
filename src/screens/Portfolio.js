@@ -15,28 +15,23 @@ export default function Portfolio({navigation}) {
 	const [depositAmount, setDepositAmount] = useState(0)
 	const [user, setUser] = useState(0);
 	
-
 	// GET THE USER OBJECT (contains cashOnHand, Watchlist, OwnedStocksList)
 	function fetchUser() {
 		// (firebaseAuth) current user's UUID
 		const userUID = firebase.auth().currentUser.uid
-		// console.log("userUID: ", userUID)
-		// (firestoreDB) ref=collection, get user obj via onSnapshot, where id=userUID
-		const ref = firebase.firestore().collection('users')
-		ref.where("id", "==", userUID)
-			.onSnapshot((querySnapshot) => {
-				const items = []
-				querySnapshot.docs.map((doc) => items.push(doc.data()));
-				setUser(items[0])
-			})
+		// get user document by user UID; setUser		
+		const userDoc = firebase.firestore().collection('users').doc(userUID)
+		userDoc.onSnapshot((doc) => {
+			console.log("current data: ", doc.data());
+			setUser(doc.data());
+		})
 	}
 	useEffect(() => {
 		fetchUser();
 	}, [])
 	console.log("Portfolio, user.positions: ", user.positions)
 
-
-
+	console.log("(TEST) Portfolio, user: ", user)
 
 	// TOGGLE ADD FUNDS FORM
 	function toggleAddFunds() {
