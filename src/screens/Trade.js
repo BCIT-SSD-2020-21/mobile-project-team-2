@@ -1,18 +1,22 @@
 import React, {useState, useEffect} from 'react'
-import {StyleSheet,Button, SafeAreaView,View, Vibration, TouchableOpacity, Text } from 'react-native';
+import {StyleSheet, Button, SafeAreaView, ScrollView, View, Vibration, TouchableOpacity, Text } from 'react-native';
 import {getStockProfile, getStockQuote} from '../api/stockapi';
 
 const styles = StyleSheet.create({
 
 	container: {
 		flex: 1,
+    paddingTop: 45,
+    alignItems: 'center',
 		justifyContent: 'center',
+    backgroundColor:  '#147DF0',
     },
 
     results: {
       backgroundColor:  '#147DF0',
       maxWidth: '100%',
-	  minHeight: '35%',
+      height: 200,
+	    minHeight: '25%',
       alignItems: 'center',
       justifyContent: 'center',
 	 
@@ -62,7 +66,7 @@ const styles = StyleSheet.create({
 
     button: {
       borderColor: '#fff',
-	  backgroundColor: '#fff',
+	    backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'center',
       minWidth: '31%',
@@ -88,14 +92,19 @@ const styles = StyleSheet.create({
 		maxHeight: 45,
 		color: '#fff',
 		fontSize: 25,
-		paddingLeft: 40,
+		// paddingLeft: 40,
 		justifyContent: 'center',
 		flexDirection: 'row',
 	},
 	wallet: {
-		width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+		alignItems: 'center',
+    margin: 'auto',
+    width: '95%',
 		flexDirection: 'row',
-		backgroundColor:  '#147DF0',
+		
 		//paddingTop: 10,
 		//paddingBottom: 10,
 	}
@@ -154,43 +163,53 @@ export default function Trade({ route, navigation }) {
   console.log('Trade, stockQuote: ', stockQuote)
   return (
     <SafeAreaView style={styles.container}>
+      {/* <ScrollView> */}
+        {/* Heading */}
+        <View style={styles.results}>
+          <Text style={styles.companyName}>{stockProfile.name}</Text>
+          <Text style={styles.howMany}>{`How many shares of ${symbol} do you want to ${transactionType}?`}</Text>
+          <Text style={styles.resultText}>{currentNumber}</Text>
+        </View>
 
-      {/* Heading */}
-      <View style={styles.results}>
-		    <Text style={styles.companyName}>{stockProfile.name}</Text>
-		    <Text style={styles.howMany}>How many shares do you want to buy/[sell]?</Text>
-        <Text style={styles.resultText}>{currentNumber}</Text>
-	    </View>
-      {/* Transaction Info */}
-		  <View style={styles.wallet} >
-        <Text style={styles.renderValues}>Current price: </Text> 
-        <Text style={styles.renderValues}>{`$${Math.round(stockQuote.c).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
-	  	</View>
+        {/* Transaction Info */}
+        <View style={styles.wallet} >
+          <Text style={styles.renderValues}>Available funds: </Text> 
+          <Text style={styles.renderValues}>{`$${Math.round(stockQuote.c).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
+        </View>
+        <View style={styles.wallet} >
+          <Text style={styles.renderValues}>Current price: </Text> 
+          <Text style={styles.renderValues}>{`$${Math.round(stockQuote.c).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
+        </View>
+        <View style={styles.wallet} >
+          <Text style={styles.renderValues}>Total cost: </Text> 
+          <Text style={styles.renderValues}>{`$${Math.round(stockQuote.c).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
+        </View>
 
-      {/* Keypad */}
-      <View style={styles.buttons}>
-        {buttons.map((button) =>
-          button === 0 ?
-          <TouchableOpacity key={button} style={[styles.button, ]} onPress={() => handleInput(button)}>
-            <Text style={styles.textButton}>{button}</Text>
-          </TouchableOpacity>
-          :
-        	button === 'x' ?
-          <TouchableOpacity key={button} style={[styles.button, ]} onPress={() => handleInput(button)}>
-            <Text style={styles.textButton}>{button}</Text>
-          </TouchableOpacity>
-          :
-          <TouchableOpacity key={button} style={[styles.button ]} onPress={() => handleInput(button)}>
-            <Text style={styles.textButton}>{button}</Text>
-          </TouchableOpacity>
-		  
-        )}
-        {/* Submit */}
-        <Button style={styles.buttonContinue}
-          title="Continue"
-          onPress={() => Alert.alert('button continue pressed')}
-        />
-      </View>
+        {/* Keypad */}
+        <View style={styles.buttons}>
+          {buttons.map((button) =>
+            button === 0 ?
+            <TouchableOpacity key={button} style={[styles.button, ]} onPress={() => handleInput(button)}>
+              <Text style={styles.textButton}>{button}</Text>
+            </TouchableOpacity>
+            :
+            button === 'x' ?
+            <TouchableOpacity key={button} style={[styles.button, ]} onPress={() => handleInput(button)}>
+              <Text style={styles.textButton}>{button}</Text>
+            </TouchableOpacity>
+            :
+            <TouchableOpacity key={button} style={[styles.button ]} onPress={() => handleInput(button)}>
+              <Text style={styles.textButton}>{button}</Text>
+            </TouchableOpacity>
+        
+          )}
+          {/* Submit */}
+          <Button style={styles.buttonContinue}
+            title="Continue"
+            onPress={() => Alert.alert('button continue pressed')}
+          />
+        </View>
+      {/* </ScrollView> */}
     </SafeAreaView>
   )
 }
