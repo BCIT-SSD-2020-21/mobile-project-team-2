@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
 
 	container: {
 		flex: 1,
-    paddingTop: 45,
+    paddingTop: 30,
     alignItems: 'center',
 		justifyContent: 'center',
     backgroundColor:  '#147DF0',
@@ -59,10 +59,10 @@ const styles = StyleSheet.create({
       height: '55%',
       flexDirection: 'row',
       flexWrap: 'wrap',
-	  //paddingLeft: 40,
-	  //paddingRight: 40,
-	  alignItems: 'center',
-	  justifyContent: 'center'
+      //paddingLeft: 40,
+      //paddingRight: 40,
+      alignItems: 'center',
+      justifyContent: 'center'
     },
 
     button: {
@@ -81,13 +81,23 @@ const styles = StyleSheet.create({
     },
 
 	buttonContinue: {
-		textAlign: 'center',
-    	marginVertical: 15,
-		width: '60%',
-    	minHeight: '20%',
-		flexDirection: 'row',
-		fontSize: 32,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    padding: 'auto',
+    marginVertical: 10,
+    width: '60%',
+    minHeight: 40,
+    flexDirection: 'row',
+    fontSize: 32,
+    backgroundColor: '#68dceb', // light-blue
 	},
+  buttonContinueText: {
+    fontSize: 24,
+    textAlign: 'center',
+
+  },
 
 	renderValues: {
 		maxHeight: 45,
@@ -178,6 +188,25 @@ export default function Trade({ route, navigation }) {
     }
   }, [symbol])
 
+  function submitTransaction() {
+    if (transactionType === 'buy') {
+      if (totalAmount > user.cashOnHand) {
+        return
+      } else {
+        // create Transaction
+        // check if position exists
+        // -- if yes, update (shareQuantity, averageCostPerShare)
+        // -- if no, create new position
+        // update user.cashOnHand
+      }
+    } else if (transactionType === 'sell') {
+      // if ( position?.shareQuantity < currentNumber) { return }
+      // else { 
+        // create Transaction
+        // update position (shareQuantity)
+        // update user.cashOnHand
+    }
+  }
 
   console.log("Trade, symbol: ", symbol)
   console.log("Trade, type: ", transactionType)
@@ -226,10 +255,12 @@ export default function Trade({ route, navigation }) {
         
           )}
           {/* Submit */}
-          <Button style={styles.buttonContinue}
-            title="Continue"
-            onPress={() => Alert.alert('button continue pressed')}
-          />
+          <TouchableOpacity style={styles.buttonContinue}
+            enabled={ totalAmount <= user.cashOnHand ? true : false}
+            onPress={() => submitTransaction()} 
+          >
+            <Text style={styles.buttonContinueText}>Continue</Text>
+          </TouchableOpacity>
         </View>
       {/* </ScrollView> */}
     </SafeAreaView>
