@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {StyleSheet, Button, SafeAreaView, ScrollView, View, Vibration, TouchableOpacity, Text } from 'react-native';
 import {getStockProfile, getStockQuote} from '../api/stockapi';
+import {firebase} from '../firebase/config';
 
 const styles = StyleSheet.create({
 
@@ -115,6 +116,7 @@ export default function Trade({ route, navigation }) {
 	
   const [symbol, setSymbol] = useState(route.params.symbol)
   const [transactionType, setTransactionType] = useState(route.params.type)
+  const [user, setUser] = useState({})
   const [stockProfile, setStockProfile] = useState({})
   const [stockQuote, setStockQuote] = useState({})
   const [currentNumber, setCurrentNumber] = useState('');
@@ -137,6 +139,22 @@ export default function Trade({ route, navigation }) {
     setCurrentNumber(currentNumber + buttonPressed)
   }
 
+  function fetchUser() {
+		// (firebaseAuth) current user's UUID
+		const userUID = firebase.auth().currentUser.uid
+		// console.log("userUID: ", userUID)
+		// (firestoreDB) ref=collection, get user obj via onSnapshot, where id=userUID
+		const ref = firebase.firestore().collection('users')
+		ref.where("id", "==", userUID)
+			.onSnapshot((querySnapshot) => {
+				const items = []
+				querySnapshot.docs.map((doc) => items.push(doc.data()));
+				setUser(items[0])
+			})
+	}
+	useEffect(() => {
+		fetchUser();
+	}, [])
   useEffect(() => {
     if (symbol) {
       (async () => {
@@ -178,11 +196,11 @@ export default function Trade({ route, navigation }) {
         </View>
         <View style={styles.wallet} >
           <Text style={styles.renderValues}>Current price: </Text> 
-          <Text style={styles.renderValues}>{`$${Math.round(stockQuote.c).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
+          <Text style={styles.renderValues}>{`$${Math.round(user.cashOnHand).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
         </View>
         <View style={styles.wallet} >
           <Text style={styles.renderValues}>Total cost: </Text> 
-          <Text style={styles.renderValues}>{`$${Math.round(stockQuote.c).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
+          <Text style={styles.renderValues}>{`$${Math.round(user.cashOnHand).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
         </View>
 
         {/* Keypad */}
