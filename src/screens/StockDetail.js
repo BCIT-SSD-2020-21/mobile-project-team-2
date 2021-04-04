@@ -199,7 +199,7 @@ const StockDetail = ({ route, navigation}) => {
 			if (symbol) {
 				const params = {
 					symbol: symbol,
-					type: 'purchase',
+					type: 'buy',
 				}
 				navigation.navigate('Trade', params)
 			}
@@ -208,7 +208,7 @@ const StockDetail = ({ route, navigation}) => {
 			if (symbol) {
 				const params = {
 					symbol: symbol,
-					type: 'sale',
+					type: 'sell',
 				}
 				navigation.navigate('Trade', params)
 			}
