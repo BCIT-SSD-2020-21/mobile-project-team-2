@@ -135,9 +135,6 @@ const styles = StyleSheet.create({
 
 });
 
-
-
-
 const StockDetail = ({ route, navigation}) => {
 	//  const {symbol} = route.params
 	 const [symbol, setSymbol] = useState(route.params)
@@ -146,6 +143,7 @@ const StockDetail = ({ route, navigation}) => {
 	const [inited, setInited] = useState(false)
 	const [currentPrice, setCurrentPrice] = useState(null)
 	const [stockProfile, setStockProfile] = useState({})
+	const [stockQuote, setStockQuote] = useState({})
 
 	// const getProfile = async ({ symbolVal }) => {
 	// 	try {
@@ -156,14 +154,14 @@ const StockDetail = ({ route, navigation}) => {
 	// 	}
 	// }
 
-	const getCurrentPrice = async () => {
-		try {
-			const response = await axios.get(`${BASE_URL}/quote?symbol=${symbolVal}&token=${API_KEY}`)
-			setCurrentPrice(response.data.c)
-		} catch (err) {
-			console.error('API Call error:', err)
-		}
-	}	
+	// const getCurrentPrice = async () => {
+	// 	try {
+	// 		const response = await axios.get(`${BASE_URL}/quote?symbol=${symbolVal}&token=${API_KEY}`)
+	// 		setCurrentPrice(response.data.c)
+	// 	} catch (err) {
+	// 		console.error('API Call error:', err)
+	// 	}
+	// }	
 
 	// useEffect( async () => {
 	// 	await getProfile({symbolVal})
@@ -182,10 +180,20 @@ const StockDetail = ({ route, navigation}) => {
 		  })();
 		}
 	  }, [symbol])
+	  useEffect(() => {
+		if (symbol) {
+		  (async () => {
+			const quoteResult = await getStockQuote(symbol);
+			console.log('StockDetail, quoteResult: ', quoteResult)
+			setStockQuote(quoteResult)
+		  })();
+		}
+	  }, [symbol])
 
 	console.log("StocKDetial, route: ", route.params)
 	console.log("StocKDetial, symbol: ", symbol)
 	console.log("StocKDetial, stockProfile: ", stockProfile)
+	console.log("StocKDetial, stockQuote: ", stockQuote)
     return (
 		<ScrollView contentContainerStyle ={styles.scrollContainer}>
 		
