@@ -127,17 +127,21 @@ export default function Trade({ route, navigation }) {
     if(buttonPressed === 1 || buttonPressed === 2 || buttonPressed === 3 || buttonPressed === 4 || buttonPressed === 5 ||
 		buttonPressed === 6 || buttonPressed === 7 || buttonPressed === 8 || buttonPressed === 9 || buttonPressed === 0  ) {
       Vibration.vibrate(35);
-      setCurrentNumber(currentNumber + buttonPressed)
-      return
+      setCurrentNumber(parseInt(`${currentNumber}${buttonPressed}`))
+      return;
     }
     switch(buttonPressed) {
       case 'X':
         Vibration.vibrate(35);
-        setCurrentNumber('')
+        setCurrentNumber(0)
         return
     }
     setCurrentNumber(currentNumber + buttonPressed)
   }
+
+  useEffect(() => {
+    setTotalAmount(currentNumber * stockQuote.c)
+  }, [currentNumber, stockQuote])
 
   function fetchUser() {
 		// (firebaseAuth) current user's UUID
@@ -200,7 +204,7 @@ export default function Trade({ route, navigation }) {
         </View>
         <View style={styles.wallet} >
           <Text style={styles.renderValues}>Total cost: </Text> 
-          <Text style={styles.renderValues}>{`$${Math.round(user.cashOnHand).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
+          <Text style={styles.renderValues}>{`$${Math.round(totalAmount).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
         </View>
 
         {/* Keypad */}
