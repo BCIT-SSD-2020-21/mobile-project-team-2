@@ -195,6 +195,24 @@ const StockDetail = ({ route, navigation}) => {
 			navigation.navigate('Trade', symbol)
 		  }
 	  }
+	  	function toTradeBuyStock() {
+			if (symbol) {
+				const params = {
+					symbol: symbol,
+					type: 'purchase',
+				}
+				navigation.navigate('Trade', params)
+			}
+		}
+		function toTradeSaleStock() {
+			if (symbol) {
+				const params = {
+					symbol: symbol,
+					type: 'sale',
+				}
+				navigation.navigate('Trade', params)
+			}
+		}	
 
 	// console.log("StocKDetial, route: ", route.params)
 	console.log("StocKDetial, symbol: ", symbol)
@@ -229,11 +247,11 @@ const StockDetail = ({ route, navigation}) => {
 						<View style={styles.description}><Text>{stock.description}</Text></View>							
 					
 						<View style={styles.buttons}>			
-							<TouchableOpacity style={styles.buttonLeft}	onPress={() => toTrade()}>
-								<Text style={styles.buttonText}	>Buy</Text> 
+							<TouchableOpacity style={styles.buttonLeft}	onPress={() => toTradeBuyStock()}>
+								<Text style={styles.buttonText}	>{'Buy'}</Text> 
 							</TouchableOpacity>
-							<TouchableOpacity style={styles.buttonRight} onPress={() => toTrade()} >
-								<Text style={styles.buttonText}	>Sell</Text>
+							<TouchableOpacity style={styles.buttonRight} onPress={() => toTradeSaleStock()} >
+								<Text style={styles.buttonText}>{'Sell'}</Text>
 							</TouchableOpacity>		
 						</View>			
 					</View>

@@ -104,10 +104,12 @@ const styles = StyleSheet.create({
 
 export default function Trade({ route, navigation }) {
 	
-  const [symbol, setSymbol] = useState(route.params)
+  const [symbol, setSymbol] = useState(route.params.symbol)
+  const [transactionType, setTransactionType] = useState(route.params.type)
   const [stockProfile, setStockProfile] = useState({})
   const [stockQuote, setStockQuote] = useState({})
   const [currentNumber, setCurrentNumber] = useState('');
+  const [totalAmount, setTotalAmount] = useState(0)
 
   const buttons = [1,2,3, 4,5,6, 7,8,9, '', 0,'X']
   function handleInput(buttonPressed) {
@@ -146,7 +148,8 @@ export default function Trade({ route, navigation }) {
   }, [symbol])
 
 
-  console.log("Trade, symbol: ", route.params)
+  console.log("Trade, symbol: ", symbol)
+  console.log("Trade, type: ", transactionType)
   console.log('Trade, stockProfile: ', stockProfile)
   console.log('Trade, stockQuote: ', stockQuote)
   return (
