@@ -164,7 +164,7 @@ const StockDetail = ({ route, navigation}) => {
 	const [stock, setStock] = useState({})
 	const [error, setError] = useState('')
 	const [currentPrice, setCurrentPrice] = useState(null)
-	const [stockProfile, setStockProfile] = useState({})
+	const [stockProfile, setStockProfile] = useState({})	
 	const [stockQuote, setStockQuote] = useState({})
 
 	// const getProfile = async ({ symbolVal }) => {
@@ -238,12 +238,13 @@ const StockDetail = ({ route, navigation}) => {
 
 	// console.log("StocKDetial, route: ", route.params)
 	console.log("StocKDetial, symbol: ", symbol)
-	// console.log("StocKDetial, stockProfile: ", stockProfile)
-	// console.log("StocKDetial, stockQuote: ", stockQuote)
+	console.log("StocKDetial, stockProfile: ", stockProfile)
+	console.log("StocKDetial, stockQuote: ", stockQuote)
+	
     return (
 		<ScrollView contentContainerStyle ={styles.scrollContainer}>
 		
-		{ !!profile2 ? 
+
 			<SafeAreaView style={styles.safeAreaContainer}>
 				<View style={styles.container}>
 					<View style={styles.titleContainer}>
@@ -264,49 +265,9 @@ const StockDetail = ({ route, navigation}) => {
 							<Text style={styles.activityLeft}>{'Sell '}</Text>
 							<Text style={styles.activityRight}>${`${currentPrice?.toFixed(2)}`}</Text>
 						</View>		
-						<View style={styles.company}> 				
-							<Text style={styles.companyInfo} numberOfLines={1} >Company Info</Text>
-							<Image style={styles.companyLogo} source={{ uri: profile2.logo}} />
-						</View>
+
 					
-
-						<View style={styles.card}>
-							<Text style={styles.cardHeader}>Exchange:</Text>
-							<Text style={styles.cardDetail}>{profile2.exchange}</Text>
-						</View>						
-
-						<View style={styles.card}>
-							<Text style={styles.cardHeader}>IPO:</Text>
-							<Text style={styles.cardDetail}>{profile2.ipo}</Text>
-						</View>
-
-						<View style={styles.card}>
-							<Text style={styles.cardHeader}>Telephone:</Text>
-							<Text style={styles.cardDetail}>{profile2.phone}</Text>
-						</View>
-
-						<View style={styles.card}>
-							<Text style={styles.cardHeader}>IPO:</Text>
-							<Text style={styles.cardDetail}>{profile2.ipo}</Text>
-						</View>							
-
-						<View style={styles.card}>
-							<Text style={styles.cardHeader}>Market Capitalization:</Text>
-							<Text style={styles.cardDetail}>{profile2.marketCapitalization}</Text>
-						</View>							
-
-						<View style={styles.card}>
-						<Text style={styles.cardHeader}>Share Outstanding:</Text>
-							<Text style={styles.cardDetail}>{profile2.shareOutstanding}</Text>
-						</View>
-
-						<View style={styles.card}>
-							<Text style={styles.cardHeader}>Website:</Text>
-							<Text style={{color: 'blue'}}
-							onPress={() => {  Linking.openURL(weburl.url);  }}>
-							Click Here to Open {profile2.name} Website
-							</Text> 
-						</View>							
+						
   
 			
 	
@@ -325,9 +286,7 @@ const StockDetail = ({ route, navigation}) => {
 					</View>
 				</View>
 			</SafeAreaView>
-			:
-			<Text> Loading</Text>
-		}
+
 		</ScrollView>
 		
     )
