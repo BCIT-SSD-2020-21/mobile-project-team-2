@@ -1,20 +1,23 @@
-import React from 'react'
-import {StyleSheet,Button, SafeAreaView,View, ImageBackground,FlatList,Vibration,TouchableOpacity,Text, Image,} from 'react-native';
-
-import {useState} from 'react';
-
+import React, {useState, useEffect} from 'react'
+import {StyleSheet, Button, SafeAreaView, ScrollView, View, Vibration, TouchableOpacity, Text } from 'react-native';
+import {getStockProfile, getStockQuote} from '../api/stockapi';
+import {firebase} from '../firebase/config';
 
 const styles = StyleSheet.create({
 
 	container: {
 		flex: 1,
+    paddingTop: 30,
+    alignItems: 'center',
 		justifyContent: 'center',
+    backgroundColor:  '#147DF0',
     },
 
     results: {
       backgroundColor:  '#147DF0',
       maxWidth: '100%',
-	  minHeight: '35%',
+      height: 200,
+	    minHeight: '25%',
       alignItems: 'center',
       justifyContent: 'center',
 	 
@@ -56,15 +59,15 @@ const styles = StyleSheet.create({
       height: '55%',
       flexDirection: 'row',
       flexWrap: 'wrap',
-	  //paddingLeft: 40,
-	  //paddingRight: 40,
-	  alignItems: 'center',
-	  justifyContent: 'center'
+      //paddingLeft: 40,
+      //paddingRight: 40,
+      alignItems: 'center',
+      justifyContent: 'center'
     },
 
     button: {
       borderColor: '#fff',
-	  backgroundColor: '#fff',
+	    backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'center',
       minWidth: '31%',
@@ -78,103 +81,188 @@ const styles = StyleSheet.create({
     },
 
 	buttonContinue: {
-		textAlign: 'center',
-    	marginVertical: 15,
-		width: '60%',
-    	minHeight: '20%',
-		flexDirection: 'row',
-		fontSize: 32,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    padding: 'auto',
+    marginVertical: 10,
+    width: '60%',
+    minHeight: 40,
+    flexDirection: 'row',
+    fontSize: 32,
+    backgroundColor: '#68dceb', // light-blue
 	},
+  buttonContinueText: {
+    fontSize: 24,
+    textAlign: 'center',
+
+  },
 
 	renderValues: {
 		maxHeight: 45,
 		color: '#fff',
 		fontSize: 25,
-		paddingLeft: 40,
+		// paddingLeft: 40,
 		justifyContent: 'center',
 		flexDirection: 'row',
 	},
 	wallet: {
-		width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+		alignItems: 'center',
+    margin: 'auto',
+    width: '95%',
 		flexDirection: 'row',
-		backgroundColor:  '#147DF0',
+		
 		//paddingTop: 10,
 		//paddingBottom: 10,
 	}
 
   })
 
-export default function Trade() {
+export default function Trade({ route, navigation }) {
 	
+  const [symbol, setSymbol] = useState(route.params.symbol)
+  const [transactionType, setTransactionType] = useState(route.params.type)
+  const [user, setUser] = useState({})
+  const [stockProfile, setStockProfile] = useState({})
+  const [stockQuote, setStockQuote] = useState({})
+  const [currentNumber, setCurrentNumber] = useState('');
+  const [totalAmount, setTotalAmount] = useState(0)
 
-const [currentNumber, setCurrentNumber] = useState('');
-
-
-
-const buttons = [1,2,3, 4,5,6, 7,8,9, '', 0,'X']
-
+  const buttons = [1,2,3, 4,5,6, 7,8,9, '', 0,'X']
   function handleInput(buttonPressed) {
     if(buttonPressed === 1 || buttonPressed === 2 || buttonPressed === 3 || buttonPressed === 4 || buttonPressed === 5 ||
 		buttonPressed === 6 || buttonPressed === 7 || buttonPressed === 8 || buttonPressed === 9 || buttonPressed === 0  ) {
-  Vibration.vibrate(35);
-  setCurrentNumber(currentNumber + buttonPressed)
-      return
+      Vibration.vibrate(35);
+      setCurrentNumber(parseInt(`${currentNumber}${buttonPressed}`))
+      return;
     }
-   
     switch(buttonPressed) {
-    case 'X':
+      case 'X':
         Vibration.vibrate(35);
-        setCurrentNumber('')
+        setCurrentNumber(0)
         return
-	
-	}
+    }
     setCurrentNumber(currentNumber + buttonPressed)
   }
 
+  useEffect(() => {
+    setTotalAmount(currentNumber * stockQuote.c)
+  }, [currentNumber, stockQuote])
 
+  function fetchUser() {
+		// (firebaseAuth) current user's UUID
+		const userUID = firebase.auth().currentUser.uid
+		// console.log("userUID: ", userUID)
+		// (firestoreDB) ref=collection, get user obj via onSnapshot, where id=userUID
+		const ref = firebase.firestore().collection('users')
+		ref.where("id", "==", userUID)
+			.onSnapshot((querySnapshot) => {
+				const items = []
+				querySnapshot.docs.map((doc) => items.push(doc.data()));
+				setUser(items[0])
+			})
+	}
+	useEffect(() => {
+		fetchUser();
+	}, [])
+  useEffect(() => {
+    if (symbol) {
+      (async () => {
+        const profileResult = await getStockProfile(symbol);
+        console.log('profileResult: ', profileResult)
+        setStockProfile(profileResult)
+      })();
+    }
+  }, [symbol])
+  useEffect(() => {
+    if (symbol) {
+      (async () => {
+        const quoteResult = await getStockQuote(symbol);
+        console.log('quoteResult: ', quoteResult)
+        setStockQuote(quoteResult)
+      })();
+    }
+  }, [symbol])
 
-    return (
+  function submitTransaction() {
+    if (transactionType === 'buy') {
+      if (totalAmount > user.cashOnHand) {
+        return
+      } else {
+        // create Transaction
+        // check if position exists
+        // -- if yes, update (shareQuantity, averageCostPerShare)
+        // -- if no, create new position
+        // update user.cashOnHand
+      }
+    } else if (transactionType === 'sell') {
+      // if ( position?.shareQuantity < currentNumber) { return }
+      // else { 
+        // create Transaction
+        // update position (shareQuantity)
+        // update user.cashOnHand
+    }
+  }
+
+  console.log("Trade, symbol: ", symbol)
+  console.log("Trade, type: ", transactionType)
+  console.log('Trade, stockProfile: ', stockProfile)
+  console.log('Trade, stockQuote: ', stockQuote)
+  return (
     <SafeAreaView style={styles.container}>
-
+      {/* <ScrollView> */}
+        {/* Heading */}
         <View style={styles.results}>
-		<Text style={styles.companyName}>DogeCoin, Inc.</Text>
-		<Text style={styles.howMany}>How many shares do you want to buy/[sell]?</Text>
+          <Text style={styles.companyName}>{stockProfile.name}</Text>
+          <Text style={styles.howMany}>{`How many shares of ${symbol} do you want to ${transactionType}?`}</Text>
+          <Text style={styles.resultText}>{currentNumber}</Text>
+        </View>
 
-        <Text style={styles.resultText}>{currentNumber}</Text>
-		
+        {/* Transaction Info */}
+        <View style={styles.wallet} >
+          <Text style={styles.renderValues}>Available funds: </Text> 
+          <Text style={styles.renderValues}>{`$${Math.round(stockQuote.c).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
+        </View>
+        <View style={styles.wallet} >
+          <Text style={styles.renderValues}>Current price: </Text> 
+          <Text style={styles.renderValues}>{`$${Math.round(user.cashOnHand).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
+        </View>
+        <View style={styles.wallet} >
+          <Text style={styles.renderValues}>Total cost: </Text> 
+          <Text style={styles.renderValues}>{`$${Math.round(totalAmount).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
+        </View>
 
-		</View>
-		<View style={styles.wallet} >
-		<Text style={styles.renderValues}>DogCoin Price</Text> 
-		<Text style={styles.renderValues}>50.65 CAD</Text>
-		</View>
-
-
-      	<View style={styles.buttons}>
-        {buttons.map((button) =>
-          button === 0 ?
-          <TouchableOpacity key={button} style={[styles.button, ]} onPress={() => handleInput(button)}>
-			
-            <Text style={styles.textButton}>{button}</Text>
+        {/* Keypad */}
+        <View style={styles.buttons}>
+          {buttons.map((button) =>
+            button === 0 ?
+            <TouchableOpacity key={button} style={[styles.button, ]} onPress={() => handleInput(button)}>
+              <Text style={styles.textButton}>{button}</Text>
+            </TouchableOpacity>
+            :
+            button === 'x' ?
+            <TouchableOpacity key={button} style={[styles.button, ]} onPress={() => handleInput(button)}>
+              <Text style={styles.textButton}>{button}</Text>
+            </TouchableOpacity>
+            :
+            <TouchableOpacity key={button} style={[styles.button ]} onPress={() => handleInput(button)}>
+              <Text style={styles.textButton}>{button}</Text>
+            </TouchableOpacity>
+        
+          )}
+          {/* Submit */}
+          <TouchableOpacity style={styles.buttonContinue}
+            enabled={ totalAmount <= user.cashOnHand ? true : false}
+            onPress={() => submitTransaction()} 
+          >
+            <Text style={styles.buttonContinueText}>Continue</Text>
           </TouchableOpacity>
-          :
-        	button === 'x' ?
-          <TouchableOpacity key={button} style={[styles.button, ]} onPress={() => handleInput(button)}>
-            <Text style={styles.textButton}>{button}</Text>
-          </TouchableOpacity>
-          :
-      
-          <TouchableOpacity key={button} style={[styles.button ]} onPress={() => handleInput(button)}>
-            <Text style={styles.textButton}>{button}</Text>
-          </TouchableOpacity>
-		  
-        )}
-		<Button style={styles.buttonContinue}
-          title="Continue"
-          onPress={() => Alert.alert('button continue pressed')}
-        />
-		
-      	</View>
-        </SafeAreaView>
-    )
+        </View>
+      {/* </ScrollView> */}
+    </SafeAreaView>
+  )
 }

@@ -3,6 +3,8 @@ import { StyleSheet, View, Text, TextInput, Keyboard, ScrollView, TouchableOpaci
 import stockapi from '../api/stockapi'
 import { Ionicons } from '@expo/vector-icons'
 import { API_KEY, BASE_URL } from 'dotenv'
+import StockList from '../components/atoms/StockList';
+import SearchList from '../components/atoms/SearchList';
 import axios from 'axios';
 
 // function PromptText ({ children }) {
@@ -20,34 +22,6 @@ function SearchBox({ searchText, handleChangeSearchText }) {
 		</View>
 	)
 }
-
-function StockList({ navigation, stocks }) {
-	console.log("stocksFromStockList", stocks)
-	return (
-		<ScrollView styles={styles.stockList}>
-			{stocks.map((stock, i ) => (
-				<TouchableOpacity key={i} onPress={() => {
-					
-					navigation.navigate('StockDetail', stock); 
-					
-					}} >
-					<StockListItem stock={stock} />
-				</TouchableOpacity>
-			)
-			)}
-		</ScrollView>
-	)
-}	
-
-function StockListItem({ stock }) {
-	return (
-		<View style={styles.stockListItem}>
-			<Text style={styles.stockSymbol}>{stock.symbol}</Text>
-			<Text style={styles.stockName}>{stock.description}</Text>
-		</View>
-	)
-}
-
 
 export default function Search({ navigation }) {
 	// const { baseURL, addToWatchList } = useStockContext()
@@ -102,17 +76,16 @@ export default function Search({ navigation }) {
 		navigation.navigate('Stocks')
 	}
 
+	// console.log("Search: ", filteredStocks)
     return (
-		<View style={styles.container}>
-			
+		<View style={styles.container}>			
 			<SearchBox 
 				searchText={searchText}
 				handleChangeSearchText={handleChangeSearchText}
-				/>
-
-				{searchText !== "" && 
-				<StockList navigation={nav} stocks={filteredStocks} // addStockToWatchList={handleAddStockToWatchList}
-				/>}
+			/>
+			{searchText !== "" && 
+				<SearchList navigation={nav} stocks={filteredStocks} /> // addStockToWatchList={handleAddStockToWatchList}
+			}
 		</View>
     )
 }
