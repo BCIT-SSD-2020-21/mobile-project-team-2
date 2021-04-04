@@ -115,7 +115,7 @@ export default function Portfolio({navigation}) {
 
 				<View style={styles.fundingContainer}>
 					<Text style={styles.fundingLabel}>{'Available funding: '}</Text>
-					<Text style={styles.fundingAmount}>{user.cashOnHand}</Text>
+					<Text style={styles.fundingAmount}>{user?.cashOnHand ? user.cashOnHand : '$0.00'}</Text>
 					{/* INITIALLY: 		Add $50,000 CASH 
 							LATER: 		navigate() to new page?  */}
 					<TouchableOpacity 
