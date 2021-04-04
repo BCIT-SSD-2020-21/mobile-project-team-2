@@ -1,6 +1,5 @@
 import React from 'react'
 import {StyleSheet,Button, SafeAreaView,View, ImageBackground,FlatList,Vibration,TouchableOpacity,Text, Image,} from 'react-native';
-
 import {useState} from 'react';
 
 
@@ -106,57 +105,49 @@ const styles = StyleSheet.create({
 
 export default function Trade({ route, navigation }) {
 	
-const [symbol, setSymbol] = useState(route.params)
-const [stockProfile, setStockProfile] = useState({})
-const [stockQuote, setStockQuote] = useState({})
-const [currentNumber, setCurrentNumber] = useState('');
+  const [symbol, setSymbol] = useState(route.params)
+  const [stockProfile, setStockProfile] = useState({})
+  const [stockQuote, setStockQuote] = useState({})
+  const [currentNumber, setCurrentNumber] = useState('');
 
-
-
-const buttons = [1,2,3, 4,5,6, 7,8,9, '', 0,'X']
-
+  const buttons = [1,2,3, 4,5,6, 7,8,9, '', 0,'X']
   function handleInput(buttonPressed) {
     if(buttonPressed === 1 || buttonPressed === 2 || buttonPressed === 3 || buttonPressed === 4 || buttonPressed === 5 ||
 		buttonPressed === 6 || buttonPressed === 7 || buttonPressed === 8 || buttonPressed === 9 || buttonPressed === 0  ) {
-  Vibration.vibrate(35);
-  setCurrentNumber(currentNumber + buttonPressed)
+      Vibration.vibrate(35);
+      setCurrentNumber(currentNumber + buttonPressed)
       return
     }
-   
     switch(buttonPressed) {
-    case 'X':
+      case 'X':
         Vibration.vibrate(35);
         setCurrentNumber('')
         return
-	
-	}
+    }
     setCurrentNumber(currentNumber + buttonPressed)
   }
 
-
-    console.log("Trade, symbol: ", route)
-    return (
+  console.log("Trade, symbol: ", route.params)
+  return (
     <SafeAreaView style={styles.container}>
 
-        <View style={styles.results}>
-		<Text style={styles.companyName}>DogeCoin, Inc.</Text>
-		<Text style={styles.howMany}>How many shares do you want to buy/[sell]?</Text>
-
+      {/* Heading */}
+      <View style={styles.results}>
+		    <Text style={styles.companyName}>DogeCoin, Inc.</Text>
+		    <Text style={styles.howMany}>How many shares do you want to buy/[sell]?</Text>
         <Text style={styles.resultText}>{currentNumber}</Text>
-		
+	    </View>
+      {/* Transaction Info */}
+		  <View style={styles.wallet} >
+        <Text style={styles.renderValues}>DogCoin Price</Text> 
+        <Text style={styles.renderValues}>50.65 CAD</Text>
+	  	</View>
 
-		</View>
-		<View style={styles.wallet} >
-		<Text style={styles.renderValues}>DogCoin Price</Text> 
-		<Text style={styles.renderValues}>50.65 CAD</Text>
-		</View>
-
-
-      	<View style={styles.buttons}>
+      {/* Keypad */}
+      <View style={styles.buttons}>
         {buttons.map((button) =>
           button === 0 ?
           <TouchableOpacity key={button} style={[styles.button, ]} onPress={() => handleInput(button)}>
-			
             <Text style={styles.textButton}>{button}</Text>
           </TouchableOpacity>
           :
@@ -165,18 +156,17 @@ const buttons = [1,2,3, 4,5,6, 7,8,9, '', 0,'X']
             <Text style={styles.textButton}>{button}</Text>
           </TouchableOpacity>
           :
-      
           <TouchableOpacity key={button} style={[styles.button ]} onPress={() => handleInput(button)}>
             <Text style={styles.textButton}>{button}</Text>
           </TouchableOpacity>
 		  
         )}
-		<Button style={styles.buttonContinue}
+        {/* Submit */}
+        <Button style={styles.buttonContinue}
           title="Continue"
           onPress={() => Alert.alert('button continue pressed')}
         />
-		
-      	</View>
-        </SafeAreaView>
-    )
+      </View>
+    </SafeAreaView>
+  )
 }
