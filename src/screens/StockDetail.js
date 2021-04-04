@@ -12,10 +12,9 @@ import {
 } from 'react-native';
 import { API_KEY, BASE_URL } from 'dotenv'
 import axios from 'axios';
-import stockapi from '../api/stockapi'
 import { EvilIcons } from '@expo/vector-icons';
 import { firebase } from '../firebase/config';
-import { getStockQuantity } from '../firebase/service';
+
 
 
 const styles = StyleSheet.create({
@@ -38,7 +37,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		backgroundColor:  '#147DF0',
 	},	
-	companyLogo : {
+	companyDefaultLogo : {
 		width: 60,
 		height: 60,
 		flexDirection: 'row',
@@ -89,13 +88,22 @@ const styles = StyleSheet.create({
 	activityRight : {
 		fontSize: 20,
 	},
-	company : {
+	company: {
+		display: 'flex',
+		width: '100%',
+		flexDirection: 'row',
+		justifyContent: 'flex-start',
+		alignItems: 'center',
+		marginVertical: 5,
+	},	
+	companyInfo : {
 		fontSize: 36,
 		marginVertical: 10,
 	},
-	description : {
-		fontSize: 16,
-		marginVertical: 5,
+	companyLogo: {
+		resizeMode: 'stretch',
+		width: 36,
+		height: 36,
 	},	
 	buttons : {
 		flex: 1,
@@ -129,8 +137,22 @@ const styles = StyleSheet.create({
 		fontSize: 24, 
 		height: 40, 
     },		
+  card : {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center'
+  },
+  cardHeader : {
+    fontSize: 20,
+    fontWeight: 'bold'
 
+  },
+  cardDetail : {
+    fontSize: 20,
+    marginLeft: 10
 
+  },
 
 });
 
@@ -140,7 +162,7 @@ const styles = StyleSheet.create({
 const StockDetail = ({ route, navigation}) => {
 	 const {symbol} = route.params
 	 const [symbolVal, setSymbol] = useState(symbol??'' )
-	const [stock, setStock] = useState({})
+	const [profile2, setProfile2] = useState({})
 	const [error, setError] = useState('')
 	const [currentPrice, setCurrentPrice] = useState(null)
 	const [quantity, setQuantity] = useState(null)
@@ -148,8 +170,9 @@ const StockDetail = ({ route, navigation}) => {
 
 	const getProfile = async ({ symbolVal }) => {
 		try {
-			const response = await axios.get(`${BASE_URL}/stock/profile?symbol=${symbolVal}&token=${API_KEY}`)
-			setStock(response.data)
+			// we choose the free endpoint profile2 instead of profile which requires premium
+			const response = await axios.get(`${BASE_URL}/stock/profile2?symbol=${symbolVal}&token=${API_KEY}`)
+			setProfile2(response.data)
 		} catch (err) {
 			console.error('API Call error:', err)
 		}
@@ -169,9 +192,6 @@ const StockDetail = ({ route, navigation}) => {
 		 getCurrentPrice({symbolVal})
 
 		var {email} = firebase.auth().currentUser
-		const quantity =  getStockQuantity({email, symbol: symbolVal})
-		console.log('quantity', quantity);
-
 		const users = firebase.firestore().collection('users')
 		users.where('email', '==', email)
 		.get()
@@ -212,15 +232,15 @@ const StockDetail = ({ route, navigation}) => {
     return (
 		<ScrollView contentContainerStyle ={styles.scrollContainer}>
 		
-		{ stock ? 
+		{ !!profile2 ? 
 			<SafeAreaView style={styles.safeAreaContainer}>
 				<View style={styles.container}>
 					<View style={styles.titleContainer}>
-						<View style={styles.companyLogo}>
-							<Text style={styles.companyLogoName}>DC</Text>
+						<View style={styles.companyDefaultLogo}>
+							<Text style={styles.companyLogoName}>{profile2.ticker}</Text>
 						</View>
-						<Text style={styles.companyName}>DogeCoin, Inc.</Text>
-						<Text style={styles.portfolio}>$ {portfolio?.toFixed(2)}</Text>
+						<Text style={styles.companyName}>{profile2.name}</Text>
+						<Text style={styles.portfolio}>$ {portfolio?.toFixed(2)} {profile2.currency}</Text>
 						<EvilIcons name='chart' size={300} color='white' />
 					</View>
 					<View style={styles.bodyContainer}>
@@ -232,17 +252,63 @@ const StockDetail = ({ route, navigation}) => {
 						<View style={styles.activity}> 
 							<Text style={styles.activityLeft}>{'Sell '}</Text>
 							<Text style={styles.activityRight}>${`${currentPrice?.toFixed(2)}`}</Text>
+						</View>		
+						<View style={styles.company}> 				
+							<Text style={styles.companyInfo} numberOfLines={1} >Company Info</Text>
+							<Image style={styles.companyLogo} source={{ uri: profile2.logo}} />
+						</View>
+					
+
+						<View style={styles.card}>
+							<Text style={styles.cardHeader}>Exchange:</Text>
+							<Text style={styles.cardDetail}>{profile2.exchange}</Text>
 						</View>						
-						<Text style={styles.company}>Company Info</Text>
-						
-						<View style={styles.description}><Text>{stock.description}</Text></View>							
+
+						<View style={styles.card}>
+							<Text style={styles.cardHeader}>IPO:</Text>
+							<Text style={styles.cardDetail}>{profile2.ipo}</Text>
+						</View>
+
+						<View style={styles.card}>
+							<Text style={styles.cardHeader}>Telephone:</Text>
+							<Text style={styles.cardDetail}>{profile2.phone}</Text>
+						</View>
+
+						<View style={styles.card}>
+							<Text style={styles.cardHeader}>IPO:</Text>
+							<Text style={styles.cardDetail}>{profile2.ipo}</Text>
+						</View>							
+
+						<View style={styles.card}>
+							<Text style={styles.cardHeader}>Market Capitalization:</Text>
+							<Text style={styles.cardDetail}>{profile2.marketCapitalization}</Text>
+						</View>							
+
+						<View style={styles.card}>
+						<Text style={styles.cardHeader}>Share Outstanding:</Text>
+							<Text style={styles.cardDetail}>{profile2.shareOutstanding}</Text>
+						</View>
+
+						<View style={styles.card}>
+							<Text style={styles.cardHeader}>Website:</Text>
+							<Text style={{color: 'blue'}}
+							onPress={() => {  Linking.openURL(weburl.url);  }}>
+							Click Here to Open {profile2.name} Website
+							</Text> 
+						</View>							
+  
+			
+	
+
+
+
 					
 						<View style={styles.buttons}>			
 							<TouchableOpacity style={styles.buttonLeft}	onPress={() => {navigation.navigate('Trade')}}>
 								<Text style={styles.buttonText}	>Buy</Text> 
 							</TouchableOpacity>
 							<TouchableOpacity style={styles.buttonRight}	onPress={() => {
-								navigation.navigate('Trade', stock)
+								navigation.navigate('Trade', profile2)
 								}}>
 								<Text style={styles.buttonText}	>Sell</Text>
 							</TouchableOpacity>		
