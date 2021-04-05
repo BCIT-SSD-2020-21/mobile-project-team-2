@@ -206,16 +206,16 @@ export default function Trade({ route, navigation }) {
   }, [user, symbol])
 
   function submitTransaction() {
+    // reference Firebase collections 
+    const usersRef = firebase.firestore().collection('users'); // to update user
+    const transactionsRef = firebase.firestore().collection('transactions'); // to create transaction
+    const positionsRef = firebase.firestore().collection('positions'); // to update position (if exists), or create (else)
+
     if (transactionType === 'buy') {
       if (totalAmount > user?.cashOnHand) {
         return
       } else {
-        // reference the Users collection (used when updating User)
-        const usersRef = firebase.firestore().collection('users');
-
-        // create TRANSACTION
-        const transactionsRef = firebase.firestore().collection('transactions');
-        // let transactionDocumentId = ""; // to be added to user.transactions
+        // TRANSACTION - Create
         transactionsRef.add({
           type: "stock",
           symbol: symbol,
@@ -225,19 +225,18 @@ export default function Trade({ route, navigation }) {
           userId: firebase.auth().currentUser.uid,
           timestamp: Date.now()
         }).then((docRef) => {
-          // UPDATE USER : transactions
+          // USER - Update transactions
           const newTransactions = [...user?.transactions, docRef.ZE.path.segments[1]]
           usersRef.doc(firebase.auth().currentUser.uid).update({
             transactions: newTransactions
           })
         })
 
-        // create or update POSITIONS:
-        const positionsRef = firebase.firestore().collection('positions');
+        // POSITION         
         // check if position exists
         console.log("positionDocumentId before conditional: ", positionDocumentId)
         if (!positionDocumentId) {
-          // -- if exists, update (shareQuantity, averageCostPerShare)
+          // POSITION - Create create
           console.log("adding position to User")
           positionsRef.add({
             symbol: symbol,
@@ -252,8 +251,7 @@ export default function Trade({ route, navigation }) {
             })
           })
         } else {
-          // -- if not exists, create new position
-          // -- calculate new averageCostPerShare and newQuantity
+          // POSITION - Update quantity, averageCostPerShare, timestamp
           console.log("updating position, Id: ", positionDocumentId)
           const newAverageCostPerShare = ((position.quantity * position.averageCostPerShare) + (currentNumber * stockQuote.c))/(position.quantity + currentNumber)
           const newShareQuantity = position.quantity + currentNumber
@@ -262,26 +260,62 @@ export default function Trade({ route, navigation }) {
             quantity: newShareQuantity,
             averageCostPerShare: newAverageCostPerShare,
             lastUpdated: Date.now()
-          }).then((docRef) => {
-            // UPDATE USER : positions
-            const newPositions = user?.positions.push(docRef.ZE.path.segments[1])
-            usersRef.doc(firebase.auth().currentUser.uid).update({
-              positions: newPositions,
-            })
           })
+            // .then((docRef) => {
+            // USER - Update positions
+            // const newPositions = user?.positions.push(docRef.ZE.path.segments[1])
+            // usersRef.doc(firebase.auth().currentUser.uid).update({
+            //   positions: newPositions,
+            // })
+          // })
         }
-        // UPDATE USER : cashOnHand
+        // USER - Update cashOnHand (SUBTRACT)
         const newCashOnHand = user?.cashOnHand ? user?.cashOnHand - totalAmount : 0;
         usersRef.doc(firebase.auth().currentUser.uid).update({
           cashOnHand: newCashOnHand,
         })
       }
     } else if (transactionType === 'sell') {
-      // if ( position?.shareQuantity < currentNumber) { return }
-      // else { 
-        // create Transaction
-        // update position (shareQuantity)
-        // update user.cashOnHand
+        
+        if ( currentNumber <= position.quantity ) { 
+          // TRANSACTIOn - Create
+          transactionsRef.add({
+            type: "stock",
+            symbol: symbol,
+            price: stockQuote.c,
+            quantity: -currentNumber, // negative
+            total: -totalAmount, // negative
+            userId: firebase.auth().currentUser.uid,
+            timestamp: Date.now()
+          }).then((docRef) => {
+            // USER - Update transactions
+            const newTransactions = [...user?.transactions, docRef.ZE.path.segments[1]]
+            usersRef.doc(firebase.auth().currentUser.uid).update({
+              transactions: newTransactions
+            })
+          })
+          // POSITION - Update quantity, averageCostPerShare, timestamp
+          console.log("updating position, Id: ", positionDocumentId)
+          // const newAverageCostPerShare = ((position.quantity * position.averageCostPerShare) + (currentNumber * stockQuote.c))/(position.quantity + currentNumber)
+          const newShareQuantity = position.quantity - currentNumber
+          positionsRef.doc(positionDocumentId).update({
+            symbol: symbol,
+            quantity: newShareQuantity,
+            // averageCostPerShare: newAverageCostPerShare,
+            lastUpdated: Date.now()
+          }).then((docRef) => {
+            // USER - Update positions
+            const newPositions = user?.positions.push(docRef.ZE.path.segments[1])
+            usersRef.doc(firebase.auth().currentUser.uid).update({
+              positions: newPositions,
+            })
+          })
+          // USER - Update cashOnHand (ADD)
+          const newCashOnHand = user?.cashOnHand ? user?.cashOnHand + totalAmount : 0;
+          usersRef.doc(firebase.auth().currentUser.uid).update({
+          cashOnHand: newCashOnHand,
+        })
+        } 
     }
   }
 
