@@ -195,7 +195,7 @@ export default function Trade({ route, navigation }) {
       const positionsRef = firebase.firestore().collection('positions');
       user.positions.map((positionId, index) => {
         positionsRef.doc(positionId).onSnapshot((doc) => {
-          if (doc.data().symbol === symbol && doc.data().quantity > 0) { 
+          if (doc.data().symbol === symbol) { 
             setPosition(doc.data())
             console.log("Trade, getPosition useEffect, Id: ", positionId)
             setPositionDocumentId(positionId)
@@ -261,13 +261,7 @@ export default function Trade({ route, navigation }) {
             averageCostPerShare: newAverageCostPerShare,
             lastUpdated: Date.now()
           })
-            // .then((docRef) => {
-            // USER - Update positions
-            // const newPositions = user?.positions.push(docRef.ZE.path.segments[1])
-            // usersRef.doc(firebase.auth().currentUser.uid).update({
-            //   positions: newPositions,
-            // })
-          // })
+
         }
         // USER - Update cashOnHand (SUBTRACT)
         const newCashOnHand = user?.cashOnHand ? user?.cashOnHand - totalAmount : 0;
