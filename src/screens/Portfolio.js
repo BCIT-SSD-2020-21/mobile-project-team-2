@@ -7,6 +7,7 @@ import { EvilIcons } from '@expo/vector-icons';
 // import axios from 'axios';
 import StockList from '../components/atoms/StockList';
 import PositionList from '../components/atoms/PositionList';
+import { getStockQuote } from '../api/stockapi';
 
 export default function Portfolio({navigation}) {
 
@@ -14,7 +15,11 @@ export default function Portfolio({navigation}) {
 	const [depositing, setDepositing] = useState(false)
 	const [depositAmount, setDepositAmount] = useState(0)
 	const [user, setUser] = useState(0);
-	
+	const [positions, setPositions] = useState([])
+	const [portfolioValue, setPortfolioValue] = useState(0);
+	const [watchList, setWatchList] = useState([])
+	const [portfolioValueDifference, setPortfolioValueDifference] = useState(-34.25);
+
 	// GET THE USER OBJECT (contains cashOnHand, Watchlist, OwnedStocksList)
 	function fetchUser() {
 		// (firebaseAuth) current user's UUID
@@ -29,9 +34,30 @@ export default function Portfolio({navigation}) {
 	useEffect(() => {
 		fetchUser();
 	}, [])
-	console.log("Portfolio, user.positions: ", user.positions)
+	// console.log("Portfolio, user.positions: ", user.positions)
 
-	console.log("(TEST) Portfolio, user: ", user)
+	// get User's Positions (All)   
+	useEffect(() => {
+		// initialize portfolioValue calculation 
+		if (user)
+		{
+			// (async () => {
+				setPortfolioValue(user.cashOnHand);
+				const positionsRef = firebase.firestore().collection('positions');
+				// const userPositions = [];
+				user.positions.map((positionId, index) => {
+			  		positionsRef.doc(positionId).onSnapshot(async (doc) => { 
+						// userPositions.push(doc.data())
+						const positionStockQuote = await getStockQuote(doc.data.symbol)
+						console.log("positionStockQuote: ", positionStockQuote)
+						setPortfolioValue(positionStockQuote.c*doc.data().quantity + portfolioValue)
+						console.log("portfolioValue: ", portfolioValue)
+			  		})
+				})
+			//   setPositions(userPositions)
+			// })();
+		}
+	}, [user])
 
 	// TOGGLE ADD FUNDS FORM
 	function toggledepositFunds() {
@@ -67,9 +93,6 @@ export default function Portfolio({navigation}) {
 		// pending button and textinput
 	}
 
-	const [watchList, setWatchList] = useState(['GME', 'APPL'])
-	const [portfolioValueDifference, setPortfolioValueDifference] = useState(-34.25);
-	const [portfolioValue, setPortfolioValue] = useState(123.50);
 	useEffect(() => {
 		// GET value from DB (sum aggregate qtyOwned x currPrice from finnhub)
 		// watchList.map(stock => {
