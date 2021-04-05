@@ -115,7 +115,7 @@ export default function Portfolio({navigation}) {
 
 				<View style={styles.fundingContainer}>
 					<Text style={styles.fundingLabel}>{'Available funding: '}</Text>
-					<Text style={styles.fundingAmount}>{user?.cashOnHand ? user.cashOnHand : '$0.00'}</Text>
+					<Text style={styles.fundingAmount}>{user?.cashOnHand ? `$${Math.round(user.cashOnHand).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}` : '$0.00'}</Text>
 					{/* INITIALLY: 		Add $50,000 CASH 
 							LATER: 		navigate() to new page?  */}
 					<TouchableOpacity 
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
 	fundingButton: {
 		width: 60,
 		height: 60,
-		margin: 20,	
+		margin: 5,	
 		padding: 10,
 		borderRadius: 100,
 		alignItems: 'center',
