@@ -190,25 +190,28 @@ export default function Trade({ route, navigation }) {
 
   // get Stock Position IF Exists for User   
   useEffect(() => {
-    const positionsRef = firebase.firestore().collection('positions');
     if (user.positions)
     {
+      const positionsRef = firebase.firestore().collection('positions');
       user.positions.map((positionId, index) => {
         positionsRef.doc(positionId).onSnapshot((doc) => {
           if (doc.data().symbol === symbol && doc.data().quantity > 0) { 
             setPosition(doc.data())
+            console.log("Trade, getPosition useEffect, Id: ", positionId)
             setPositionDocumentId(positionId)
           }
         })
       })
     }
-  }, [symbol])
+  }, [user, symbol])
 
   function submitTransaction() {
     if (transactionType === 'buy') {
       if (totalAmount > user?.cashOnHand) {
         return
       } else {
+        // reference the Users collection (used when updating User)
+        const usersRef = firebase.firestore().collection('users');
 
         // create TRANSACTION
         const transactionsRef = firebase.firestore().collection('transactions');
@@ -222,15 +225,20 @@ export default function Trade({ route, navigation }) {
           userId: firebase.auth().currentUser.uid,
           timestamp: Date.now()
         }).then((docRef) => {
-          console.log("Purchase, Transaction docRef.ZE.path.segments[1]: ", docRef.ZE.path.segments[1])
-          setTransactionDocumentId(docRef.ZE.path.segments[1]);
+          // UPDATE USER : transactions
+          const newTransactions = [...user?.transactions, docRef.ZE.path.segments[1]]
+          usersRef.doc(firebase.auth().currentUser.uid).update({
+            transactions: newTransactions
+          })
         })
-        // create or update position:
+
+        // create or update POSITIONS:
         const positionsRef = firebase.firestore().collection('positions');
         // check if position exists
+        console.log("positionDocumentId before conditional: ", positionDocumentId)
         if (!positionDocumentId) {
           // -- if exists, update (shareQuantity, averageCostPerShare)
-          console.log("adding position, Id: ", positionDocumentId)
+          console.log("adding position to User")
           positionsRef.add({
             symbol: symbol,
             quantity: currentNumber,
@@ -238,8 +246,10 @@ export default function Trade({ route, navigation }) {
             userId: firebase.auth().currentUser.uid,
             createdOn: Date.now()
           }).then((docRef) => {
-            console.log("Purchase, Position docRef.ZE.path.segments[1]: ", docRef.ZE.path.segments[1]);
-            setPositionDocumentId(docRef.ZE.path.segments[1]);
+            const newPositions = [...user?.positions, docRef.ZE.path.segments[1]]
+            usersRef.doc(firebase.auth().currentUser.uid).update({
+              positions: newPositions,
+            })
           })
         } else {
           // -- if not exists, create new position
@@ -252,23 +262,19 @@ export default function Trade({ route, navigation }) {
             quantity: newShareQuantity,
             averageCostPerShare: newAverageCostPerShare,
             lastUpdated: Date.now()
+          }).then((docRef) => {
+            // UPDATE USER : positions
+            const newPositions = user?.positions.push(docRef.ZE.path.segments[1])
+            usersRef.doc(firebase.auth().currentUser.uid).update({
+              positions: newPositions,
+            })
           })
         }
-        // UPDATE USER : cashOnHand, transactions, positions
-        // console.log("Purchase, user before update: ", user)
-        // const usersRef = firebase.firestore().collection('users');
-        // const newCashOnHand = user?.cashOnHand ? user?.cashOnHand - totalAmount : 0;
-        // console.log("Purchase, positionDocumentId: ", positionDocumentId)
-        // const newPositions = user?.positions.push(positionDocumentId)
-        // console.log("Purchase, newPositions: ", newPositions)
-        // console.log("Purchase, transactionDocumentId: ", transactionDocumentId)
-        // const newTransactions = user?.transactions.push(transactionDocumentId)
-        // console.log("Purchase, newTransactions: ", newTransactions)
-        // usersRef.doc(firebase.auth().currentUser.uid).update({
-        //   cashOnHand: newCashOnHand,
-        //   positions: newPositions,
-        //   transactions: newTransactions
-        // })
+        // UPDATE USER : cashOnHand
+        const newCashOnHand = user?.cashOnHand ? user?.cashOnHand - totalAmount : 0;
+        usersRef.doc(firebase.auth().currentUser.uid).update({
+          cashOnHand: newCashOnHand,
+        })
       }
     } else if (transactionType === 'sell') {
       // if ( position?.shareQuantity < currentNumber) { return }
@@ -279,14 +285,14 @@ export default function Trade({ route, navigation }) {
     }
   }
 
-  console.log("Trade, user: ", user)
+  // console.log("Trade, user: ", user)
   // console.log("Trade, symbol: ", symbol)
   // console.log("Trade, type: ", transactionType)
   // console.log('Trade, stockProfile: ', stockProfile)
   // console.log('Trade, stockQuote: ', stockQuote)
-  console.log('Trade, transactionDocumentId: ', transactionDocumentId)
-  console.log('Trade, positionDocumentId: ', positionDocumentId)
-  console.log('Trade, position: ', position)
+  // console.log('Trade, transactionDocumentId: ', transactionDocumentId)
+  // console.log('Trade, positionDocumentId: ', positionDocumentId)
+  // console.log('Trade, position: ', position)
   return (
     <SafeAreaView style={styles.container}>
       {/* <ScrollView> */}
@@ -298,6 +304,7 @@ export default function Trade({ route, navigation }) {
         </View>
 
         {/* Transaction Info */}
+        <Text>{positionDocumentId && `You own ${position.quantity} stocks`}</Text>
         <View style={styles.wallet} >
           <Text style={styles.renderValues}>Available funds: </Text> 
           <Text style={styles.renderValues}>{`$${Math.round(user?.cashOnHand).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
