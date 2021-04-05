@@ -54,7 +54,7 @@ export default function Search({ navigation }) {
 	const getOneStock = async ({ symbol }) => {
 		try {
 			const response = await stockapi.get(`/quote?symbol=${symbol}`)
-			console.log(response)
+			// console.log(response)
 		} catch (err) {
 			console.error('+++++API Call error+++++', err)
 		}
@@ -62,9 +62,9 @@ export default function Search({ navigation }) {
 
 	const searchStocks = async ( text ) => {
 		try {
-			console.log("searchTerm", text)
+			// console.log("searchTerm", text)
 			const response = await axios.get(`${BASE_URL}/search?q=${text}&token=${API_KEY}`)// await stockapi.get(`/search?q=${text}&token=${API_KEY}`)
-			console.log(response.data.result)
+			// console.log(response.data.result)
 			setFilteredStocks(response.data.result)
 		} catch (err) {
 			console.error('+++++API Call error+++++', err)

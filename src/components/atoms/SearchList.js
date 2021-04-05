@@ -6,7 +6,7 @@ export default function SearchList({ navigation, stocks }) {
 
     
 
-    console.log("SearchList, stocks: ", stocks)
+    // console.log("SearchList, stocks: ", stocks)
     return (
 		<ScrollView styles={styles.stockList}>
 			{stocks.map((stock, index ) => (
