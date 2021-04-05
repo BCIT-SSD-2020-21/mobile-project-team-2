@@ -13,12 +13,12 @@ export default axios.create({
 export async function getStockProfile(symbol) {
   // console.log("param1: ", symbol)
   const stockProfile = await axios.get(`${BASE_URL}/stock/profile2?symbol=${symbol}&token=${API_KEY}`)
-  // console.log("stockProfile: ", stockProfile)
+  console.log("stockProfile request: ", `${BASE_URL}/stock/profile2?symbol=${symbol}&token=${API_KEY}`)
   return stockProfile.data
 }
 export async function getStockQuote(symbol) {
-  // console.log("param2: ", symbol)
+  console.log("getStockQuote request: ", `${BASE_URL}/quote?symbol=${symbol}&token=${API_KEY}`)
   const stockQuote = await axios.get(`${BASE_URL}/quote?symbol=${symbol}&token=${API_KEY}`)
-  // console.log("stockQuote: ", stockQuote)
+    console.log("stockQuote: ", stockQuote)
   return stockQuote.data
 }
