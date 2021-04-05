@@ -9,7 +9,7 @@ import PositionListItem from './PositionListItem';
 
 export default function PositionList({ navigation, positionsArray }) {
 
-    console.log("positionsArray: ", positionsArray)
+    // console.log("positionsArray: ", positionsArray)
     return (
         <View> 
             {

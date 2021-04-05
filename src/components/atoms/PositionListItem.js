@@ -21,7 +21,7 @@ export default function PositionListItem({onPress, positionId, navigation}) {
               // (firestoreDB) ref=collection, get user obj via onSnapshot, where id=positionId
               const ref = firebase.firestore().collection('positions').doc(positionId)
               ref.onSnapshot((doc) => {
-                  console.log("current data: ", doc.data());
+                  // console.log("current data: ", doc.data());
                   setPosition(doc.data());
               });
           }
@@ -29,12 +29,12 @@ export default function PositionListItem({onPress, positionId, navigation}) {
     useEffect(() => {
       fetchPosition();
     }, [])
-    console.log("position: ", position);
+    // console.log("position: ", position);
     useEffect(() => {
       if (position?.symbol) {
         (async () => {
           const profileResult = await getStockProfile(position?.symbol);
-          console.log('profileResult: ', profileResult)
+          // console.log('profileResult: ', profileResult)
           setStockDescription(profileResult.name)
         })();
       }
@@ -43,7 +43,7 @@ export default function PositionListItem({onPress, positionId, navigation}) {
       if (position?.symbol) {
         (async () => {
           const quoteResult = await getStockQuote(position?.symbol);
-          console.log('quoteResult: ', quoteResult)
+          // console.log('quoteResult: ', quoteResult)
           setCurrentPrice(quoteResult.c)
         })();
       }
@@ -55,7 +55,7 @@ export default function PositionListItem({onPress, positionId, navigation}) {
       }
     }
 
-    console.log("position: ", position);
+    // console.log("position: ", position);
     return (
         // REVIEW API Response Data
     <TouchableOpacity style={styles.itemContainer} onPress={() => toStockDetail()}>
