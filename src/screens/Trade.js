@@ -127,6 +127,9 @@ export default function Trade({ route, navigation }) {
   const [symbol, setSymbol] = useState(route.params.symbol)
   const [transactionType, setTransactionType] = useState(route.params.type)
   const [user, setUser] = useState({})
+  const [position, setPosition] = useState({}) // user's position for the Stock (if exists)
+  const [transactionDocumentId, setTransactionDocumentId] = useState("")
+  const [positionDocumentId, setPositionDocumentId] = useState("")
   const [stockProfile, setStockProfile] = useState({})
   const [stockQuote, setStockQuote] = useState({})
   const [currentNumber, setCurrentNumber] = useState('');
@@ -156,15 +159,12 @@ export default function Trade({ route, navigation }) {
   function fetchUser() {
 		// (firebaseAuth) current user's UUID
 		const userUID = firebase.auth().currentUser.uid
-		// console.log("userUID: ", userUID)
-		// (firestoreDB) ref=collection, get user obj via onSnapshot, where id=userUID
-		const ref = firebase.firestore().collection('users')
-		ref.where("id", "==", userUID)
-			.onSnapshot((querySnapshot) => {
-				const items = []
-				querySnapshot.docs.map((doc) => items.push(doc.data()));
-				setUser(items[0])
-			})
+		// get user document by user UID; setUser		
+		const userDoc = firebase.firestore().collection('users').doc(userUID)
+		userDoc.onSnapshot((doc) => {
+			console.log("current data: ", doc.data());
+			setUser(doc.data());
+		})
 	}
 	useEffect(() => {
 		fetchUser();
@@ -188,30 +188,134 @@ export default function Trade({ route, navigation }) {
     }
   }, [symbol])
 
+  // get Stock Position IF Exists for User   
+  useEffect(() => {
+    if (user.positions)
+    {
+      const positionsRef = firebase.firestore().collection('positions');
+      user.positions.map((positionId, index) => {
+        positionsRef.doc(positionId).onSnapshot((doc) => {
+          if (doc.data().symbol === symbol) { 
+            setPosition(doc.data())
+            console.log("Trade, getPosition useEffect, Id: ", positionId)
+            setPositionDocumentId(positionId)
+          }
+        })
+      })
+    }
+  }, [user, symbol])
+
   function submitTransaction() {
+    // reference Firebase collections 
+    const usersRef = firebase.firestore().collection('users'); // to update user
+    const transactionsRef = firebase.firestore().collection('transactions'); // to create transaction
+    const positionsRef = firebase.firestore().collection('positions'); // to update position (if exists), or create (else)
+
     if (transactionType === 'buy') {
-      if (totalAmount > user.cashOnHand) {
+      if (totalAmount > user?.cashOnHand) {
         return
       } else {
-        // create Transaction
+        // TRANSACTION - Create
+        transactionsRef.add({
+          type: "stock",
+          symbol: symbol,
+          price: stockQuote.c,
+          quantity: currentNumber,
+          total: totalAmount,
+          userId: firebase.auth().currentUser.uid,
+          timestamp: Date.now()
+        }).then((docRef) => {
+          // USER - Update transactions
+          const newTransactions = [...user?.transactions, docRef.ZE.path.segments[1]]
+          usersRef.doc(firebase.auth().currentUser.uid).update({
+            transactions: newTransactions
+          })
+        })
+
+        // POSITION         
         // check if position exists
-        // -- if yes, update (shareQuantity, averageCostPerShare)
-        // -- if no, create new position
-        // update user.cashOnHand
+        console.log("positionDocumentId before conditional: ", positionDocumentId)
+        if (!positionDocumentId) {
+          // POSITION - Create create
+          console.log("adding position to User")
+          positionsRef.add({
+            symbol: symbol,
+            quantity: currentNumber,
+            averageCostPerShare: stockQuote.c,
+            userId: firebase.auth().currentUser.uid,
+            createdOn: Date.now()
+          }).then((docRef) => {
+            const newPositions = [...user?.positions, docRef.ZE.path.segments[1]]
+            usersRef.doc(firebase.auth().currentUser.uid).update({
+              positions: newPositions,
+            })
+          })
+        } else {
+          // POSITION - Update quantity, averageCostPerShare, timestamp
+          console.log("updating position, Id: ", positionDocumentId)
+          const newAverageCostPerShare = ((position.quantity * position.averageCostPerShare) + (currentNumber * stockQuote.c))/(position.quantity + currentNumber)
+          const newShareQuantity = position.quantity + currentNumber
+          positionsRef.doc(positionDocumentId).update({
+            symbol: symbol,
+            quantity: newShareQuantity,
+            averageCostPerShare: newAverageCostPerShare,
+            lastUpdated: Date.now()
+          })
+
+        }
+        // USER - Update cashOnHand (SUBTRACT)
+        const newCashOnHand = user?.cashOnHand ? user?.cashOnHand - totalAmount : 0;
+        usersRef.doc(firebase.auth().currentUser.uid).update({
+          cashOnHand: newCashOnHand,
+        })
       }
     } else if (transactionType === 'sell') {
-      // if ( position?.shareQuantity < currentNumber) { return }
-      // else { 
-        // create Transaction
-        // update position (shareQuantity)
-        // update user.cashOnHand
+        
+        if ( currentNumber <= position.quantity ) { 
+          // TRANSACTIOn - Create
+          transactionsRef.add({
+            type: "stock",
+            symbol: symbol,
+            price: stockQuote.c,
+            quantity: -currentNumber, // negative
+            total: -totalAmount, // negative
+            userId: firebase.auth().currentUser.uid,
+            timestamp: Date.now()
+          }).then((docRef) => {
+            // USER - Update transactions
+            const newTransactions = [...user?.transactions, docRef.ZE.path.segments[1]]
+            usersRef.doc(firebase.auth().currentUser.uid).update({
+              transactions: newTransactions
+            })
+          })
+          // POSITION - Update quantity, averageCostPerShare, timestamp
+          console.log("updating position, Id: ", positionDocumentId)
+          // const newAverageCostPerShare = ((position.quantity * position.averageCostPerShare) + (currentNumber * stockQuote.c))/(position.quantity + currentNumber)
+          const newShareQuantity = position.quantity - currentNumber
+          positionsRef.doc(positionDocumentId).update({
+            symbol: symbol,
+            quantity: newShareQuantity,
+            // averageCostPerShare: newAverageCostPerShare,
+            lastUpdated: Date.now()
+          }).then((docRef) => {
+            // USER - Update positions
+            const newPositions = user?.positions.push(docRef.ZE.path.segments[1])
+            usersRef.doc(firebase.auth().currentUser.uid).update({
+              positions: newPositions,
+            })
+          })
+          // USER - Update cashOnHand (ADD)
+          const newCashOnHand = user?.cashOnHand ? user?.cashOnHand + totalAmount : 0;
+          usersRef.doc(firebase.auth().currentUser.uid).update({
+          cashOnHand: newCashOnHand,
+        })
+      }
     }
+    setCurrentNumber(0)
+    setTotalAmount(0)
+    navigation.navigate("StockDetail")
   }
 
-  console.log("Trade, symbol: ", symbol)
-  console.log("Trade, type: ", transactionType)
-  console.log('Trade, stockProfile: ', stockProfile)
-  console.log('Trade, stockQuote: ', stockQuote)
   return (
     <SafeAreaView style={styles.container}>
       {/* <ScrollView> */}
@@ -223,13 +327,14 @@ export default function Trade({ route, navigation }) {
         </View>
 
         {/* Transaction Info */}
+        <Text>{positionDocumentId && `You own ${position.quantity} stocks`}</Text>
         <View style={styles.wallet} >
           <Text style={styles.renderValues}>Available funds: </Text> 
-          <Text style={styles.renderValues}>{`$${Math.round(stockQuote.c).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
+          <Text style={styles.renderValues}>{`$${Math.round(user?.cashOnHand).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
         </View>
         <View style={styles.wallet} >
           <Text style={styles.renderValues}>Current price: </Text> 
-          <Text style={styles.renderValues}>{`$${Math.round(user.cashOnHand).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
+          <Text style={styles.renderValues}>{`$${Math.round(stockQuote.c).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
         </View>
         <View style={styles.wallet} >
           <Text style={styles.renderValues}>Total cost: </Text> 
@@ -256,7 +361,7 @@ export default function Trade({ route, navigation }) {
           )}
           {/* Submit */}
           <TouchableOpacity style={styles.buttonContinue}
-            enabled={ totalAmount <= user.cashOnHand ? true : false}
+            enabled={ totalAmount <= user?.cashOnHand ? true : false}
             onPress={() => submitTransaction()} 
           >
             <Text style={styles.buttonContinueText}>Continue</Text>

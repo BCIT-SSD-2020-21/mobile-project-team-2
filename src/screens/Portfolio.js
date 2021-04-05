@@ -34,21 +34,37 @@ export default function Portfolio({navigation}) {
 	console.log("(TEST) Portfolio, user: ", user)
 
 	// TOGGLE ADD FUNDS FORM
-	function toggleAddFunds() {
+	function toggledepositFunds() {
 		setDepositing(!depositing)
 	}
 
 	// ADD FUNDS
-	function addFunds() {
+	function depositFunds() {
+		// TRANSACTION - Create
+		const transactionsRef = firebase.firestore().collection('transactions'); // to create transaction
+        transactionsRef.add({
+			type: "cash",
+			total: depositAmount,
+			userId: firebase.auth().currentUser.uid,
+			timestamp: Date.now()
+			}).then((docRef) => {
+			// USER - Update transactions
+			const newTransactions = [...user?.transactions, docRef.ZE.path.segments[1]]
+			usersRef.doc(firebase.auth().currentUser.uid).update({
+			  transactions: newTransactions
+			})
+		  })
 		// get current user's UID
-		const userUID = firebase.auth().currentUser.uid;
 		const db = firebase.firestore();
-		console.log("depositAmount", parseFloat(depositAmount))
 		const increment = firebase.firestore.FieldValue.increment(parseFloat(depositAmount));
-		const userRef = db.collection('users').doc(userUID);
-
+		const userRef = db.collection('users').doc(firebase.auth().currentUser.uid);
 		userRef.update({ cashOnHand: increment });
-		toggleAddFunds();
+		setDepositAmount(0)
+		toggledepositFunds();
+	}
+	function withdrawFunds() {
+		// same as deposit, but negative amount
+		// pending button and textinput
 	}
 
 	const [watchList, setWatchList] = useState(['GME', 'APPL'])
@@ -80,7 +96,7 @@ export default function Portfolio({navigation}) {
 	// 	console.log("fundingActionPressed clicked");
 	// 	// INITIAL: 	POST method, Add $100.00 to firestoneDB
 	// 	// LATER:   	navigate() to Funding Screen 
-	// 	addFunds();
+	// 	depositFunds();
 		
 	// }
 	const displayPortfolioList = () => {
@@ -115,12 +131,12 @@ export default function Portfolio({navigation}) {
 
 				<View style={styles.fundingContainer}>
 					<Text style={styles.fundingLabel}>{'Available funding: '}</Text>
-					<Text style={styles.fundingAmount}>{user?.cashOnHand ? user.cashOnHand : '$0.00'}</Text>
+					<Text style={styles.fundingAmount}>{user?.cashOnHand ? `$${Math.round(user.cashOnHand).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}` : '$0.00'}</Text>
 					{/* INITIALLY: 		Add $50,000 CASH 
 							LATER: 		navigate() to new page?  */}
 					<TouchableOpacity 
 						style={styles.fundingButton} 
-						onPress={toggleAddFunds} 
+						onPress={toggledepositFunds} 
 					>
 						<Text style={styles.fundingButtonText}>{depositing ? 'CANCEL' : 'ADD $'}</Text>
 					</TouchableOpacity>
@@ -132,7 +148,7 @@ export default function Portfolio({navigation}) {
 						<TextInput style={styles.fundingFormField} placeholder ="$" onChangeText={(amount) => setDepositAmount(amount)} />
 						<TouchableOpacity 
 							style={styles.fundingButton} 
-							onPress={() => addFunds()} 
+							onPress={() => depositFunds()} 
 						>
 							<Text style={styles.fundingButtonText}>{'Submit'}</Text>
 						</TouchableOpacity>
@@ -235,7 +251,7 @@ const styles = StyleSheet.create({
 	fundingButton: {
 		width: 60,
 		height: 60,
-		margin: 20,	
+		margin: 5,	
 		padding: 10,
 		borderRadius: 100,
 		alignItems: 'center',
