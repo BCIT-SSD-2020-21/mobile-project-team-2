@@ -17,6 +17,7 @@ export default function Portfolio({navigation}) {
 	const [user, setUser] = useState(0);
 	const [positions, setPositions] = useState([])
 	const [portfolioValue, setPortfolioValue] = useState(0);
+	const [positionsTotalValue, setPositionsTotalValue] = useState(0)
 	const [watchList, setWatchList] = useState([])
 	const [portfolioValueDifference, setPortfolioValueDifference] = useState(-34.25);
 
@@ -27,7 +28,7 @@ export default function Portfolio({navigation}) {
 		// get user document by user UID; setUser		
 		const userDoc = firebase.firestore().collection('users').doc(userUID)
 		userDoc.onSnapshot((doc) => {
-			console.log("current data: ", doc.data());
+			// console.log("current data: ", doc.data()); // Shows User Object from FirestoreDB
 			setUser(doc.data());
 		})
 	}
@@ -39,25 +40,32 @@ export default function Portfolio({navigation}) {
 	// get User's Positions (All)   
 	useEffect(() => {
 		// initialize portfolioValue calculation 
+		setPortfolioValue(0)
 		if (user)
 		{
 			// (async () => {
-				setPortfolioValue(user.cashOnHand);
+				
 				const positionsRef = firebase.firestore().collection('positions');
-				// const userPositions = [];
+				let userPositionsAggregateValue = 0;
 				user.positions.map((positionId, index) => {
 			  		positionsRef.doc(positionId).onSnapshot(async (doc) => { 
 						// userPositions.push(doc.data())
-						const positionStockQuote = await getStockQuote(doc.data.symbol)
-						console.log("positionStockQuote: ", positionStockQuote)
-						setPortfolioValue(positionStockQuote.c*doc.data().quantity + portfolioValue)
-						console.log("portfolioValue: ", portfolioValue)
+						console.log("portfolioValue useEffect, doc.data.symbol: ", doc.data().symbol)
+						const positionStockQuote = await getStockQuote(doc.data().symbol)
+						console.log("portfolioValue useEffect, positionStockQuote: ", positionStockQuote)
+						console.log("portfolioValue useEffect, doc.data(): ", doc.data())
+						userPositionsAggregateValue = userPositionsAggregateValue + positionStockQuote.c*doc.data().quantity 
+						console.log("portfolioValue useEffect, userPositionsAggregateValue: ", userPositionsAggregateValue)
+						setPositionsTotalValue(positionsTotalValue + userPositionsAggregateValue)						
 			  		})
 				})
-			//   setPositions(userPositions)
+				// setPortfolioValue(user.cashOnHand + userPositionsAggregateValue)
 			// })();
 		}
 	}, [user])
+	useEffect(() => {
+		setPortfolioValue(user.cashOnHand + positionsTotalValue)
+	}, [positionsTotalValue])
 
 	// TOGGLE ADD FUNDS FORM
 	function toggledepositFunds() {
@@ -131,7 +139,7 @@ export default function Portfolio({navigation}) {
 		console.log("displayWatchList clicked")
 	}
 	
-	
+	console.log("portfolioValue: ", portfolioValue)
     return (
 		<ScrollView contentContainerStyle={styles.scrollContainer}>
 			<SafeAreaView style={styles.container}>
@@ -141,7 +149,7 @@ export default function Portfolio({navigation}) {
 						{/* some indo from firebaseAuth */}
 						<Text style={styles.greetLabel}>{'Your portfolio is valued at'}</Text>
 							{/* some info from firestoreDB */}
-						<Text style={styles.portfolioValue}>{`${portfolioValue}`}</Text>
+						<Text style={styles.portfolioValue}>{`$${Math.round(portfolioValue).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
 							{/* some info from firestoreDB */}
 						<Text style={styles.status}>{`${portfolioValueDifference > 0 ? "UP" : "DOWN"} ${portfolioValueDifference} in the past week`}</Text> 
 					</View>
