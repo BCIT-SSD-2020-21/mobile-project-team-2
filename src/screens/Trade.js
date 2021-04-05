@@ -309,18 +309,13 @@ export default function Trade({ route, navigation }) {
           usersRef.doc(firebase.auth().currentUser.uid).update({
           cashOnHand: newCashOnHand,
         })
-        } 
+      }
     }
+    setCurrentNumber(0)
+    setTotalAmount(0)
+    navigation.navigate("StockDetail")
   }
 
-  // console.log("Trade, user: ", user)
-  // console.log("Trade, symbol: ", symbol)
-  // console.log("Trade, type: ", transactionType)
-  // console.log('Trade, stockProfile: ', stockProfile)
-  // console.log('Trade, stockQuote: ', stockQuote)
-  // console.log('Trade, transactionDocumentId: ', transactionDocumentId)
-  // console.log('Trade, positionDocumentId: ', positionDocumentId)
-  // console.log('Trade, position: ', position)
   return (
     <SafeAreaView style={styles.container}>
       {/* <ScrollView> */}
