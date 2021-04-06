@@ -6,14 +6,15 @@ import {firebase} from '../../firebase/config';
 
 export default function PositionListItem({onPress, position, navigation}) {
     const [loaded, setLoaded] = useState(false)
-    const [stockDescription, setStockDescription] = useState("")
-    const [currentPrice, setCurrentPrice] = useState("")
+    const [stockProfile, setStockProfile] = useState("")
+    const [stockQuote, setStockQuote] = useState("")
+    const [currentPositionValue, setCurrentPositionValue] = useState(0)
 
     useEffect(() => {
       if (position?.symbol) {
         (async () => {
           const profileResult = await getStockProfile(position?.symbol);
-          setStockDescription(profileResult.name)
+          setStockProfile(profileResult)
         })();
       }
     }, [position])
@@ -21,10 +22,13 @@ export default function PositionListItem({onPress, position, navigation}) {
       if (position?.symbol) {
         (async () => {
           const quoteResult = await getStockQuote(position?.symbol);
-          setCurrentPrice(quoteResult.c)
+          setStockQuote(quoteResult)
         })();
       }
     }, [position])
+    useEffect(() => {
+      setCurrentPositionValue(stockQuote.c*position.quantity)
+    }, [stockQuote])
 
     function toStockDetail() {
       if (position) {
@@ -34,49 +38,59 @@ export default function PositionListItem({onPress, position, navigation}) {
 
     // console.log("position: ", position);
     return (
-    <TouchableOpacity style={styles.itemContainer} onPress={() => toStockDetail()}>
-        <View style={styles.itemInfoSection}>
-          <Text style={styles.itemSymbol}>{position?.symbol}</Text>
-          <Text style={styles.itemDescription}>{stockDescription}</Text>
+    <TouchableOpacity style={styles.container} onPress={() => toStockDetail()}>
+        <View style={styles.profile}>
+          <Text style={styles.symbol}>{position?.symbol}</Text>
+          <Text style={styles.name}>{stockProfile.name}</Text>
         </View>
-          <Text style={styles.currentPrice}>
-            {`$${Math.round(currentPrice*100/100).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}
+        <View style={styles.amounts}>
+          <Text style={styles.price}>
+            {`$${Math.round(stockQuote.c).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}
           </Text>
+          <Text style={styles.positionValue}>
+            {`$${Math.round(currentPositionValue).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}
+          </Text>
+        </View>
     </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
-    // ...
-    itemContainer: {
-      // marginTop: 5,
+    container: {
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'space-between',
     },
-    itemInfoSection: {
-        flexDirection: 'column',
-        justifyContent: 'space-around',
+    profile: {
+      flexDirection: 'column',
+      justifyContent: 'space-around',
     },
-    itemSymbol: {
+    symbol: {
       fontSize: 32,
       fontWeight: "bold",
-    //   alignSelf: "flex-start",
       textTransform: "uppercase"
     },
-    itemDescription: {
-        fontSize: 24,
-        color: "#000",
-        // alignSelf: "flex-start",
+    name: {
+      fontSize: 24,
+      color: "#000",
     },
-    currentPrice: {
-        fontSize: 36,
-        color: "#000",
-        fontWeight: "bold",
-        // alignSelf: "flex-end",
-        textTransform: "uppercase"
-      },
-      priceDetail: {
-        fontSize: 18,
-      }
+    amounts: {
+      flexDirection: 'column',
+      justifyContent: 'space-around',
+    },
+    price: {
+      fontSize: 32,
+      textAlign: 'right',
+      color: "#000",
+      textTransform: "uppercase"
+    },
+    positionValue: {
+      fontSize: 24,
+      textAlign: 'right',
+      color: "#000",
+      textTransform: "uppercase"
+    },
+    // priceDetail: {
+    //   fontSize: 18,
+    // }
   });
