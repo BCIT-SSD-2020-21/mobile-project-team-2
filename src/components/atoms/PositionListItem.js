@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import { getStockProfile, getStockQuote } from '../../api/stockapi';
+import styles from '../../styles/positionListStyles'
 
 export default function PositionListItem({ position, navigation}) {
     const [stockProfile, setStockProfile] = useState("")
@@ -21,15 +22,6 @@ export default function PositionListItem({ position, navigation}) {
 			})();
 		}
     }, [position])
-
-    // useEffect(() => {
-    //   if (position?.symbol) {
-    //     (async () => {
-    //         const quoteResult = await getStockQuote(position?.symbol);
-    //         setStockQuote(quoteResult)
-    //     })();
-    //   }
-    // }, [position])
 
     useEffect(() => {
         setCurrentPositionValue(stockQuote?.c * position?.quantity)
@@ -101,88 +93,3 @@ export default function PositionListItem({ position, navigation}) {
 		</TouchableOpacity>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-		display: 'flex',
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		borderWidth: 1,
-		margin: 2,
-    },
-    positionLeft: {
-
-    },
-    profile: {
-		flexDirection: 'column',
-		justifyContent: 'space-around',
-    },
-    symbol: {
-		textAlign: 'left',
-		fontSize: 24,
-		fontWeight: "bold",
-		textTransform: "uppercase"
-    },
-    
-    name: {
-		textAlign: 'left',
-		fontSize: 18,
-		color: "#000",
-    },
-    amounts: {
-		flexDirection: 'column',
-		justifyContent: 'space-around',
-    },
-    // center
-    positionCenter: {
-		display: 'flex',
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-    },
-    currentPrice: {
-		fontSize: 20,
-		textAlign: 'center',
-		color: "#000",
-		textTransform: "uppercase"
-    },
-    currentPriceDecimal: {
-		fontSize: 14,
-		textAlign: 'left',
-		color: "#000",
-		textTransform: "uppercase"
-    },
-    priceVariance: {
-		fontSize: 16,
-		textAlign: 'center',
-		color: "#000",
-		textTransform: "uppercase"
-    },
-    // right
-    position: {
-
-    },
-    positionRight: {
-		display: 'flex',
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-    },
-    label: {
-		fontSize: 12,
-		textAlign: 'left',
-		fontStyle: 'italic',
-    },
-    quantityValue: {
-		fontSize: 16,
-		textAlign: 'right',
-    },
-    averageCost: {
-		fontSize: 20,
-		textAlign: 'right',
-    },
-	positionValue: {
-		fontSize: 16,
-		textAlign: 'right',
-		color: "#000",
-		textTransform: "uppercase"
-	},
-  });

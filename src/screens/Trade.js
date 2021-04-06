@@ -5,18 +5,17 @@ import {firebase} from '../firebase/config';
 import styles from '../styles/tradeScreen'
 
 export default function Trade({ route, navigation }) {
-	
-    const [symbol, setSymbol] = useState(route.params.symbol)
-    const [transactionType, setTransactionType] = useState(route.params.type)
+    
     const [user, setUser] = useState({})
     const [position, setPosition] = useState({}) // user's position for the Stock (if exists)
-    const [transactionDocumentId, setTransactionDocumentId] = useState("")
     const [positionDocumentId, setPositionDocumentId] = useState("")
     const [stockProfile, setStockProfile] = useState({})
     const [stockQuote, setStockQuote] = useState({})
     const [currentNumber, setCurrentNumber] = useState('');
     const [totalAmount, setTotalAmount] = useState(0)
-
+    
+    const transactionType = route.params.type
+    const symbol = route.params.symbol
     const userID = firebase.auth().currentUser.uid;
     const positionsRef = firebase.firestore().collection('positions');
     const usersRef = firebase.firestore().collection('users');
