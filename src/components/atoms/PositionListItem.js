@@ -4,38 +4,18 @@ import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { getStockProfile, getStockQuote } from '../../api/stockapi';
 import {firebase} from '../../firebase/config';
 
-export default function PositionListItem({onPress, positionId, navigation}) {
-
-    // console.log("Position: positionId PROP: ", positionId)
-
+export default function PositionListItem({onPress, position, navigation}) {
     const [loaded, setLoaded] = useState(false)
-    
-    // const [stockSymbol, setStockSymbol] = useState(symbol)
-    const [position, setPosition] = useState({})
-    const [stockDescription, setStockDescription] = useState("")
-    const [currentPrice, setCurrentPrice] = useState("")
+    const [stockProfile, setStockProfile] = useState("")
+    const [stockQuote, setStockQuote] = useState("")
+    const [currentPositionValue, setCurrentPositionValue] = useState(0)
+    const [priceVariance, setPriceVariance] = useState(0)
 
-    	// GET THE USER OBJECT (contains cashOnHand, Watchlist, OwnedStocksList)
-    function fetchPosition() {
-          if (positionId) {
-              // (firestoreDB) ref=collection, get user obj via onSnapshot, where id=positionId
-              const ref = firebase.firestore().collection('positions').doc(positionId)
-              ref.onSnapshot((doc) => {
-                  console.log("current data: ", doc.data());
-                  setPosition(doc.data());
-              });
-          }
-    }
-    useEffect(() => {
-      fetchPosition();
-    }, [])
-    console.log("position: ", position);
     useEffect(() => {
       if (position?.symbol) {
         (async () => {
           const profileResult = await getStockProfile(position?.symbol);
-          console.log('profileResult: ', profileResult)
-          setStockDescription(profileResult.name)
+          setStockProfile(profileResult)
         })();
       }
     }, [position])
@@ -43,11 +23,14 @@ export default function PositionListItem({onPress, positionId, navigation}) {
       if (position?.symbol) {
         (async () => {
           const quoteResult = await getStockQuote(position?.symbol);
-          console.log('quoteResult: ', quoteResult)
-          setCurrentPrice(quoteResult.c)
+          setStockQuote(quoteResult)
         })();
       }
     }, [position])
+    useEffect(() => {
+      setCurrentPositionValue(stockQuote?.c*position.quantity)
+      setPriceVariance(stockQuote.c - position.averageCostPerShare)
+    }, [stockQuote])
 
     function toStockDetail() {
       if (position) {
@@ -55,54 +38,150 @@ export default function PositionListItem({onPress, positionId, navigation}) {
       }
     }
 
-    console.log("position: ", position);
+    // console.log("position: ", position);
     return (
-        // REVIEW API Response Data
-    <TouchableOpacity style={styles.itemContainer} onPress={() => toStockDetail()}>
-        <View style={styles.itemInfoSection}>
-            <Text style={styles.itemSymbol}>{position?.symbol}</Text>
-            <Text style={styles.itemDescription}>{stockDescription}</Text>
+    <TouchableOpacity style={styles.container} onPress={() => toStockDetail()}>
+    
+        {/* Left */}
+        <View style={styles.profile}>
+          <Text style={styles.symbol}>{position?.symbol}</Text>
+          <Text style={styles.name}>{stockProfile.name}</Text>
         </View>
-        {/* <View> */}
-            {/* { currentPrice &&  */}
-              <Text style={styles.currentPrice}>{`$${Math.round(currentPrice*100/100).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
-            {/* } */}
-        {/* </View> */}
+
+        {/* Center */}
+        <View style={styles.variances}>
+
+         <View style={styles.positionCenter}> 
+          <Text style={styles.label}>{'price: '}</Text>
+          <Text style={styles.currentPrice}>
+            {stockQuote ? `$${Math.round(stockQuote?.c).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`: ''}
+          </Text>
+          <Text style={styles.currentPriceDecimal}>
+            {stockQuote ? `${(stockQuote?.c.toFixed(0)%stockQuote?.c).toFixed(2).toString().substring(1,4)}` : ''}
+          </Text>
+          </View>
+
+        <View style={styles.positionCenter}>
+          <Text style={styles.label}>{'var: '}</Text>
+          <Text style={styles.priceVariance}>
+            {`$${Math.round(priceVariance).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}
+          </Text>
+          </View>
+        </View>
+
+        {/* total shares, current price, positionValue */}
+        <View style={styles.position}>
+          {/* Center */}
+          
+          <View style={styles.positionRight}>
+            <Text style={styles.label}>{'avg cost: '}</Text>
+            <Text style={styles.averageCost}>
+              {`$${Math.round(position.averageCostPerShare).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}
+            </Text>
+            {/* <Text style={styles.averageCost}>
+              {`$${(position.averageCostPerShare.toFixed(2)).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}
+            </Text> */}
+          </View>
+
+          <View style={styles.positionRight}>
+            <Text style={styles.label}>{'own: '}</Text>
+            <Text style={styles.quantityValue}>
+              {`${position.quantity.toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}
+            </Text>
+          </View>
+
+          <View style={styles.positionRight}>
+            <Text style={styles.label}>{'value: '}</Text>
+            <Text style={styles.positionValue}>
+              {`$${Math.round(currentPositionValue).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}
+            </Text>
+          </View>
+        </View>
     </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
-    // ...
-    itemContainer: {
-      // marginTop: 5,
+    container: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      borderWidth: 1,
+      margin: 2,
+    },
+    positionLeft: {
+
+    },
+    profile: {
+      flexDirection: 'column',
+      justifyContent: 'space-around',
+    },
+    symbol: {
+      textAlign: 'left',
+      fontSize: 24,
+      fontWeight: "bold",
+      textTransform: "uppercase"
+    },
+    
+    name: {
+      textAlign: 'left',
+      fontSize: 18,
+      color: "#000",
+    },
+    amounts: {
+      flexDirection: 'column',
+      justifyContent: 'space-around',
+    },
+    // center
+    positionCenter: {
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'space-between',
     },
-    itemInfoSection: {
-        flexDirection: 'column',
-        justifyContent: 'space-around',
-    },
-    itemSymbol: {
-      fontSize: 32,
-      fontWeight: "bold",
-    //   alignSelf: "flex-start",
+    currentPrice: {
+      fontSize: 20,
+      textAlign: 'center',
+      color: "#000",
       textTransform: "uppercase"
     },
-    itemDescription: {
-        fontSize: 24,
-        color: "#000",
-        // alignSelf: "flex-start",
+    currentPriceDecimal: {
+      fontSize: 14,
+      textAlign: 'left',
+      color: "#000",
+      textTransform: "uppercase"
     },
-    currentPrice: {
-        fontSize: 36,
-        color: "#000",
-        fontWeight: "bold",
-        // alignSelf: "flex-end",
-        textTransform: "uppercase"
-      },
-      priceDetail: {
-        fontSize: 18,
-      }
+    priceVariance: {
+      fontSize: 16,
+      textAlign: 'center',
+      color: "#000",
+      textTransform: "uppercase"
+    },
+    // right
+    position: {
+
+    },
+    positionRight: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
+    label: {
+      fontSize: 12,
+      textAlign: 'left',
+      fontStyle: 'italic',
+    },
+    quantityValue: {
+      fontSize: 16,
+      textAlign: 'right',
+    },
+    averageCost: {
+      fontSize: 20,
+      textAlign: 'right',
+    },
+    positionValue: {
+      fontSize: 16,
+      textAlign: 'right',
+      color: "#000",
+      textTransform: "uppercase"
+    },
   });

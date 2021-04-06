@@ -7,15 +7,15 @@ import { View } from 'react-native'; // StyleSheet, SafeAreaView, ScrollView, To
 // import axios from 'axios';
 import PositionListItem from './PositionListItem';
 
-export default function PositionList({ navigation, positionsArray }) {
+export default function PositionList({ navigation, positions }) {
 
-    console.log("positionsArray: ", positionsArray)
+    // console.log("positionsArray: ", positionsArray)
     return (
         <View> 
             {
-                positionsArray?.map((prop, index) => {
+                positions.map((position, index) => {
                     return (
-                        <PositionListItem key={index} positionId={prop} navigation={navigation} />
+                        <PositionListItem key={index} position={position} navigation={navigation} />
                     )
                 })
             }
