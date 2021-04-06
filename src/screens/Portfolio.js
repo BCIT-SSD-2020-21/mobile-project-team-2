@@ -38,7 +38,7 @@ export default function Portfolio({navigation}) {
 	// 3 - calc portfolio value
 	// GET POSITIONS
 	useEffect(() => {		
-		if (user.positions) {
+		if (user?.positions) {
 			const userUID = firebase.auth().currentUser.uid
 			const positionsRef = firebase.firestore().collection('positions');
 			positionsRef
@@ -56,22 +56,27 @@ export default function Portfolio({navigation}) {
 					}
 				)
 		}
+		
+	}, [user])
+	// initialize portfolioValue = cashOnHand
+	useEffect(() => {
+		setPortfolioValue(user?.cashOnHand)
 	}, [user])
 	// GET STOCK QUOTE , CALC PositionValue, ADD TO PositionValue StateVar 
 	useEffect(() => {
-		if (positions) {
-			let portfolioValueAggregate = user.cashOnHand; // Start with User's Available Funds, then add...
+		if (positions && user) {
+			let portfolioValueAggregate = user?.cashOnHand; // Start with User's Available Funds, then add...
 			positions.forEach( async (position) => {
 				const quoteResult = await getStockQuote(position.symbol) // from Finnhub
 				portfolioValueAggregate += quoteResult?.c * position?.quantity
 				setPortfolioValue(portfolioValueAggregate)
 			})
 		}
-	}, [positions])
+	}, [positions, user])
 
 	// -- Handlers
 	// TOGGLE ADD FUNDS FORM
-	function toggledepositFunds() {
+	const toggledepositFunds = () => {
 		setDepositing(!depositing)
 	}
 	// ADD FUNDS
