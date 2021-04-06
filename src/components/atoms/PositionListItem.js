@@ -14,27 +14,27 @@ export default function PositionListItem({onPress, position, navigation}) {
     useEffect(() => {
       if (position?.symbol) {
         (async () => {
-          const profileResult = await getStockProfile(position?.symbol);
-          setStockProfile(profileResult)
+            const profileResult = await getStockProfile(position?.symbol);
+            setStockProfile(profileResult)
         })();
       }
     }, [position])
     useEffect(() => {
       if (position?.symbol) {
         (async () => {
-          const quoteResult = await getStockQuote(position?.symbol);
-          setStockQuote(quoteResult)
+            const quoteResult = await getStockQuote(position?.symbol);
+            setStockQuote(quoteResult)
         })();
       }
     }, [position])
     useEffect(() => {
-      setCurrentPositionValue(stockQuote?.c*position.quantity)
-      setPriceVariance(stockQuote.c - position.averageCostPerShare)
+        setCurrentPositionValue(stockQuote?.c*position.quantity)
+        setPriceVariance(stockQuote.c - position.averageCostPerShare)
     }, [stockQuote])
 
     function toStockDetail() {
       if (position) {
-        navigation.navigate('StockDetail', position?.symbol)
+         navigation.navigate('StockDetail', position?.symbol)
       }
     }
 
@@ -44,22 +44,22 @@ export default function PositionListItem({onPress, position, navigation}) {
     
         {/* Left */}
         <View style={styles.profile}>
-          <Text style={styles.symbol}>{position?.symbol}</Text>
-          <Text style={styles.name}>{stockProfile.name}</Text>
+            <Text style={styles.symbol}>{position?.symbol}</Text>
+            <Text style={styles.name}>{stockProfile.name}</Text>
         </View>
 
         {/* Center */}
         <View style={styles.variances}>
 
          <View style={styles.positionCenter}> 
-          <Text style={styles.label}>{'price: '}</Text>
-          <Text style={styles.currentPrice}>
-            {stockQuote ? `$${Math.round(stockQuote?.c).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`: ''}
-          </Text>
-          <Text style={styles.currentPriceDecimal}>
-            {stockQuote ? `${(stockQuote?.c.toFixed(0)%stockQuote?.c).toFixed(2).toString().substring(1,4)}` : ''}
-          </Text>
-          </View>
+            <Text style={styles.label}>{'price: '}</Text>
+            <Text style={styles.currentPrice}>
+                {stockQuote ? `$${Math.round(stockQuote?.c).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`: ''}
+            </Text>
+            <Text style={styles.currentPriceDecimal}>
+                {stockQuote ? `${(stockQuote?.c.toFixed(0)%stockQuote?.c).toFixed(2).toString().substring(1,4)}` : ''}
+            </Text>
+            </View>
 
         <View style={styles.positionCenter}>
           <Text style={styles.label}>{'var: '}</Text>
@@ -76,24 +76,24 @@ export default function PositionListItem({onPress, position, navigation}) {
           <View style={styles.positionRight}>
             <Text style={styles.label}>{'avg cost: '}</Text>
             <Text style={styles.averageCost}>
-              {`$${Math.round(position.averageCostPerShare).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}
+                {`$${Math.round(position.averageCostPerShare).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}
             </Text>
             {/* <Text style={styles.averageCost}>
-              {`$${(position.averageCostPerShare.toFixed(2)).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}
+                {`$${(position.averageCostPerShare.toFixed(2)).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}
             </Text> */}
           </View>
 
           <View style={styles.positionRight}>
             <Text style={styles.label}>{'own: '}</Text>
             <Text style={styles.quantityValue}>
-              {`${position.quantity.toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}
+                {`${position.quantity.toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}
             </Text>
           </View>
 
           <View style={styles.positionRight}>
             <Text style={styles.label}>{'value: '}</Text>
             <Text style={styles.positionValue}>
-              {`$${Math.round(currentPositionValue).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}
+                {`$${Math.round(currentPositionValue).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}
             </Text>
           </View>
         </View>
