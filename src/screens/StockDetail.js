@@ -18,6 +18,7 @@ import { EvilIcons } from '@expo/vector-icons';
 import { firebase } from '../firebase/config';
 import { getStockQuantity } from '../firebase/service';
 import { getStockProfile, getStockQuote } from '../api/stockapi';
+import { VictoryBar, VictoryChart, VictoryTheme } from 'victory-native'
 
 
 
