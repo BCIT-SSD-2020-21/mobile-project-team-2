@@ -5,44 +5,41 @@ import {resetPassword} from './ResetPassword'
 
 
 export default function Login({navigation}) {
-	 const [ email, setEmail] = useState( '' );
-	 const [password, setPassword] = useState( '' );
-	const [error, setError] =  useState( '' );
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+	const [error, setError] =  useState('');
 
 
 	const onLogin = () => {
-		 firebase.auth().signInWithEmailAndPassword(email, password)
-		 	.then((result) => {setError("sucess")})
-			 .catch((error) => {setError(""+error) })
-
-			 console.log(email)
-			 console.log(password)
-	  }	  
+        firebase.auth().signInWithEmailAndPassword(email, password)
+            .then((result) => {setError("sucess")})
+            .catch((error) => {setError(""+error) })
+    }	  
 
     return (
-			<SafeAreaView style={styles.container}>
-				<Image style={styles.image} source={require('../../assets/images/logo.png')} />
-				<View>
-					<View>
-						<Text style={styles.label}>Email Address </Text>
-						<TextInput style={styles.input} autoCorrect={false} autoCapitalize={'none'} placeholder="Enter email" onChangeText={(email) => setEmail(email)} />
-					</View>
-					<View>
-						<Text style={styles.label}>Password</Text>
-						<TextInput style={styles.input} secureTextEntry={true} placeholder="Enter password" onChangeText={(password) => setPassword(password)} />
-					</View>	
-					<Text style={styles.forgot} onPress={() => resetPassword(email)}>Forgot password or email?</Text>
-					<Text style={{paddingBottom: 5, color: 'red'}}>{error}</Text>
-					<Button style={styles.button} onPress={() => onLogin()} title="Login" />
-				</View>
-			</SafeAreaView>
+        <SafeAreaView style={styles.container}>
+            <Image style={styles.image} source={require('../../assets/images/logo.png')} />
+            <View>
+                <View>
+                    <Text style={styles.label}>Email Address </Text>
+                    <TextInput style={styles.input} autoCorrect={false} autoCapitalize={'none'} placeholder="Enter email" onChangeText={(email) => setEmail(email)} />
+                </View>
+                <View>
+                    <Text style={styles.label}>Password</Text>
+                    <TextInput style={styles.input} secureTextEntry={true} placeholder="Enter password" onChangeText={(password) => setPassword(password)} />
+                </View>	
+                <Text style={styles.forgot} onPress={() => resetPassword(email)}>Forgot password or email?</Text>
+                <Text style={{paddingBottom: 5, color: 'red'}}>{error}</Text>
+                <Button style={styles.button} onPress={() => onLogin()} title="Login" />
+            </View>
+        </SafeAreaView>
     )
 }
 
 
 const styles = StyleSheet.create({
 	container: {
-    flex: 1,
+        flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
 		padding: 100,

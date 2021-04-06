@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react'
-import {StyleSheet, Button, SafeAreaView, ScrollView, View, Vibration, TouchableOpacity, Text } from 'react-native';
+import { SafeAreaView, View, Vibration, TouchableOpacity, Text } from 'react-native';
 import {getStockProfile, getStockQuote} from '../api/stockapi';
 import {firebase} from '../firebase/config';
+import styles from '../styles/tradeScreen'
 
 export default function Trade({ route, navigation }) {
 	
@@ -72,17 +73,16 @@ export default function Trade({ route, navigation }) {
 
     
     const handleInput = (buttonPressed) => {
-        console.log("buttonPressed", buttonPressed, typeof buttonPressed)
         if(typeof buttonPressed === 'number') {
             Vibration.vibrate(35);
             setCurrentNumber(+(`${currentNumber}${buttonPressed}`))
         } else if (buttonPressed === 'X') { 
             Vibration.vibrate(35);
-            setCurrentNumber(0) 
+            var stringNumber = currentNumber.toString()
+            setCurrentNumber(stringNumber.slice(0, -1)) // remove last digit
         } else {
             return
         }
-        setCurrentNumber(currentNumber + buttonPressed)
     }
 
     const submitTransaction = () => {
@@ -195,27 +195,28 @@ export default function Trade({ route, navigation }) {
 
     return (
         <SafeAreaView style={styles.container}>
-        {/* <ScrollView> */}
             {/* Heading */}
-            <View style={styles.results}>
-            <Text style={styles.companyName}>{stockProfile.name}</Text>
-            <Text style={styles.howMany}>{`How many shares of ${symbol} do you want to ${transactionType}?`}</Text>
-            <Text style={styles.resultText}>{currentNumber}</Text>
-            </View>
+            <View style={styles.blueContainer}>
+                <View style={styles.results}>
+                    <Text style={styles.companyName}>{stockProfile.name}</Text>
+                    <Text style={styles.howMany}>{`How many shares of ${symbol} do you want to ${transactionType}?`}</Text>
+                    <Text style={styles.resultText}>{currentNumber}</Text>
+                </View>
 
-            {/* Transaction Info */}
-            <Text>{positionDocumentId && `You own ${position.quantity} stocks`}</Text>
-            <View style={styles.wallet} >
-            <Text style={styles.renderValues}>Available funds: </Text> 
-            <Text style={styles.renderValues}>{`$${Math.round(user?.cashOnHand).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
-            </View>
-            <View style={styles.wallet} >
-            <Text style={styles.renderValues}>Current price: </Text> 
-            <Text style={styles.renderValues}>{`$${Math.round(stockQuote.c).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
-            </View>
-            <View style={styles.wallet} >
-            <Text style={styles.renderValues}>Total cost: </Text> 
-            <Text style={styles.renderValues}>{`$${Math.round(totalAmount).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
+                {/* Transaction Info */}
+                <Text style={{color: 'white'}}>{positionDocumentId && `You own ${position.quantity} stocks`}</Text>
+                <View style={styles.wallet}>
+                    <Text style={styles.renderValues}>Available funds: </Text> 
+                    <Text style={styles.renderValues}>{`$${Math.round(user?.cashOnHand).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
+                </View>
+                <View style={styles.wallet}>
+                    <Text style={styles.renderValues}>Current price: </Text> 
+                    <Text style={styles.renderValues}>{`$${Math.round(stockQuote.c).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
+                </View>
+                <View style={styles.wallet}>
+                    <Text style={styles.renderValues}>Total cost: </Text> 
+                    <Text style={styles.renderValues}>{`$${Math.round(totalAmount).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
+                </View>
             </View>
 
             {/* Keypad */}
@@ -231,118 +232,6 @@ export default function Trade({ route, navigation }) {
                     <Text style={styles.buttonContinueText}>Continue</Text>
                 </TouchableOpacity>
             </View>
-        {/* </ScrollView> */}
         </SafeAreaView>
     )
 }
-
-
-const styles = StyleSheet.create({
-
-	container: {
-		flex: 1,
-        paddingTop: 30,
-        alignItems: 'center',
-		justifyContent: 'center',
-        backgroundColor:  '#147DF0',
-    },
-
-    results: {
-        backgroundColor:  '#147DF0',
-        maxWidth: '100%',
-        height: 200,
-	    minHeight: '25%',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-	renderValues: {
-		backgroundColor:  '#147DF0',
-	},
-
-	historyText: {
-		color: '#fff',
-		margin: 15,
-		fontSize: 35,
-	},
-
-    resultText: {
-        maxHeight: 50,
-        color: '#fff',
-        margin: 15,
-        fontSize: 45,
-    },
-
-	companyName: {
-		color: '#fff',
-		fontSize: 40,
-		fontWeight: 'bold'
-    },
-
-	howMany: {
-		minWidth: 40,
-		color: '#fff',
-		margin: 15,
-		fontSize: 28,
-		alignItems: 'center',
-		justifyContent: 'center'
-    },
-
-    buttons: {
-        width: '100%',
-        height: '55%',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-
-    button: {
-        borderColor: '#fff',
-	    backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minWidth: '31%',
-        minHeight: '20%',
-    },
-
-    textButton: {
-        color: '#000',
-        fontSize: 32,
-    },
-
-	buttonContinue: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center',
-        padding: 'auto',
-        marginVertical: 10,
-        width: '60%',
-        minHeight: 40,
-        flexDirection: 'row',
-        fontSize: 32,
-        backgroundColor: '#68dceb', // light-blue
-	},
-    buttonContinueText: {
-        fontSize: 24,
-        textAlign: 'center',
-
-    },
-	renderValues: {
-		maxHeight: 45,
-		color: '#fff',
-		fontSize: 25,
-		justifyContent: 'center',
-		flexDirection: 'row',
-	},
-	wallet: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        margin: 'auto',
-        width: '95%',
-        flexDirection: 'row'
-	}
-
-})
