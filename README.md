@@ -20,33 +20,33 @@ Each team must build a mobile mock trading app that allows users to “Buy” an
 A minimal implementation of each milestone feature must exist before any team member can move on to tasks relating to the next milestone. A review must be conducted by the instructor before the team is approved to advance to the next milestone.
 
 ### Milestone 1
-- ✅Authentication (Register, Login, Logout)
-- ✅    Consume a Stock Price API (like finnhub.io and/or alphavantage.co)
-- ✅      expo install firebase
-- ✅    Search and display the current stock price for a given symbol
+- ✅ Authentication (Register, Login, Logout)
+- ✅ Consume a Stock Price API (like finnhub.io and/or alphavantage.co)
+- ✅ expo install firebase
+- ✅ Search and display the current stock price for a given symbol
 - User Interface
-- ✅    Register/Login Screen
-- ✅    Search/Quote Screen
-- ✅    Navigation link to Log Out
+- ✅ Register/Login Screen
+- ✅ Search/Quote Screen
+- ✅ Navigation link to Log Out
 
 [Figma Prototye](https://www.figma.com/file/RSOoEmLT3sZSQatMWqtzGz/DiamondHands?node-id=0%3A1)
 
 ### Milestone 2
-- ✅Create and consume a user “portfolio” API (single currency)
-- ✅Create a user’s “Cash” (each user to start with $50,000)
-- ✅Perform a “market buy”
-- ✅    Create a record for {user, symbol, quotePrice, numShares}
-- ✅    Update Cash by subtracting quotePrice x numShares
-- ✅Perform a “market sell” (same as a buy but numShares should be negative and thus Cash should increase)
-- ✅User Interface
-- ✅    Buy/Sell Links on the Search/Quote Screen
-- ✅    Buy/Sell Screen
+- ✅ Create and consume a user “portfolio” API (single currency)
+- ✅ Create a user’s “Cash” (each user to start with $50,000)
+- ✅ Perform a “market buy”
+- ✅ Create a record for {user, symbol, quotePrice, numShares}
+- ✅ Update Cash by subtracting quotePrice x numShares
+- ✅ Perform a “market sell” (same as a buy but numShares should be negative and thus Cash should increase)
+- ✅ User Interface
+- ✅ Buy/Sell Links on the Search/Quote Screen
+- ✅ Buy/Sell Screen
 ### Milestone 3
-- ✅    Display “Portfolio Positions” (each position is the sum of the numShares for a given user and symbol, the average price per share, the current price per share, and the profit/loss which is the difference between the average price multiplied by shares held and current price multiplied by shares held).
-- ✅    Display “Portfolio Value” = Cash plus the sums of each position currentPrice multiplied by shares held)
+- ✅ Display “Portfolio Positions” (each position is the sum of the numShares for a given user and symbol, the average price per share, the current price per share, and the profit/loss which is the difference between the average price multiplied by shares held and current price multiplied by shares held).
+- ✅ Display “Portfolio Value” = Cash plus the sums of each position currentPrice multiplied by shares held)
 - User Interface
-- ✅    Portfolio Screen (Display Cash, List of Positions…with Buy/Sell Links, and Portfolio Value)
-- ✅    Navigation links to view Portfolio or Search/Quote Screen
+- ✅ Portfolio Screen (Display Cash, List of Positions…with Buy/Sell Links, and Portfolio Value)
+- ✅ Navigation links to view Portfolio or Search/Quote Screen
 ### Milestone 4
 - Add “Stock Watchlist”
 - User Interface

@@ -25,7 +25,7 @@ export default function Login({navigation}) {
 				<View>
 					<View>
 						<Text style={styles.label}>Email Address </Text>
-						<TextInput style={styles.input} placeholder="Enter email" onChangeText={(email) => setEmail(email)} />
+						<TextInput style={styles.input} autoCorrect={false} autoCapitalize={'none'} placeholder="Enter email" onChangeText={(email) => setEmail(email)} />
 					</View>
 					<View>
 						<Text style={styles.label}>Password</Text>

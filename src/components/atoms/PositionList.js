@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View } from 'react-native'; // StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Text, TextInput, 
+import { View, Text } from 'react-native'; // StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Text, TextInput, 
 // import { firebase } from '../firebase/config';
 // import { EvilIcons } from '@expo/vector-icons';
 // import { getStockProfile, getStockQuote } from '../../api/stockapi';
@@ -13,11 +13,9 @@ export default function PositionList({ navigation, positions }) {
     return (
         <View> 
             {
-                positions.map((position, index) => {
-                    return (
-                        <PositionListItem key={index} position={position} navigation={navigation} />
-                    )
-                })
+                positions.map((position, index) => 
+                    <PositionListItem key={index} position={position} navigation={navigation} />
+                )
             }
         </View>
     )
