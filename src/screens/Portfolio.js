@@ -260,11 +260,12 @@ const styles = StyleSheet.create({
 		// color: '#abd4b4', // lightGreen
 	},
 	fundingButton: {
-		width: 60,
+		width: 61,
 		height: 60,
 		margin: 5,	
 		padding: 10,
 		borderRadius: 100,
+        justifyContent: 'center',
 		alignItems: 'center',
 		backgroundColor: "#0876EE", // blue
 	},
