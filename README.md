@@ -42,10 +42,10 @@ A minimal implementation of each milestone feature must exist before any team me
 - ✅    Buy/Sell Links on the Search/Quote Screen
 - ✅    Buy/Sell Screen
 ### Milestone 3
-- Display “Portfolio Positions” (each position is the sum of the numShares for a given user and symbol, the average price per share, the current price per share, and the profit/loss which is the difference between the average price multiplied by shares held and current price multiplied by shares held).
-- Display “Portfolio Value” = Cash plus the sums of each position currentPrice multiplied by shares held)
+- ✅    Display “Portfolio Positions” (each position is the sum of the numShares for a given user and symbol, the average price per share, the current price per share, and the profit/loss which is the difference between the average price multiplied by shares held and current price multiplied by shares held).
+- ✅    Display “Portfolio Value” = Cash plus the sums of each position currentPrice multiplied by shares held)
 - User Interface
-    - Portfolio Screen (Display Cash, List of Positions…with Buy/Sell Links, and Portfolio Value)
+- ✅    Portfolio Screen (Display Cash, List of Positions…with Buy/Sell Links, and Portfolio Value)
 - ✅    Navigation links to view Portfolio or Search/Quote Screen
 ### Milestone 4
 - Add “Stock Watchlist”
