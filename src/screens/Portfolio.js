@@ -15,7 +15,12 @@ export default function Portfolio({navigation}) {
 	const [depositing, setDepositing] = useState(false)
 	const [depositAmount, setDepositAmount] = useState(0)
 	const [user, setUser] = useState(0);
+	
+	// try method: load positions, then loop, calc and add to new collection
+	const [positionsLoaded, setPositionsLoaded] = useState(false)
 	const [positions, setPositions] = useState([])
+
+	// try method: 
 	const [portfolioValue, setPortfolioValue] = useState(0);
 	const [positionsTotalValue, setPositionsTotalValue] = useState(0)
 	const [watchList, setWatchList] = useState([])
@@ -40,32 +45,110 @@ export default function Portfolio({navigation}) {
 	// get User's Positions (All)   
 	useEffect(() => {
 		// initialize portfolioValue calculation 
-		setPortfolioValue(0)
-		if (user)
-		{
-			// (async () => {
+		// setPortfolioValue(0)
+		// if (user)
+		// {
+		// 	// (async () => {
+		// 		console.log("---------START---------------------------")
+		// 		const positionsRef = firebase.firestore().collection('positions');
+		// 		let userPositionsAggregateValue = 0; // increment by current total position value  
+		// 		user.positions.map((positionId, index) => { // loop  thru user's positionArray (Id's)
+		// 	  		positionsRef.doc(positionId).onSnapshot(async (doc) => { // for each Id, get document
+		// 				// userPositions.push(doc.data())
+		// 				console.log("---------LOOP Start---------------------------")
+		// 				console.log("portfolioValue useEffect, doc.data.symbol: ", doc.data().symbol) 
+		// 				const positionStockQuote = await getStockQuote(doc.data().symbol) // GET stockQuote for symbol
+		// 				console.log("portfolioValue useEffect, positionStockQuote: ", positionStockQuote)
+		// 				console.log("portfolioValue useEffect, doc.data(): ", doc.data())
+		// 				userPositionsAggregateValue = userPositionsAggregateValue + positionStockQuote.c*doc.data().quantity // calculate current total position value, increment aggegate 
+		// 				console.log("portfolioValue useEffect, userPositionsAggregateValue: ", userPositionsAggregateValue)
+		// 				console.log("---------LOOP End---------------------------")					
+		// 	  		})
+		// 		})
+		// 		console.log("---------After-LOOP---------------------------")	
+		// 		setPositionsTotalValue(userPositionsAggregateValue) // set final value to state var	
+		// 		// setPortfolioValue(user.cashOnHand + userPositionsAggregateValue)
+		// 	// })();
+		// 	console.log("---------END---------------------------")
+		// }
+	}, [user])
+	// CurrentPortfolioValue: we will need 2 UseEffects:
+	// 1 - loop thru user.positions (onSnapshot), getDoc, add it to a stateVar(Array of Obj)
+	// 2 - WHEN DONE, loop thru stateVar(Array of Obj) (map()), (async)getStockQuote (cannot have async inside onsnapshot )
+	// 3 - calc portfolio value
+	useEffect(() => {
+		
+		if (user.positions) {
+			// console.log('------Step1 - START -------------------- ')
+			const userUID = firebase.auth().currentUser.uid
+			// console.log("userUID", userUID)
+			const positionsRef = firebase.firestore().collection('positions');
+			positionsRef
+				.where("userId", "==", userUID)
+				.onSnapshot(
+					querySnapshot => {
+						const userPositions = []
+						querySnapshot.forEach(doc => {
+							// console.log("doc.data(): ", doc.data())
+							userPositions.push(doc.data())
+						})
+						// console.log("userPositions: ", userPositions)
+						setPositions(userPositions);
+					},
+					error => {
+						console.log(error)
+					}
+				)
+
+			// const userPositions = [];
+			// user.positions.map((positionId, index) => {				
+				// positionsRef.doc(positionId).onSnapshot( doc => {
+					// userPositions.push(doc.data())
+					// userPositions.push(doc.data())
+				// 	console.log("doc.data(): ", doc.data())
+				// 	setPositions([...positions, doc.data()])
+				// })
 				
-				const positionsRef = firebase.firestore().collection('positions');
-				let userPositionsAggregateValue = 0;
-				user.positions.map((positionId, index) => {
-			  		positionsRef.doc(positionId).onSnapshot(async (doc) => { 
-						// userPositions.push(doc.data())
-						console.log("portfolioValue useEffect, doc.data.symbol: ", doc.data().symbol)
-						const positionStockQuote = await getStockQuote(doc.data().symbol)
-						console.log("portfolioValue useEffect, positionStockQuote: ", positionStockQuote)
-						console.log("portfolioValue useEffect, doc.data(): ", doc.data())
-						userPositionsAggregateValue = userPositionsAggregateValue + positionStockQuote.c*doc.data().quantity 
-						console.log("portfolioValue useEffect, userPositionsAggregateValue: ", userPositionsAggregateValue)
-						setPositionsTotalValue(positionsTotalValue + userPositionsAggregateValue)						
-			  		})
-				})
-				// setPortfolioValue(user.cashOnHand + userPositionsAggregateValue)
-			// })();
+			// })
+			// console.log("userPositions: ", userPositions)
+			// setPositions(userPositions)
+			// console.log("after snapshot")
 		}
 	}, [user])
+	// console.log("positions:", positions)
 	useEffect(() => {
-		setPortfolioValue(user.cashOnHand + positionsTotalValue)
-	}, [positionsTotalValue])
+		// console.log('------Step2 - START -------------------- ')
+		// console.log('Step2 check, positions?.length: ', positions?.length)
+		// console.log('Step2 check, user?.positions?.length: ', user?.positions?.length)
+		if (positions) {
+			let aggegatePositionsCurrentTotalValue = 0;
+			positions.forEach( async (position) => {
+				// ( () => {
+					const quoteResult = await getStockQuote(position.symbol)
+					// console.log('Step2, LOOP, position:', position)
+					aggegatePositionsCurrentTotalValue += quoteResult?.c * position?.quantity
+					setPositionsTotalValue(aggegatePositionsCurrentTotalValue)
+
+					// console.log('Step2, LOOP, aggegatePositionsCurrentTotalValue:', aggegatePositionsCurrentTotalValue)
+				// })
+			})
+			// console.log("after forEach, aggegatePositionsCurrentTotalValue: ", aggegatePositionsCurrentTotalValue)
+			// setPositionsTotalValue(aggegatePositionsCurrentTotalValue)
+			// console.log('------Step2 - END -------------------- ')
+		}
+	}, [positions])
+	// console.log("positionsTotalValue: ", positionsTotalValue)
+	useEffect(() => {
+		// console.log('------Step3 - START -------------------- ')
+		// console.log('Step3, cashOnHand:', user.cashOnHand)
+		// console.log('Step3, positionsTotalValue:', positionsTotalValue)
+		// console.log("setPortVal, user: ", user)
+		// console.log("setPortVal, cashOnHand: ", user.cashOnHand)
+		// console.log("setPortVal, positionsTotalValue: ", positionsTotalValue)
+		setPortfolioValue(user.cashOnHand + positionsTotalValue)  
+		// console.log('------Step3 - END -------------------- ')
+	}, [user, positionsTotalValue])
+	// console.log("portfolioValue: ", portfolioValue)
 
 	// TOGGLE ADD FUNDS FORM
 	function toggledepositFunds() {
@@ -139,7 +222,7 @@ export default function Portfolio({navigation}) {
 		console.log("displayWatchList clicked")
 	}
 	
-	console.log("portfolioValue: ", portfolioValue)
+	// console.log("portfolioValue: ", portfolioValue)
     return (
 		<ScrollView contentContainerStyle={styles.scrollContainer}>
 			<SafeAreaView style={styles.container}>
