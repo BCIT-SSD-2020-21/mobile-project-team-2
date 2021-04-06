@@ -48,19 +48,15 @@ export default function Trade({ route, navigation }) {
     }, [symbol])
 
     // get Stock Position IF Exists for User   
-    useEffect(() => {
-        if (user.positions) {
-            
-            user.positions.map((positionId, index) => {
-                positionsRef.doc(positionId).onSnapshot((doc) => {
-                    if (doc.data().symbol === symbol) { 
-                        setPosition(doc.data())
-                        console.log("Trade, getPosition useEffect, Id: ", positionId)
-                        setPositionDocumentId(positionId)
-                    }
-                })
+    useEffect(() => { 
+        user?.positions?.map(positionId => {
+            positionsRef.doc(positionId).onSnapshot(doc => {
+                if (doc.data().symbol === symbol) { 
+                    setPosition(doc.data())
+                    setPositionDocumentId(positionId)
+                }
             })
-        }
+        })
     }, [user, symbol])
 
 
