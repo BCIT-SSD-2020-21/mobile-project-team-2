@@ -174,7 +174,7 @@ export default function Portfolio({navigation}) {
 						/> 
 					</View>
 
-					{ user?.positions && <PositionList navigation={nav} positionsArray={user.positions}/> }
+					{ user?.positions && <PositionList navigation={nav} positions={positions}/> }
 					
 				</View>	
 

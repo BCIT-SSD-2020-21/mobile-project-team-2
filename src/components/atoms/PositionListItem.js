@@ -4,31 +4,31 @@ import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { getStockProfile, getStockQuote } from '../../api/stockapi';
 import {firebase} from '../../firebase/config';
 
-export default function PositionListItem({onPress, positionId, navigation}) {
+export default function PositionListItem({onPress, position, navigation}) {
 
     // console.log("Position: positionId PROP: ", positionId)
 
     const [loaded, setLoaded] = useState(false)
     
     // const [stockSymbol, setStockSymbol] = useState(symbol)
-    const [position, setPosition] = useState({})
+    // const [position, setPosition] = useState({})
     const [stockDescription, setStockDescription] = useState("")
     const [currentPrice, setCurrentPrice] = useState("")
 
     	// GET THE USER OBJECT (contains cashOnHand, Watchlist, OwnedStocksList)
-    function fetchPosition() {
-          if (positionId) {
-              // (firestoreDB) ref=collection, get user obj via onSnapshot, where id=positionId
-              const ref = firebase.firestore().collection('positions').doc(positionId)
-              ref.onSnapshot((doc) => {
-                  // console.log("current data: ", doc.data());
-                  setPosition(doc.data());
-              });
-          }
-    }
-    useEffect(() => {
-      fetchPosition();
-    }, [])
+    // function fetchPosition() {
+    //       if (positionId) {
+    //           // (firestoreDB) ref=collection, get user obj via onSnapshot, where id=positionId
+    //           const ref = firebase.firestore().collection('positions').doc(positionId)
+    //           ref.onSnapshot((doc) => {
+    //               // console.log("current data: ", doc.data());
+    //               setPosition(doc.data());
+    //           });
+    //       }
+    // }
+    // useEffect(() => {
+    //   fetchPosition();
+    // }, [])
     // console.log("position: ", position);
     useEffect(() => {
       if (position?.symbol) {
