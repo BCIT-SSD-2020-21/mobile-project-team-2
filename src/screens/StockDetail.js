@@ -302,7 +302,7 @@ const StockDetail = ({ route, navigation}) => {
 
 						<View style={styles.itemInfoSection}>
 							<Text style={styles.itemSymbol}>Exchange</Text>
-							<Text style={{...styles.itemDescription, fontSize: 20, marginLeft: 20, maxWidth: '50%',} }> {stockProfile.exchange}</Text>
+							<Text style={{...styles.itemDescription, fontSize: 20, marginLeft: 20, maxWidth: '50%'}}>{stockProfile.exchange}</Text>
 						</View>							
 
 

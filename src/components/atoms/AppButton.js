@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Button, StyleSheet, TouchableOpacity, Text } from "react-native";
+import { StyleSheet, TouchableOpacity, Text } from "react-native";
 
 export const AppButton = ({onPress, title}) (
     <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
@@ -8,19 +8,18 @@ export const AppButton = ({onPress, title}) (
 )
 
 const styles = StyleSheet.create({
-    // ...
     appButtonContainer: {
-      elevation: 8,
-      backgroundColor: "#009688",
-      borderRadius: 10,
-      paddingVertical: 10,
-      paddingHorizontal: 12
+		elevation: 8,
+		backgroundColor: "#009688",
+		borderRadius: 10,
+		paddingVertical: 10,
+		paddingHorizontal: 12
     },
     appButtonText: {
-      fontSize: 18,
-      color: "#fff",
-      fontWeight: "bold",
-      alignSelf: "center",
-      textTransform: "uppercase"
+		fontSize: 18,
+		color: "#fff",
+		fontWeight: "bold",
+		alignSelf: "center",
+		textTransform: "uppercase"
     }
-  });
+});
