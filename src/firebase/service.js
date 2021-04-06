@@ -6,3 +6,4 @@ export const userSignOut = () => {
         .then(() => setError("User SignedOut"))
         .catch((error) => console.log(error.message))
  }
+

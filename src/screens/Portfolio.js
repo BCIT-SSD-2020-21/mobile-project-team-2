@@ -1,57 +1,88 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Text, View } from 'react-native';
+import { StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Text, TextInput, View } from 'react-native';
 import { firebase } from '../firebase/config';
 import { EvilIcons } from '@expo/vector-icons';
-import { API_KEY, BASE_URL } from 'dotenv'
-import axios from 'axios';
-
-function StockListItem({ stock }) {
-	return (
-		<View style={styles.stockListItem}>
-			<Text style={styles.stockSymbol}>{stock.symbol}</Text>
-			<Text style={styles.stockName}>{stock.description}</Text>
-		</View>
-	)
-}
-
-function StockList({ stocks }) {
-	console.log("stocksFromStockList", stocks)
-	return (
-		<ScrollView styles={styles.stockList}>
-			{stocks.map((stock, i ) => (
-				<TouchableOpacity key={i}// onPress={() => addStockToWatchList(stock)} key={stock.symbol}
-				>
-					<StockListItem stock={stock} />
-				</TouchableOpacity>
-			)
-			)}
-		</ScrollView>
-	)
-}
-
+// import { getStockQuote } from '../api/stockapi';
+// import { API_KEY, BASE_URL } from 'dotenv'
+// import axios from 'axios';
+import StockList from '../components/atoms/StockList';
+import PositionList from '../components/atoms/PositionList';
 
 export default function Portfolio({navigation}) {
-	const [filteredStocks, setFilteredStocks] = useState(['GME', 'APPL'])
+
+	const [nav, setNav] = useState(navigation)
+	const [depositing, setDepositing] = useState(false)
+	const [depositAmount, setDepositAmount] = useState(0)
+	const [user, setUser] = useState(0);
+	
+	// GET THE USER OBJECT (contains cashOnHand, Watchlist, OwnedStocksList)
+	function fetchUser() {
+		// (firebaseAuth) current user's UUID
+		const userUID = firebase.auth().currentUser.uid
+		// get user document by user UID; setUser		
+		const userDoc = firebase.firestore().collection('users').doc(userUID)
+		userDoc.onSnapshot((doc) => {
+			console.log("current data: ", doc.data());
+			setUser(doc.data());
+		})
+	}
+	useEffect(() => {
+		fetchUser();
+	}, [])
+	console.log("Portfolio, user.positions: ", user.positions)
+
+	console.log("(TEST) Portfolio, user: ", user)
+
+	// TOGGLE ADD FUNDS FORM
+	function toggledepositFunds() {
+		setDepositing(!depositing)
+	}
+
+	// ADD FUNDS
+	function depositFunds() {
+		// TRANSACTION - Create
+		const transactionsRef = firebase.firestore().collection('transactions'); // to create transaction
+        transactionsRef.add({
+			type: "cash",
+			total: depositAmount,
+			userId: firebase.auth().currentUser.uid,
+			timestamp: Date.now()
+			}).then((docRef) => {
+			// USER - Update transactions
+			const newTransactions = [...user?.transactions, docRef.ZE.path.segments[1]]
+			usersRef.doc(firebase.auth().currentUser.uid).update({
+			  transactions: newTransactions
+			})
+		  })
+		// get current user's UID
+		const db = firebase.firestore();
+		const increment = firebase.firestore.FieldValue.increment(parseFloat(depositAmount));
+		const userRef = db.collection('users').doc(firebase.auth().currentUser.uid);
+		userRef.update({ cashOnHand: increment });
+		setDepositAmount(0)
+		toggledepositFunds();
+	}
+	function withdrawFunds() {
+		// same as deposit, but negative amount
+		// pending button and textinput
+	}
+
+	const [watchList, setWatchList] = useState(['GME', 'APPL'])
 	const [portfolioValueDifference, setPortfolioValueDifference] = useState(-34.25);
-
-	const entityRef = firebase.firestore().collection('entities')
-	console.log('entityRef', entityRef)
-
 	const [portfolioValue, setPortfolioValue] = useState(123.50);
 	useEffect(() => {
 		// GET value from DB (sum aggregate qtyOwned x currPrice from finnhub)
-		filteredStocks.map(stock => {
-			getStocks(stock)
-		})
-		
+		// watchList.map(stock => {
+		// 	getStocks(stock)
+		// })
 	}, [])
 
 	const getStocks = async (text) => {
 		try {
-			console.log("searchTerm", text)
-			const response = await axios.get(`${BASE_URL}/search?q=${text}&token=${API_KEY}`)// await stockapi.get(`/search?q=${text}&token=${API_KEY}`)
-			console.log("getStocks", response.data.result)
-			setFilteredStocks(response.data.result)
+			// console.log("searchTerm", text)
+			// const response = await axios.get(`${BASE_URL}/search?q=${text}&token=${API_KEY}`)// await stockapi.get(`/search?q=${text}&token=${API_KEY}`)
+			// console.log("getStocks", response.data.result)
+			// setwatchList(response.data.result)
 		} catch (err) {
 			console.error('API Call error:', err)
 		} 
@@ -61,11 +92,13 @@ export default function Portfolio({navigation}) {
 		// GET value from DB (sum aggregate portfolioValue (qtyOwned x currPrice from finnhub) LESS (qtyOwned x purchPrice) from firestoreDB )
 	}, [portfolioValue])
 	
-	const fundingActionPressed = () => {
-		// INITIAL: 	POST method, Add $100.00 to firestoneDB
-		// LATER:   	navigate() to Funding Screen 
-		console.log("fundingActionPressed clicked")
-	}
+	// const fundingActionPressed = () => {
+	// 	console.log("fundingActionPressed clicked");
+	// 	// INITIAL: 	POST method, Add $100.00 to firestoneDB
+	// 	// LATER:   	navigate() to Funding Screen 
+	// 	depositFunds();
+		
+	// }
 	const displayPortfolioList = () => {
 		//  navigate() to FullListScreen (takes props as any stock list) 
 		console.log("displayPortfolioList clicked")
@@ -74,6 +107,7 @@ export default function Portfolio({navigation}) {
 		//  navigate() to FullListScreen (takes props as any stock list) 
 		console.log("displayWatchList clicked")
 	}
+	
 	
     return (
 		<ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -97,15 +131,30 @@ export default function Portfolio({navigation}) {
 
 				<View style={styles.fundingContainer}>
 					<Text style={styles.fundingLabel}>{'Available funding: '}</Text>
-					<Text style={styles.fundingAmount}>{'$100,000'}</Text>
+					<Text style={styles.fundingAmount}>{user?.cashOnHand ? `$${Math.round(user.cashOnHand).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}` : '$0.00'}</Text>
 					{/* INITIALLY: 		Add $50,000 CASH 
 							LATER: 		navigate() to new page?  */}
 					<TouchableOpacity 
 						style={styles.fundingButton} 
-						title="+"
-						onPress={() => fundingActionPressed()} 
-					/>
+						onPress={toggledepositFunds} 
+					>
+						<Text style={styles.fundingButtonText}>{depositing ? 'CANCEL' : 'ADD $'}</Text>
+					</TouchableOpacity>
 				</View>
+
+				{ depositing && 
+					<View style={styles.fundingForm}>
+						<Text style={styles.fundingLabel}>{'Enter an amount: '}</Text>
+						<TextInput style={styles.fundingFormField} placeholder ="$" onChangeText={(amount) => setDepositAmount(amount)} />
+						<TouchableOpacity 
+							style={styles.fundingButton} 
+							onPress={() => depositFunds()} 
+						>
+							<Text style={styles.fundingButtonText}>{'Submit'}</Text>
+						</TouchableOpacity>
+					</View>
+				}
+
 				{/* Owned Stocks 
 				  	-- FlatList, limit 6, top change in value */}
 				<View style={styles.listingContainer}>
@@ -118,33 +167,25 @@ export default function Portfolio({navigation}) {
 							onPress={() => displayPortfolioList()} 
 						/> 
 					</View>
-					  {/* List Item Placeholders: */}
-					  <Text style={styles.listingItem}>{'AAAA - OwnedStock1'}</Text>
-					  <Text style={styles.listingItem}>{'BBBB - OwnedStock2'}</Text>
-					  <Text style={styles.listingItem}>{'CCCC - OwnedStock3'}</Text>
-					  <Text style={styles.listingItem}>{'DDDD - OwnedStock4'}</Text>
+
+					{ user?.positions && <PositionList navigation={nav} positionsArray={user.positions}/> }
+					
 				</View>	
 
 				{/* Watchlist Stocks
 				-- FlatList, limit 10, top change in value */}
-				{/* <View style={styles.listingContainer}>
+				<View style={styles.listingContainer}>
 					 <View style={styles.listingHeader}>
 						<Text style={styles.listingTitle}>Watchlist</Text>
 						{/* ->Click 'See All' --> navigate() to large FlatList (StockListScreen) */}
-						{/* <TouchableOpacity 
+						<TouchableOpacity 
 							style={styles.listingButton} 
 							title="FULL LIST"
 							onPress={() => displayWatchList()} 
 						/>
-					</View> 
-					<Text style={styles.listingItem}>{'AAA1 - WatchlistStock1'}</Text>
-					<Text style={styles.listingItem}>{'BBB2 - WatchlistStock2'}</Text>
-					<Text style={styles.listingItem}>{'CCC3 - WatchlistStock3'}</Text>
-					<Text style={styles.listingItem}>{'DDD4 - WatchlistStock4'}</Text>
-					<StockList stocks={filteredStocks}/>
-				</View> */}
-				<Text style={styles.listingTitle}>Watchlist</Text>
-				<StockList stocks={filteredStocks}/>
+					</View>
+					<StockList navigation={nav} stockArray={user?.watchlist}/>
+				</View>
 
 				{/* Footer ?  */}
 				<View style={styles.footerContainer}>
@@ -200,26 +241,51 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	fundingLabel: {
-		fontSize: 26,
+		fontSize: 20,
 		// color: '#abd4b4', // lightGreen
 	},
 	fundingAmount: {
-		fontSize: 32,
+		fontSize: 24,
 		// color: '#abd4b4', // lightGreen
 	},
-	// fundingButton: {
-	// 	width: 100,
-	// 	height: 100,
-	// //	borderRadius: '50%',
-	// 	margin: 10,
-	// 	fontSize: 42,
-	// 	color: '#abd4b4', // lightGreen
-	// 	backgroundColor: '#59a66b', // medium-green
-	// },
+	fundingButton: {
+		width: 60,
+		height: 60,
+		margin: 5,	
+		padding: 10,
+		borderRadius: 100,
+		alignItems: 'center',
+		backgroundColor: "#0876EE", // blue
+	},
+	fundingButtonText: {
+		textAlign: 'center',
+		textAlignVertical: 'center',
+		fontSize: 10,
+		color: '#abd4b4', // lightGreen
+	},
+	fundingForm: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+	},
+	fundingFormField: {
+		// fontFamily: 'Roboto',
+		height: 40,
+		fontSize: 24,
+		// marginTop: 8,
+		marginVertical: 10,
+		paddingLeft: 3,
+		paddingRight: 3,
+		color: '#000000',
+		borderColor: '#9b9b9b',
+		borderBottomWidth: 2,	
+	},
 	listingContainer: {
-		// border: '1px solid #59a66b',
 		// borderRadius: 5,
-		// width: '100%',
+		minWidth: 320,
+		width: '100%',
+		maxWidth: 400,
 		paddingLeft: 1
 	},
 	listingHeader: {
@@ -230,7 +296,7 @@ const styles = StyleSheet.create({
 	},
 	listingTitle: {
 		fontSize: 26,
-		// color: '#59a66b', // medium-green
+		color: '#59a66b', // medium-green
 	},
 	listingButton: {
 		width: 80,

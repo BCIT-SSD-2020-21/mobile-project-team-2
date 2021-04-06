@@ -13,7 +13,7 @@ export default function MenuIcon() {
   
     return (
       <TouchableOpacity onPress={openDrawer}>
-          <EvilIcons name="paperclip" size={30} color="black" style={{marginLeft: 25, marginRight: 10}} />
+          <EvilIcons name="navicon" size={30} color="black" style={{marginLeft:10}} />
       </TouchableOpacity>
     );
   };

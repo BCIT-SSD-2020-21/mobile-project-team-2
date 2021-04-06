@@ -3,19 +3,13 @@ import { Button } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { EvilIcons } from '@expo/vector-icons';
 import { userSignOut } from '../../firebase/service';
+import StockDetail from '../../screens/StockDetail'
 
 const Drawer = createDrawerNavigator();
 
 export default function DrawerNavigator() {
 	return (
 		<Drawer.Navigator initialRouteName="Portfolio">
-			<Drawer.Screen
-				name="Trade"
-				component={TradeScreenNavigator}
-				options={{
-					tabBarIcon: () => <EvilIcons name="bell" size={30} color="black" />,
-				}}
-			/>
 			<Drawer.Screen
 				name="Portfolio"
 				component={PortfolioScreenNavigator}
@@ -40,34 +34,6 @@ import Portfolio from '../../screens/Portfolio';
 import Search from '../../screens/Search';
 import MenuIcon from '../navigation/MenuIcon'
 
-const TradeScreenStack = createStackNavigator()
-function TradeScreenNavigator() {
-	return (
-		<TradeScreenStack.Navigator>
-			<TradeScreenStack.Screen
-				name="TradeScreen"
-				component={Trade}
-				options={
-					Platform.OS === "android" ?
-					{headerTitle: 'Trade',
-					headerTitleStyle: {
-						textAlign: 'center',
-						fontWeight: 'bold',
-					  },
-					headerRight: () => (
-						<Button
-							onPress={() => userSignOut()}
-							title="Log out"
-							color="#147DF0"
-							margin="20px"
-						/>
-					),
-					headerLeft: () => <MenuIcon /> } : {headerTitle: 'Trade'}}
-			/>
-		</TradeScreenStack.Navigator>
-	)
-}
-
 const PortfolioScreenStack = createStackNavigator();
 function PortfolioScreenNavigator() {
 	return (
@@ -91,6 +57,40 @@ function PortfolioScreenNavigator() {
 						/>
 					),
 					headerLeft: () => <MenuIcon /> } : {headerTitle: 'Portfolio'}}
+			/>
+			<PortfolioScreenStack.Screen 
+				name="StockDetail" 
+				component={StockDetail} 
+				options={{ 
+					headerTitle: 'Stock Detail',
+					headerTitleStyle: {
+						textAlign: 'center',
+						fontWeight: 'bold',
+					},
+					headerRight: () => (
+						<Button
+							onPress={() => userSignOut()}
+							title="Log out"
+							color="#147DF0"
+							margin="20px"
+						/>
+					),
+				}}				
+			/>
+			<PortfolioScreenStack.Screen
+				name="Trade"
+				component={Trade}
+				options={{ 
+					headerTitle: 'Trade Screen',
+					headerRight: () => (
+						<Button
+							onPress={() => userSignOut()}
+							title="Log out"
+							color="#147DF0"
+							margin="20px"
+						/>
+					), 
+				}}
 			/>
 		</PortfolioScreenStack.Navigator>
 	);
@@ -120,6 +120,42 @@ function SearchScreenNavigator() {
 					),
 					headerLeft: () => <MenuIcon /> } : {headerTitle: 'Search'}}
 			/>
+
+			<SearchScreenStack.Screen 
+				name="StockDetail" 
+				component={StockDetail} 
+				options={{ 
+					headerTitle: 'Stock Detail',
+					headerTitleStyle: {
+						textAlign: 'center',
+						fontWeight: 'bold',
+					  },
+					headerRight: () => (
+						<Button
+							onPress={() => userSignOut()}
+							title="Log out"
+							color="#147DF0"
+							margin="20px"
+						/>
+					),
+				}}				
+			/>
+			<SearchScreenStack.Screen
+				name="Trade"
+				component={Trade}
+				options={{ 
+					headerTitle: 'Trade Screen',
+					headerRight: () => (
+						<Button
+							onPress={() => userSignOut()}
+							title="Log out"
+							color="#147DF0"
+							margin="20px"
+						/>
+					), 
+				}}
+			/>
+				
 		</SearchScreenStack.Navigator>
 	)
 }

@@ -3,8 +3,9 @@ import { StyleSheet, View, Text, TextInput, Keyboard, ScrollView, TouchableOpaci
 import stockapi from '../api/stockapi'
 import { Ionicons } from '@expo/vector-icons'
 import { API_KEY, BASE_URL } from 'dotenv'
+import StockList from '../components/atoms/StockList';
+import SearchList from '../components/atoms/SearchList';
 import axios from 'axios';
-// import { useStockContext } from '../context/stockContext'
 
 // function PromptText ({ children }) {
 // 	return (
@@ -22,32 +23,9 @@ function SearchBox({ searchText, handleChangeSearchText }) {
 	)
 }
 
-function StockListItem({ stock }) {
-	return (
-		<View style={styles.stockListItem}>
-			<Text style={styles.stockSymbol}>{stock.symbol}</Text>
-			<Text style={styles.stockName}>{stock.description}</Text>
-		</View>
-	)
-}
-
-function StockList({ stocks }) {
-	console.log("+++++StocksFromStockList+++++", stocks)
-	return (
-		<ScrollView styles={styles.stockList}>
-			{stocks.map((stock, i ) => (
-				<TouchableOpacity key={i}// onPress={() => addStockToWatchList(stock)} key={stock.symbol}
-				>
-					<StockListItem stock={stock} />
-				</TouchableOpacity>
-			)
-			)}
-		</ScrollView>
-	)
-}
-
 export default function Search({ navigation }) {
 	// const { baseURL, addToWatchList } = useStockContext()
+	const [nav, setNav] = useState(navigation)
 
 	const [searchText, setSearchText] = useState("")
 	const [filteredStocks, setFilteredStocks] = useState([])
@@ -66,9 +44,9 @@ export default function Search({ navigation }) {
 		setSearchText(text)
 	}
 
-	useEffect(() => {
+	useEffect( () => {
 		if (searchText.length > 1) {
-			searchStocks(searchText)
+			 searchStocks(searchText)
 		}
 	}, [searchText])
 
@@ -76,7 +54,7 @@ export default function Search({ navigation }) {
 	const getOneStock = async ({ symbol }) => {
 		try {
 			const response = await stockapi.get(`/quote?symbol=${symbol}`)
-			console.log(response)
+			// console.log(response)
 		} catch (err) {
 			console.error('+++++API Call error+++++', err)
 		}
@@ -84,9 +62,9 @@ export default function Search({ navigation }) {
 
 	const searchStocks = async ( text ) => {
 		try {
-			console.log("searchTerm", text)
+			// console.log("searchTerm", text)
 			const response = await axios.get(`${BASE_URL}/search?q=${text}&token=${API_KEY}`)// await stockapi.get(`/search?q=${text}&token=${API_KEY}`)
-			console.log(response.data.result)
+			// console.log(response.data.result)
 			setFilteredStocks(response.data.result)
 		} catch (err) {
 			console.error('+++++API Call error+++++', err)
@@ -98,17 +76,16 @@ export default function Search({ navigation }) {
 		navigation.navigate('Stocks')
 	}
 
+	// console.log("Search: ", filteredStocks)
     return (
-		<View style={styles.container}>
-			
+		<View style={styles.container}>			
 			<SearchBox 
 				searchText={searchText}
 				handleChangeSearchText={handleChangeSearchText}
-				/>
-
-				{searchText !== "" && 
-				<StockList stocks={filteredStocks} // addStockToWatchList={handleAddStockToWatchList}
-				/>}
+			/>
+			{searchText !== "" && 
+				<SearchList navigation={nav} stocks={filteredStocks} /> // addStockToWatchList={handleAddStockToWatchList}
+			}
 		</View>
     )
 }
