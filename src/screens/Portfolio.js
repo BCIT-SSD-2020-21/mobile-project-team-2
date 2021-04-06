@@ -15,73 +15,31 @@ export default function Portfolio({navigation}) {
 	const [depositing, setDepositing] = useState(false)
 	const [depositAmount, setDepositAmount] = useState(0)
 	const [user, setUser] = useState(0);
-	
-	// try method: load positions, then loop, calc and add to new collection
-	const [positionsLoaded, setPositionsLoaded] = useState(false)
 	const [positions, setPositions] = useState([])
-
-	// try method: 
 	const [portfolioValue, setPortfolioValue] = useState(0);
-	const [positionsTotalValue, setPositionsTotalValue] = useState(0)
 	const [watchList, setWatchList] = useState([])
 	const [portfolioValueDifference, setPortfolioValueDifference] = useState(-34.25);
 
 	// GET THE USER OBJECT (contains cashOnHand, Watchlist, OwnedStocksList)
 	function fetchUser() {
-		// (firebaseAuth) current user's UUID
-		const userUID = firebase.auth().currentUser.uid
-		// get user document by user UID; setUser		
-		const userDoc = firebase.firestore().collection('users').doc(userUID)
+		const userUID = firebase.auth().currentUser.uid // (firebaseAuth)
+		const userDoc = firebase.firestore().collection('users').doc(userUID) // get user document by user UID		
 		userDoc.onSnapshot((doc) => {
-			// console.log("current data: ", doc.data()); // Shows User Object from FirestoreDB
-			setUser(doc.data());
+			setUser(doc.data()); 
 		})
 	}
 	useEffect(() => {
 		fetchUser();
 	}, [])
-	// console.log("Portfolio, user.positions: ", user.positions)
 
-	// get User's Positions (All)   
-	useEffect(() => {
-		// initialize portfolioValue calculation 
-		// setPortfolioValue(0)
-		// if (user)
-		// {
-		// 	// (async () => {
-		// 		console.log("---------START---------------------------")
-		// 		const positionsRef = firebase.firestore().collection('positions');
-		// 		let userPositionsAggregateValue = 0; // increment by current total position value  
-		// 		user.positions.map((positionId, index) => { // loop  thru user's positionArray (Id's)
-		// 	  		positionsRef.doc(positionId).onSnapshot(async (doc) => { // for each Id, get document
-		// 				// userPositions.push(doc.data())
-		// 				console.log("---------LOOP Start---------------------------")
-		// 				console.log("portfolioValue useEffect, doc.data.symbol: ", doc.data().symbol) 
-		// 				const positionStockQuote = await getStockQuote(doc.data().symbol) // GET stockQuote for symbol
-		// 				console.log("portfolioValue useEffect, positionStockQuote: ", positionStockQuote)
-		// 				console.log("portfolioValue useEffect, doc.data(): ", doc.data())
-		// 				userPositionsAggregateValue = userPositionsAggregateValue + positionStockQuote.c*doc.data().quantity // calculate current total position value, increment aggegate 
-		// 				console.log("portfolioValue useEffect, userPositionsAggregateValue: ", userPositionsAggregateValue)
-		// 				console.log("---------LOOP End---------------------------")					
-		// 	  		})
-		// 		})
-		// 		console.log("---------After-LOOP---------------------------")	
-		// 		setPositionsTotalValue(userPositionsAggregateValue) // set final value to state var	
-		// 		// setPortfolioValue(user.cashOnHand + userPositionsAggregateValue)
-		// 	// })();
-		// 	console.log("---------END---------------------------")
-		// }
-	}, [user])
-	// CurrentPortfolioValue: we will need 2 UseEffects:
-	// 1 - loop thru user.positions (onSnapshot), getDoc, add it to a stateVar(Array of Obj)
+	// CurrentPortfolioValue - need 3 UseEffects:
+	// 1 - loop thru user.positions (onSnapshot), getDoc, add it to Positions stateVar(Array of Obj)
 	// 2 - WHEN DONE, loop thru stateVar(Array of Obj) (map()), (async)getStockQuote (cannot have async inside onsnapshot )
 	// 3 - calc portfolio value
-	useEffect(() => {
-		
+	// GET POSITIONS
+	useEffect(() => {		
 		if (user.positions) {
-			// console.log('------Step1 - START -------------------- ')
 			const userUID = firebase.auth().currentUser.uid
-			// console.log("userUID", userUID)
 			const positionsRef = firebase.firestore().collection('positions');
 			positionsRef
 				.where("userId", "==", userUID)
@@ -89,72 +47,33 @@ export default function Portfolio({navigation}) {
 					querySnapshot => {
 						const userPositions = []
 						querySnapshot.forEach(doc => {
-							// console.log("doc.data(): ", doc.data())
 							userPositions.push(doc.data())
 						})
-						// console.log("userPositions: ", userPositions)
-						setPositions(userPositions);
+						setPositions(userPositions); // <--- Assign Result to Positions
 					},
 					error => {
 						console.log(error)
 					}
 				)
-
-			// const userPositions = [];
-			// user.positions.map((positionId, index) => {				
-				// positionsRef.doc(positionId).onSnapshot( doc => {
-					// userPositions.push(doc.data())
-					// userPositions.push(doc.data())
-				// 	console.log("doc.data(): ", doc.data())
-				// 	setPositions([...positions, doc.data()])
-				// })
-				
-			// })
-			// console.log("userPositions: ", userPositions)
-			// setPositions(userPositions)
-			// console.log("after snapshot")
 		}
 	}, [user])
-	// console.log("positions:", positions)
+	// GET STOCK QUOTE , CALC PositionValue, ADD TO PositionValue StateVar 
 	useEffect(() => {
-		// console.log('------Step2 - START -------------------- ')
-		// console.log('Step2 check, positions?.length: ', positions?.length)
-		// console.log('Step2 check, user?.positions?.length: ', user?.positions?.length)
 		if (positions) {
-			let aggegatePositionsCurrentTotalValue = 0;
+			let portfolioValueAggregate = user.cashOnHand; // Start with User's Available Funds, then add...
 			positions.forEach( async (position) => {
-				// ( () => {
-					const quoteResult = await getStockQuote(position.symbol)
-					// console.log('Step2, LOOP, position:', position)
-					aggegatePositionsCurrentTotalValue += quoteResult?.c * position?.quantity
-					setPositionsTotalValue(aggegatePositionsCurrentTotalValue)
-
-					// console.log('Step2, LOOP, aggegatePositionsCurrentTotalValue:', aggegatePositionsCurrentTotalValue)
-				// })
+				const quoteResult = await getStockQuote(position.symbol) // from Finnhub
+				portfolioValueAggregate += quoteResult?.c * position?.quantity
+				setPortfolioValue(portfolioValueAggregate)
 			})
-			// console.log("after forEach, aggegatePositionsCurrentTotalValue: ", aggegatePositionsCurrentTotalValue)
-			// setPositionsTotalValue(aggegatePositionsCurrentTotalValue)
-			// console.log('------Step2 - END -------------------- ')
 		}
 	}, [positions])
-	// console.log("positionsTotalValue: ", positionsTotalValue)
-	useEffect(() => {
-		// console.log('------Step3 - START -------------------- ')
-		// console.log('Step3, cashOnHand:', user.cashOnHand)
-		// console.log('Step3, positionsTotalValue:', positionsTotalValue)
-		// console.log("setPortVal, user: ", user)
-		// console.log("setPortVal, cashOnHand: ", user.cashOnHand)
-		// console.log("setPortVal, positionsTotalValue: ", positionsTotalValue)
-		setPortfolioValue(user.cashOnHand + positionsTotalValue)  
-		// console.log('------Step3 - END -------------------- ')
-	}, [user, positionsTotalValue])
-	// console.log("portfolioValue: ", portfolioValue)
 
+	// -- Handlers
 	// TOGGLE ADD FUNDS FORM
 	function toggledepositFunds() {
 		setDepositing(!depositing)
 	}
-
 	// ADD FUNDS
 	function depositFunds() {
 		// TRANSACTION - Create
@@ -183,36 +102,9 @@ export default function Portfolio({navigation}) {
 		// same as deposit, but negative amount
 		// pending button and textinput
 	}
-
-	useEffect(() => {
-		// GET value from DB (sum aggregate qtyOwned x currPrice from finnhub)
-		// watchList.map(stock => {
-		// 	getStocks(stock)
-		// })
-	}, [])
-
-	const getStocks = async (text) => {
-		try {
-			// console.log("searchTerm", text)
-			// const response = await axios.get(`${BASE_URL}/search?q=${text}&token=${API_KEY}`)// await stockapi.get(`/search?q=${text}&token=${API_KEY}`)
-			// console.log("getStocks", response.data.result)
-			// setwatchList(response.data.result)
-		} catch (err) {
-			console.error('API Call error:', err)
-		} 
-	}
 	
-	useEffect(() => {
-		// GET value from DB (sum aggregate portfolioValue (qtyOwned x currPrice from finnhub) LESS (qtyOwned x purchPrice) from firestoreDB )
-	}, [portfolioValue])
-	
-	// const fundingActionPressed = () => {
-	// 	console.log("fundingActionPressed clicked");
-	// 	// INITIAL: 	POST method, Add $100.00 to firestoneDB
-	// 	// LATER:   	navigate() to Funding Screen 
-	// 	depositFunds();
 		
-	// }
+	// Route to Full Lists:
 	const displayPortfolioList = () => {
 		//  navigate() to FullListScreen (takes props as any stock list) 
 		console.log("displayPortfolioList clicked")
