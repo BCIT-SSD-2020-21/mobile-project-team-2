@@ -257,7 +257,15 @@ const StockDetail = ({ route, navigation}) => {
 				watchList: firebase.firestore.FieldValue.arrayUnion(symbol)
 			});
 
-		}			
+		}
+        
+        const request = require('request')
+
+        request('https://finnhub.io/api/v1/stock/candle?symbol=AAPL&resolution=5&from=1615298999&to=1615302599&token=c1hkcon48v6q1s3o2kmg', { json: true }, (err, res, body) => {
+        if (err) { return console.log(err) }
+        console.log(body.url)
+        console.log(body.explanation)
+        })
 
 	// console.log("StocKDetial, route: ", route.params)
 	console.log("StocKDetial, symbol: ", symbol)
