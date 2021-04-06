@@ -260,6 +260,7 @@ const StockDetail = ({ route, navigation}) => {
 
 		}
         
+        // Sample request from Finnhub
         const request = require('request')
 
         request('https://finnhub.io/api/v1/stock/candle?symbol=AAPL&resolution=5&from=1615298999&to=1615302599&token=c1hkcon48v6q1s3o2kmg', { json: true }, (err, res, body) => {
@@ -267,6 +268,14 @@ const StockDetail = ({ route, navigation}) => {
         console.log(body.url)
         console.log(body.explanation)
         })
+
+        // Sample data from Victory
+        // const data = [
+        //     {quarter: 1, earnings: 13000},
+        //     {quarter: 2, earnings: 16500},
+        //     {quarter: 3, earnings: 14200},
+        //     {quarter: 4, earnings: 19000},
+        // ]
 
 	// console.log("StocKDetial, route: ", route.params)
 	console.log("StocKDetial, symbol: ", symbol)
