@@ -53,15 +53,7 @@ function PortfolioScreenNavigator() {
 					headerTitleStyle: {
 						fontWeight: 'bold',
                     },
-					headerRight: () => (
-                        <TouchableOpacity
-                            onPress={() => userSignOut()}
-                            title="Log out"
-                            color="#147DF0"
-                        >
-                            <AntDesign name="logout" size={24} style={{ marginRight: 10 }} color="#adcef7" />
-                        </TouchableOpacity>
-					),
+					headerRight: () => <LogOut color="#adcef7"/>
 				}}
 			/>
 			<PortfolioScreenStack.Screen 
@@ -76,7 +68,7 @@ function PortfolioScreenNavigator() {
 				headerTitleStyle: {
 					fontWeight: 'bold',
 				},
-				headerRight: () => <LogOut color="#000000"/>
+				headerRight: () => <LogOut color="#adcef7"/>
 			}}				
 			/>	
 			<PortfolioScreenStack.Screen
@@ -84,7 +76,7 @@ function PortfolioScreenNavigator() {
 				component={Trade}
 				options={{ 
 					headerTitle: 'Trade Screen',
-					headerRight: () => <LogOut color="#000000"/>
+					headerRight: () => <LogOut color="#adcef7"/>
 				}}
 			/>
 
@@ -108,7 +100,7 @@ function SearchScreenNavigator() {
                         textAlign: 'center',
                         fontWeight: 'bold',
                     },
-					headerRight: () => <LogOut color="#000000"/>
+					headerRight: () => <LogOut color="#adcef7"/>
 				}}
 			/>
 			<SearchScreenStack.Screen 
@@ -124,7 +116,7 @@ function SearchScreenNavigator() {
                         textAlign: 'center',
                         fontWeight: 'bold',
                     },
-					headerRight: () => <LogOut color="#000000"/>
+					headerRight: () => <LogOut color="#adcef7"/>
 				}}				
             />
 			<SearchScreenStack.Screen
