@@ -50,7 +50,7 @@ export default function Trade({ route, navigation }) {
     useEffect(() => { 
         user?.positions?.map(positionId => {
             positionsRef.doc(positionId).onSnapshot(doc => {
-                if (doc.data().symbol === symbol) { 
+                if (doc.data()?.symbol === symbol) { 
                     setPosition(doc.data())
                     setPositionDocumentId(positionId)
                 }
@@ -164,28 +164,34 @@ export default function Trade({ route, navigation }) {
                 console.log("updating position, Id: ", positionDocumentId)
                 // const newAverageCostPerShare = ((position.quantity * position.averageCostPerShare) + (currentNumber * stockQuote.c))/(position.quantity + currentNumber)
                 const newShareQuantity = position.quantity - currentNumber
-                positionsRef.doc(positionDocumentId).update({
-                    symbol: symbol,
-                    quantity: newShareQuantity,
-                    // averageCostPerShare: newAverageCostPerShare,
-                    lastUpdated: Date.now()
-                }).then(docRef => {
-                    // USER - Update positions
-                    const newPositions = user?.positions.push(docRef.ZE.path.segments[1])
-                    usersRef.doc(userID).update({
-                        positions: newPositions
+                if (newShareQuantity === 0) {
+                    positionsRef.doc(positionDocumentId).delete()
+                    navigation.navigate("Portfolio")
+
+                } else {
+                    positionsRef.doc(positionDocumentId).update({
+                        symbol: symbol,
+                        quantity: newShareQuantity,
+                        // averageCostPerShare: newAverageCostPerShare,
+                        lastUpdated: Date.now()
+                    }).then(docRef => {
+                        // USER - Update positions
+                        const newPositions = user?.positions.push(docRef.ZE.path.segments[1])
+                        usersRef.doc(userID).update({
+                            positions: newPositions
+                        })
                     })
-                })
-                // USER - Update cashOnHand (ADD)
-                const newCashOnHand = user?.cashOnHand ? user.cashOnHand + totalAmount : 0;
-                usersRef.doc(userID).update({
-                    cashOnHand: newCashOnHand
-                })
+                    // USER - Update cashOnHand (ADD)
+                    const newCashOnHand = user?.cashOnHand ? user.cashOnHand + totalAmount : 0;
+                    usersRef.doc(userID).update({
+                        cashOnHand: newCashOnHand
+                    })
+                }
             }
         }
         setCurrentNumber(0)
         setTotalAmount(0)
-        navigation.navigate("StockDetail")
+        navigation.navigate("Portfolio")
     }
 
     return (
