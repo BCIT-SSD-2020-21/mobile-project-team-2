@@ -119,11 +119,10 @@ const StockDetail = ({ route, navigation}) => {
 	}	
 
 	// console.log("StocKDetial, route: ", route.params)
-	console.log("StocKDetial, symbol: ", symbol)
-	console.log("StocKDetial, stockProfile: ", stockProfile)
-	console.log("StocKDetial, stockQuote: ", stockQuote)
-	console.log("user position: ", position)	
-	
+	// console.log("StocKDetial, symbol: ", symbol)
+	// console.log("StocKDetial, stockProfile: ", stockProfile)
+	// console.log("StocKDetial, stockQuote: ", stockQuote)
+	// console.log("user position: ", position)	
     return (
 		<ScrollView contentContainerStyle ={styles.scrollContainer}>
             <ImageBackground style={styles.background} source={{ uri: 'https://images.unsplash.com/photo-1520269604827-3a85b49d6c76?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=673&q=80' }}>
