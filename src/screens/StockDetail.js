@@ -2,8 +2,6 @@ import React, {useState, useEffect} from 'react'
 import {
 	StyleSheet,
 	SafeAreaView,
-	ImageBackground,
-	FlatList,
 	TouchableOpacity,
 	Text,
 	Image,
@@ -11,15 +9,9 @@ import {
 	ScrollView,
 	Linking
 } from 'react-native';
-import { API_KEY, BASE_URL } from 'dotenv'
-import axios from 'axios';
-// import stockapi from '../api/stockapi'
 import { EvilIcons } from '@expo/vector-icons';
 import { firebase } from '../firebase/config';
-import { getStockQuantity } from '../firebase/service';
 import { getStockProfile, getStockQuote } from '../api/stockapi';
-
-
 
 const styles = StyleSheet.create({
 	safeAreaContainer: {
@@ -176,13 +168,16 @@ const styles = StyleSheet.create({
 
 const StockDetail = ({ route, navigation}) => {
 	//  const {symbol} = route.params
-	const [symbol, setSymbol] = useState(route.params)
-	const [stock, setStock] = useState({})
-	const [error, setError] = useState('')
-	const [currentPrice, setCurrentPrice] = useState(null)
+	const [symbol, setSymbol] = useState()
 	const [stockProfile, setStockProfile] = useState({})	
 	const [stockQuote, setStockQuote] = useState({})
-	const [position, setPosition] = useState(false)
+	const [userPositionExists, setUserPositionExists] = useState(false)
+
+	const [user, setUser] = useState({})
+
+	useEffect(() => {
+		setSymbol(route.params)
+	})
 
     useEffect( () => {
 		(async() => {
@@ -195,75 +190,66 @@ const StockDetail = ({ route, navigation}) => {
 				console.log('StockDetail, quoteResult : ', quoteResult)
 				setStockQuote(quoteResult)			
 		}})()
-	  }, [symbol])
-
+	}, [symbol])
 	useEffect(() => {
-		// find if the current user has the stock
-
 		const userUID = firebase.auth().currentUser.uid
-		// get user document by user UID; setUser		
-		const userDoc = firebase.firestore().collection('users')
-						.doc(userUID)
-						.onSnapshot((doc) => {
-							const {positions} = doc?.data()
-							positions?.map( positionId => {  
-								const positions = firebase.firestore().collection('positions')
-									.doc(positionId)
-									.onSnapshot((doc) => {
-										if (doc?.data().symbol === symbol && doc?.data().quantity > 0) 
-										{ 
-											setPosition(true) 
-											console.log("position", doc.data())
-										}							
-									})
-								
-							})
+		firebase.firestore().collection('users').doc(userUID).onSnapshot(doc => {
+			console.log("StockDetail, doc.data(): ", doc.data())
+			setUser(doc.data())
+		})
+	}, [symbol])
+	console.log("StockDetail, user", user)
+	useEffect(() => {
+		const userUID = firebase.auth().currentUser.uid
+		const positionsRef = firebase.firestore().collection('positions')
+		positionsRef
+				.where("userId", "==", userUID)
+				.onSnapshot(
+					querySnapshot => {
+						const userPosition = 
+						querySnapshot.forEach(doc => {
+							if (doc.data().symbol === symbol) {
+								setUserPositionExists(true)
+							}
 						})
-						
-					
-	
-		
-	},[])	  
-
-	  function toTrade() {
-		  if (symbol) {
-			navigation.navigate('Trade', symbol)
-		  }
-	  }
-	  	function toTradeBuyStock() {
-			if (symbol) {
-				const params = {
-					symbol: symbol,
-					type: 'buy',
-				}
-				navigation.navigate('Trade', params)
+					},
+					error => {
+						console.log(error)
+					}
+				)
+	}, [user])
+	function toTradeBuyStock() {
+		if (symbol) {
+			const params = {
+				symbol: symbol,
+				type: 'buy',
 			}
+			navigation.navigate('Trade', params)
 		}
-		function toTradeSaleStock() {
-			if (symbol) {
-				const params = {
-					symbol: symbol,
-					type: 'sell',
-				}
-				navigation.navigate('Trade', params)
+	}
+	function toTradeSaleStock() {
+		if (symbol) {
+			const params = {
+				symbol: symbol,
+				type: 'sell',
 			}
-		}	
-
-		function toAddWatch() {
-			const userUID = firebase.auth().currentUser.uid
-			console.log('toAddWatch userUID:', userUID)
-			const userRef = firebase.firestore().collection('users').doc(userUID)
-			userRef.update({
-				watchList: firebase.firestore.FieldValue.arrayUnion(symbol)
-			});
-
-		}			
+			navigation.navigate('Trade', params)
+		}
+	}	
+	function toAddWatch() {
+		const userUID = firebase.auth().currentUser.uid
+		// console.log('toAddWatch userUID:', userUID)
+		const userRef = firebase.firestore().collection('users').doc(userUID)
+		userRef.update({
+			watchList: firebase.firestore.FieldValue.arrayUnion(symbol)
+		});
+	}			
 
 	// console.log("StocKDetial, route: ", route.params)
-	console.log("StocKDetial, symbol: ", symbol)
-	console.log("StocKDetial, stockProfile: ", stockProfile)
-	console.log("StocKDetial, stockQuote: ", stockQuote)
-	console.log("user position: ", position)	
+	// console.log("StocKDetial, symbol: ", symbol)
+	// console.log("StocKDetial, stockProfile: ", stockProfile)
+	// console.log("StocKDetial, stockQuote: ", stockQuote)
+	console.log("user position: ", userPositionExists)	
 	
     return (
 		<ScrollView contentContainerStyle ={styles.scrollContainer}>
@@ -366,8 +352,8 @@ const StockDetail = ({ route, navigation}) => {
 							<TouchableOpacity style={styles.buttonLeft}	onPress={() => toTradeBuyStock()}>
 								<Text style={styles.buttonText}	>{'Buy'}</Text> 
 							</TouchableOpacity>
-							<TouchableOpacity onPress={() => position && toTradeSaleStock()} disabled={!position} 
-							style={{...styles.buttonLeft,  backgroundColor: position ? '#147DF0':'#555555'}} >
+							<TouchableOpacity onPress={() => userPositionExists && toTradeSaleStock()} disabled={!userPositionExists} 
+							style={{...styles.buttonLeft,  backgroundColor: userPositionExists ? '#147DF0':'#555555'}} >
 								<Text style={styles.buttonText}>{'Sell'}</Text>
 							</TouchableOpacity>		
 						</View>			 
