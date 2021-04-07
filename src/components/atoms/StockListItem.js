@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { getStockProfile, getStockQuote } from '../../api/stockapi';
+import PriceAmount from './PriceAmount';
+import styles from '../../styles/positionListStyles'
 
 export default function StockListItem({ symbol, navigation }) {
 
@@ -29,52 +31,12 @@ export default function StockListItem({ symbol, navigation }) {
     }
 
     return (
-        // REVIEW API Response Data
-    <TouchableOpacity style={styles.itemContainer} onPress={() => toStockDetail()}>
-        <View style={styles.itemInfoSection}>
-            <Text style={styles.itemSymbol}>{symbol}</Text>
-            <Text style={styles.itemDescription}>{description}</Text>
+    <TouchableOpacity style={styles.container} onPress={() => toStockDetail()}>
+        <View style={styles.profile}>
+            <Text style={styles.symbol}>{symbol}</Text>
+            <Text style={styles.name}>{description}</Text>
         </View>
-        {/* <View> */}
-            {/* { currentPrice &&  */}
-              <Text style={styles.currentPrice}>{`$${Math.round(currentPrice*100/100).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
-            {/* } */}
-        {/* </View> */}
+        <PriceAmount label={'cur'} amount={currentPrice}/>
     </TouchableOpacity>
     )
 }
-
-const styles = StyleSheet.create({
-    // ...
-    itemContainer: {
-		// marginTop: 5,
-		display: 'flex',
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-    },
-    itemInfoSection: {
-        flexDirection: 'column',
-        justifyContent: 'space-around',
-    },
-    itemSymbol: {
-		fontSize: 32,
-		fontWeight: "bold",
-		//   alignSelf: "flex-start",
-      	textTransform: "uppercase"
-    },
-    itemDescription: {
-        fontSize: 24,
-        color: "#000",
-        // alignSelf: "flex-start",
-    },
-    currentPrice: {
-        fontSize: 36,
-        color: "#000",
-        fontWeight: "bold",
-        // alignSelf: "flex-end",
-        textTransform: "uppercase"
-	},
-      priceDetail: {
-		fontSize: 18,
-	}
-});

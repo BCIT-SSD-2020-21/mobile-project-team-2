@@ -2,23 +2,23 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-	scrollContainer: {
+	// CONTAINER
+    background: {
+        backgroundColor: '#082b56', // dark-blue
+	},
+    container: {
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
-	},
-	currentContainer: {
-		backgroundColor: "#0876EE",
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center',
-		color: "white"
-	},
+        width: '100%',
+        // opacity: 0.5,
+    },
+    // GREET
 	greetContainer: {
 		alignItems: 'center',
 	},
 	greetLabel: {
-		fontSize: 24,
+		fontSize: 16,
 		color: 'white', 
 		paddingTop: 20,
 		paddingBottom: 5
@@ -28,19 +28,27 @@ const styles = StyleSheet.create({
 		color: "white",
 		fontWeight: "bold",
 	},
-	status: {
-		fontSize: 20,
+	portfolioVariance: {
+		fontSize: 14,
 		color: "white",
-		paddingTop: 5,
-		paddingBottom: 10
+		// paddingTop: 5,
+		// paddingBottom: 10
 	},
 	chartContainer: {
-		textAlign: "center"
+		// textAlign: "center"
 	// 	backgroundColor: "linear-gradient(180deg, rgba(32, 140, 249, 0.96875) 0%, #1268D0 100%),linear-gradient(0deg, #0876EE, #0876EE)" // not working - need https://docs.expo.io/versions/latest/sdk/linear-gradient/
 	},
-	fundingContainer: {
+    walletActions: {
 		display: 'flex',
 		flexDirection: 'row',
+		justifyContent: 'space-around',
+		alignItems: 'center',
+        width: '80%',
+    },
+	fundingContainer: {
+        width: '100%',
+		display: 'flex',
+		// flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
 	},
@@ -53,19 +61,22 @@ const styles = StyleSheet.create({
 		// color: '#abd4b4', // lightGreen
 	},
 	fundingButton: {
-		width: 60,
-		height: 60,
+		width: '45%',
+		height: 40,
 		margin: 5,	
 		padding: 10,
-		borderRadius: 100,
+		borderRadius: 7,
 		alignItems: 'center',
-		backgroundColor: "#0876EE", // blue
+		backgroundColor: "#5584a466", // blue
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
 	},
 	fundingButtonText: {
 		textAlign: 'center',
 		textAlignVertical: 'center',
-		fontSize: 10,
-		color: '#abd4b4', // lightGreen
+		fontSize: 14,
+		color: '#cbdae4', // lightGreen
 	},
 	fundingForm: {
 		display: 'flex',
@@ -96,11 +107,13 @@ const styles = StyleSheet.create({
 		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		alignItems: 'center',
+		// alignItems: 'center',
+        marginLeft: 15,
+        marginBottom: 0,
 	},
 	listingTitle: {
 		fontSize: 26,
-		color: '#59a66b', // medium-green
+		color: '#cbdae466', //
 	},
 	listingButton: {
 		width: 80,
