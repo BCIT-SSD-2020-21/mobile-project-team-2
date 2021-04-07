@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { SafeAreaView, ScrollView, TouchableOpacity, Text, TextInput, View } from 'react-native';
-import { VictoryBar, VictoryChart, VictoryAxis, VictoryStack, VictoryTheme } from 'victory-native'
+import { VictoryBar, VictoryChart, VictoryArea, VictoryAxis, VictoryStack, VictoryTheme } from 'victory-native'
 import { firebase } from '../firebase/config';
 import { EvilIcons } from '@expo/vector-icons';
 import StockList from '../components/atoms/StockList';
@@ -8,32 +8,6 @@ import PositionList from '../components/atoms/PositionList';
 import { getStockQuote } from '../api/stockapi';
 import styles from '../styles/portfolioStyles';
 import WalletAmount from '../components/atoms/WalletAmount';
-
-// Sample data from Victory
-const data2017 = [
-    {quarter: 1, earnings: 29000},
-    {quarter: 2, earnings: 16500},
-    {quarter: 3, earnings: 14250},
-    {quarter: 4, earnings: 19000}
-    ];
-    const data2018 = [
-    {quarter: 1, earnings: 17000},
-    {quarter: 2, earnings: 11500},
-    {quarter: 3, earnings: 16800},
-    {quarter: 4, earnings: 13000}
-    ];
-    const data2019= [
-    {quarter: 1, earnings: 13500},
-    {quarter: 2, earnings: 11550},
-    {quarter: 3, earnings: 18950},
-    {quarter: 4, earnings: 15070}
-    ];
-    const data2020 = [
-    {quarter: 1, earnings: 11001},
-    {quarter: 2, earnings: 14510},
-    {quarter: 3, earnings: 17150},
-    {quarter: 4, earnings: 14960}
-    ];
 
 export default function Portfolio({navigation}) {
 
@@ -45,6 +19,22 @@ export default function Portfolio({navigation}) {
 	const [portfolioValue, setPortfolioValue] = useState(0);
 	const [watchList, setWatchList] = useState([])
 	const [portfolioValueDifference, setPortfolioValueDifference] = useState(-34.25);
+    const [portfolioValueSnapshots, setPortfolioValueSnapshots] = useState([])
+    
+    // Add Fake Data - to render victory chart
+    useState(() => {
+        let timestamp = 1000
+        let portValue = 4000
+        let snapshots = []
+        for (var i = 0; i < 14; i++) {
+            portValue = portValue + (Math.random() -0.5) * 3000
+            timestamp = timestamp - 1
+            snapshots.push({x: timestamp, y: portValue })
+        }
+        setPortfolioValueSnapshots(snapshots)
+        
+    }, [])
+    console.log("portfolioValueSnapshots: ", portfolioValueSnapshots)
 
 	// GET THE USER OBJECT (contains cashOnHand, Watchlist, OwnedStocksList)
 	function fetchUser() {
@@ -153,24 +143,38 @@ export default function Portfolio({navigation}) {
                 {/* Greeting */}
 				<View style={styles.currentContainer}>
 					<View style={styles.greetContainer}>
-						{/* some indo from firebaseAuth */}
 						<Text style={styles.greetLabel}>{'Your portfolio is valued at'}</Text>
 						<Text style={styles.portfolioValue}>{`$${Math.round(portfolioValue).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
 						<Text style={styles.status}>{`${portfolioValueDifference > 0 ? "UP" : "DOWN"} ${portfolioValueDifference} in the past week`}</Text> 
 					</View>
 					{/* Chart (Vector??) - Timeline, Changes over last period (1 week? multiple options?)*/}
-					{/* <View style={styles.chartContainer}> */}
-                        <VictoryChart domainPadding={20} width={350} height={200} theme={VictoryTheme.material}>
-                            <VictoryAxis tickValues={[ 1, 2, 3, 4 ]} tickFormat={[ "Quarter 1", "Quarter 2", "Quarter 3", "Quarter 4"]} />
-                            <VictoryAxis dependentAxis tickFormat={(x) => (`$${x / 1000}k`)} />
-                                <VictoryStack colorScale={"warm"}>
-                                    <VictoryBar data={data2017} x="quarter" y="earnings" />
-                                    <VictoryBar data={data2018} x="quarter" y="earnings" />
-                                    <VictoryBar data={data2019} x="quarter" y="earnings" />
-                                    <VictoryBar data={data2020} x="quarter" y="earnings" />
-                                </VictoryStack>
+					
+                    { portfolioValueSnapshots?.length > 2 && 
+
+                        <VictoryChart
+                            height={200}
+                            theme={VictoryTheme.material}
+                        >
+                            <VictoryAxis 
+                                style={{
+                                    grid: { stroke: "#818e99", strokeWidth: 0.2 },
+                                }}
+                            />
+                            <VictoryArea
+                                style={{
+                                    grid: 0,
+                                    data: { 
+                                        stroke: '#cbdae4',
+                                        fill: '#5584a466' 
+                                    },
+                                    // parent: { border: "1px solid #ccc"}
+                                }}
+                                data={portfolioValueSnapshots}
+                            />
                         </VictoryChart>
-					</View>
+                    }
+                    
+                    </View>
 				{/* </View> */}
 
 
