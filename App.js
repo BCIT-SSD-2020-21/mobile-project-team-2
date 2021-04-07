@@ -9,6 +9,7 @@ import { firebase } from './src/firebase/config';
 // import StockDetail from './src/screens/StockDetail'
 import { Platform} from 'react-native';
 import { LogBox } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const Stack = createStackNavigator()
 
