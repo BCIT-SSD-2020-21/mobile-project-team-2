@@ -43,8 +43,8 @@ export const walletStyles = StyleSheet.create({
         transform: [
             { rotateX: "10deg" },
             { rotateZ: "-55deg" },
-            { translateX: 10 },
-            { translateY: 10 }
+            { translateX: 2 },
+            { translateY: 7 }
         ]
     },
     walletAmountInteger: {

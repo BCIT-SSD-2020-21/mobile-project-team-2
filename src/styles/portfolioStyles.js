@@ -6,9 +6,10 @@ const styles = StyleSheet.create({
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
+        backgroundColor: '#082b56', // dark-blue
 	},
 	currentContainer: {
-		backgroundColor: "#0876EE",
+		// backgroundColor: "#0876EE",
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
