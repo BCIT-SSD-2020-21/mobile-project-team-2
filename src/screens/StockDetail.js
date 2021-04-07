@@ -227,12 +227,12 @@ const StockDetail = ({ route, navigation}) => {
 		
 	},[])	  
 
-	    function toTrade() {
+	    const toTrade = () => {
 		  if (symbol) {
 			navigation.navigate('Trade', symbol)
 		}
 	    }
-	  	function toTradeBuyStock() {
+	  	const toTradeBuyStock = () => {
 			if (symbol) {
 				const params = {
 					symbol: symbol,
@@ -241,7 +241,7 @@ const StockDetail = ({ route, navigation}) => {
 				navigation.navigate('Trade', params)
 			}
 		}
-		function toTradeSaleStock() {
+		const toTradeSaleStock = () => {
 			if (symbol) {
 				const params = {
 					symbol: symbol,
@@ -251,7 +251,7 @@ const StockDetail = ({ route, navigation}) => {
 			}
 		}	
 
-		function toAddWatch() {
+		const toAddWatch = () => {
 			const userUID = firebase.auth().currentUser.uid
 			console.log('toAddWatch userUID:', userUID)
 			const userRef = firebase.firestore().collection('users').doc(userUID)
