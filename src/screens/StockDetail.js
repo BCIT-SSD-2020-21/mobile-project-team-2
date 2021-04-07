@@ -18,7 +18,7 @@ const StockDetail = ({ route, navigation}) => {
 
     const [portfolioValueDifference, setPortfolioValueDifference] = useState(-34.25);
     const [portfolioValueSnapshots, setPortfolioValueSnapshots] = useState([])
-
+    
     // Add Fake Data - to render victory chart
     useState(() => {
         let timestamp = 1000

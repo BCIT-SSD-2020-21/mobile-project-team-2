@@ -64,8 +64,9 @@ const styles = StyleSheet.create({
     },	
     portfolio : {
 		color: '#fff',
-		fontSize: 26,
-		fontWeight: 'bold'
+		fontSize: 22,
+        marginTop: 5
+		// fontWeight: 'bold'
     },	
 	bodyContainer: {
 		width: '80%',	
