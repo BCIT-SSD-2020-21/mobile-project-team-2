@@ -13,8 +13,9 @@ const BottomTab = createBottomTabNavigator();
 export default function BottomTabNavigator() {
 
 	return (
-		<BottomTab.Navigator initialRouteName= {"Portfolio"} tabBarOptions={{ style: { backgroundColor: '#244266'}}}> 
-        {/* activeTintColor: '#F9E79F', activeBackgroundColor: '#082a53', inactiveTintColor: '#F9E79F', inactiveBackgroundColor: '#244266' */}
+		<BottomTab.Navigator initialRouteName= {"Portfolio"} tabBarOptions={{ style: { backgroundColor: '#0C0E10', borderTopWidth: 0}}}> 
+        {/* USE TO CHANGE ACTIVE/INACTIVE - LEAVES WHITE SPACE AT BOTTOM activeTintColor: '#F9E79F', activeBackgroundColor: '#0C0E10', inactiveTintColor: '#F9E79F', inactiveBackgroundColor: '#0C0E10' */}
+        {/* USE TO FILL IN BOTTOMTAB COMPLETELY style: { backgroundColor: '#0C0E10', borderTopWidth: 0} */}
 			<BottomTab.Screen
                 name="Portfolio"
                 component={PortfolioScreenNavigator}
