@@ -1,20 +1,19 @@
 import React, {useState, useEffect} from 'react'
 import { SafeAreaView, TouchableOpacity, Text, Image, View, ScrollView, Linking } from 'react-native';
-import { EvilIcons } from '@expo/vector-icons';
 import { firebase } from '../firebase/config';
 import { getStockProfile, getStockQuote } from '../api/stockapi';
 import styles from '../styles/stockDetailsStyles'
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryStack, VictoryTheme } from 'victory-native'
+import { Watch, WatchOff } from "../icons/Watch";
 
 const StockDetail = ({ route, navigation}) => {
+
 	//  const {symbol} = route.params
 	const [symbol, setSymbol] = useState(route.params)
-	const [stock, setStock] = useState({})
-	const [error, setError] = useState('')
-	const [currentPrice, setCurrentPrice] = useState(null)
 	const [stockProfile, setStockProfile] = useState({})	
 	const [stockQuote, setStockQuote] = useState({})
 	const [position, setPosition] = useState(false)
+    const [watch, setWatch] = useState(false)
 
     useEffect(() => {
 		(async() => {
@@ -29,100 +28,104 @@ const StockDetail = ({ route, navigation}) => {
 			}
 		})()
 	}, [symbol])
+	    
 
 	useEffect(() => {
 		// find if the current user has the stock
 
 		const userUID = firebase.auth().currentUser.uid
-		// get user document by user UID; setUser		
+		// get user document by user UID; setUser	
+         console.log("position userUID", userUID)	
 		const userDoc = firebase.firestore().collection('users')
-			.doc(userUID)
-			.onSnapshot((doc) => {
-				const {positions} = doc?.data()
-				positions?.map( positionId => {  
-					const positions = firebase.firestore().collection('positions')
-						.doc(positionId)
-						.onSnapshot((doc) => {
-							if (doc?.data().symbol === symbol && doc?.data().quantity > 0) { 
-								setPosition(true) 
-								console.log("position", doc.data())
-							}							
-						})
-					
-				})
-			})
+            .doc(userUID)
+            .onSnapshot((doc) => {
+                const {positions, watchlist} = doc?.data()
+
+                // detech position on this stock
+                positions?.map( positionId => {  
+                    const positions = firebase.firestore().collection('positions')
+                        .doc(positionId)
+                        .onSnapshot((doc) => {
+                            if (doc && doc.data() && (doc.data().symbol === symbol && doc.data().quantity > 0)) 
+                            { 
+                                setPosition(true) 
+                                console.log("position", doc?.data())
+                            }							
+                        })
+                    
+                })
+
+                // detech the user watch on this stock
+                console.log("watchlist", watchlist)
+                if(watchlist && watchlist.includes(symbol)) {
+                    setWatch(true)
+                }              
+            })	
 	},[])	  
 
-	const toTrade = () => {
-		if (symbol) {
-			navigation.navigate('Trade', symbol)
-		}
-	}
-
-	const toTradeBuyStock = () => {
-		if (symbol) {
-			const params = {
-				symbol: symbol,
-				type: 'buy',
-			}
-			navigation.navigate('Trade', params)
-		}
-	}
-
-	const toTradeSaleStock = () => {
-		if (symbol) {
-			const params = {
-				symbol: symbol,
-				type: 'sell',
-			}
-			navigation.navigate('Trade', params)
-		}
-	}	
-
-    const toAddWatch = () => {
-        const userUID = firebase.auth().currentUser.uid
-        console.log('toAddWatch userUID:', userUID)
-        const userRef = firebase.firestore().collection('users').doc(userUID)
-        userRef.update({
-            watchList: firebase.firestore.FieldValue.arrayUnion(symbol)
-        });
-
+    function toTradeBuyStock() {
+        if (symbol) {
+            const params = {
+                symbol: symbol,
+                type: 'buy',
+            }
+            navigation.navigate('Trade', params)
+        }
     }
+
+    function toTradeSaleStock() {
+        if (symbol) {
+            const params = {
+                symbol: symbol,
+                type: 'sell',
+            }
+            navigation.navigate('Trade', params)
+        }
+    }
+
+    function toAddWatch() {
+        try {
+            const userUID = firebase.auth().currentUser?.uid
+            if(userUID) {
+                console.log('toAddWatch userUID:', userUID)
+                console.log('toAddWatch symbol:', symbol)
+                const userRef = firebase.firestore().collection('users').doc(userUID)
+                userRef.update({
+                    watchlist: watch ? firebase.firestore.FieldValue.arrayRemove(symbol) : firebase.firestore.FieldValue.arrayUnion(symbol)
+                });
+                setWatch(!watch)
+            }
+        } catch(err) {
+            console.log(err)
+        }
+	}	
         
-        // Sample request from Finnhub
-        // const request = require('request')
+    // Sample data from Victory
+    const data2017 = [
+        {quarter: 1, earnings: 29000},
+        {quarter: 2, earnings: 16500},
+        {quarter: 3, earnings: 14250},
+        {quarter: 4, earnings: 19000}
+    ];
+    const data2018 = [
+        {quarter: 1, earnings: 17000},
+        {quarter: 2, earnings: 11500},
+        {quarter: 3, earnings: 16800},
+        {quarter: 4, earnings: 13000}
+    ];
+    const data2019= [
+        {quarter: 1, earnings: 13500},
+        {quarter: 2, earnings: 11550},
+        {quarter: 3, earnings: 18950},
+        {quarter: 4, earnings: 15070}
+    ];
 
-        // request('https://finnhub.io/api/v1/stock/candle?symbol=AAPL&resolution=5&from=1615298999&to=1615302599&token=c1hkcon48v6q1s3o2kmg', { json: true }, (err, res, body) => {
-        // if (err) { return console.log(err) }
-        // console.log(body.url)
-        // console.log(body.explanation)
-        // })
-
-        // Sample data from Victory
-        const data2017 = [
-            {quarter: 1, earnings: 29000},
-            {quarter: 2, earnings: 16500},
-            {quarter: 3, earnings: 14250},
-            {quarter: 4, earnings: 19000}
-          ];
-          const data2018 = [
-            {quarter: 1, earnings: 17000},
-            {quarter: 2, earnings: 11500},
-            {quarter: 3, earnings: 16800},
-            {quarter: 4, earnings: 13000}
-          ];
-          const data2019= [
-            {quarter: 1, earnings: 13500},
-            {quarter: 2, earnings: 11550},
-            {quarter: 3, earnings: 18950},
-            {quarter: 4, earnings: 15070}
-          ];
-          const data2020 = [
-            {quarter: 1, earnings: 11001},
-            {quarter: 2, earnings: 14510},
-            {quarter: 3, earnings: 17150},
-            {quarter: 4, earnings: 14960}
-          ];
+    const data2020 = [
+        {quarter: 1, earnings: 11001},
+        {quarter: 2, earnings: 14510},
+        {quarter: 3, earnings: 17150},
+        {quarter: 4, earnings: 14960}
+    ];        
 
 	// console.log("StocKDetial, route: ", route.params)
 	console.log("StocKDetial, symbol: ", symbol)
@@ -135,8 +138,8 @@ const StockDetail = ({ route, navigation}) => {
 			<SafeAreaView style={styles.safeAreaContainer}>
 				<View style={styles.container}>
 					<View style={styles.titleContainer}>
-						<TouchableOpacity style={styles.watch} 	onPress={() => toAddWatch()}>
-							<EvilIcons  name='eye' size={50} color='white' />
+						<TouchableOpacity style={styles.watch} 	onPress={() => toAddWatch(watch)}>
+							{watch ? <Watch /> : <WatchOff />}
 						</TouchableOpacity>
 						<View style={styles.companyDefaultLogo}>
 							<Text style={styles.companyLogoName}>{symbol}</Text>
