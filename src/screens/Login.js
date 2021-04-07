@@ -12,7 +12,7 @@ export default function Login() {
 
 	const onLogin = () => {
         firebase.auth().signInWithEmailAndPassword(email, password)
-            .then((result) => {setError("sucess")})
+            .then((result) => {setError("success")})
             .catch((error) => {setError(""+error) })
     }	  
 
