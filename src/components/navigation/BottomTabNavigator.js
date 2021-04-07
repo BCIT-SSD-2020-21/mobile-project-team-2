@@ -41,7 +41,7 @@ function PortfolioScreenNavigator() {
 				name="Portfolio"
 				component={Portfolio}
 				options={{ 
-					headerTitle: 'PORTFOLIO',
+					headerTitle: 'Portfolio',
 					headerStyle: {
                         textAlign: 'center',
 						backgroundColor: '#082a53', // dark-blue
@@ -58,7 +58,7 @@ function PortfolioScreenNavigator() {
                             title="Log out"
                             color="#147DF0"
                         >
-                            <AntDesign name="logout" size={28} color="#adcef7" />
+                            <AntDesign name="logout" size={28} style={{ marginRight: 10 }} color="#adcef7" />
                         </TouchableOpacity>
 					),
 				}}
@@ -79,7 +79,7 @@ function PortfolioScreenNavigator() {
                         color="#147DF0"
                         margin="20px"
                     >
-                        <AntDesign name="logout" size={24} color="black" />
+                        <AntDesign name="logout" size={24} style={{ marginRight: 10 }} color="black" />
                     </TouchableOpacity>
 				),
 			}}				
@@ -96,7 +96,7 @@ function PortfolioScreenNavigator() {
                             color="#147DF0"
                             margin="20px"
                         >
-                            <AntDesign name="logout" size={24} color="black" />
+                            <AntDesign name="logout" size={24} style={{ marginRight: 10 }} color="black" />
                         </TouchableOpacity>
 					),
 				}}
@@ -121,7 +121,7 @@ function SearchScreenNavigator() {
                             color="#147DF0"
                             margin="20px"
                         >
-                            <AntDesign name="logout" size={24} color="black" />
+                            <AntDesign name="logout" size={24} style={{ marginRight: 10 }} color="black" />
                         </TouchableOpacity>
 					),
 				}}
@@ -144,7 +144,7 @@ function SearchScreenNavigator() {
                             color="#147DF0"
                             margin="20px"
                         >
-                            <AntDesign name="logout" size={24} color="black" />
+                            <AntDesign name="logout" size={24} style={{ marginRight: 10 }} color="black" />
                         </TouchableOpacity>
 					),
 				}}				
@@ -161,7 +161,7 @@ function SearchScreenNavigator() {
                             color="#147DF0"
                             margin="20px"
                         >
-                            <AntDesign name="logout" size={24} color="black" />
+                            <AntDesign name="logout" size={24} style={{ marginRight: 10 }} color="black" />
                         </TouchableOpacity>
 					),
 				}}
