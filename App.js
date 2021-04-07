@@ -8,6 +8,7 @@ import BottomTabNavigator from './src/components/navigation/BottomTabNavigator';
 import { firebase } from './src/firebase/config';
 // import StockDetail from './src/screens/StockDetail'
 import { Platform} from 'react-native';
+import { LogBox } from 'react-native';
 
 const Stack = createStackNavigator()
 
@@ -22,6 +23,8 @@ const PlatformNavigator = Platform.select({
 })()
 
 export default function App() {
+
+LogBox.ignoreLogs(['Setting a timer']);
 
   const [user, setUser] = useState(null);
 

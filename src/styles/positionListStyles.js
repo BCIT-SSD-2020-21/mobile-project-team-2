@@ -97,14 +97,12 @@ const styles = StyleSheet.create({
         padding: 4,
     }, 
     quantityLabel: {
-        fontFamily: 'sans-serif',
         fontSize: 12,
         opacity: 0.8,
         fontStyle: 'italic',
         color: '#adcef7',
     },
     quantityValue: {
-        fontFamily: 'sans-serif',
         opacity: 0.9,
         marginRight: 30,
         fontSize: 18,
