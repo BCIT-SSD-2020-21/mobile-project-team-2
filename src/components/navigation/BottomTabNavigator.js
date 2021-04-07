@@ -91,7 +91,7 @@ function SearchScreenNavigator() {
 				name="Search"
 				component={Search}
 				options={{ 
-					headerTitle: 'Search Stocks',
+					headerTitle: 'Search',
                     headerStyle: {
                         backgroundColor: '#041C2F'
                     },
