@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 export default function SearchListItem({navigation, stock}) {
         
-    function toStockDetail() {
+    const toStockDetail = () => {
         if (stock.symbol) {
           navigation.navigate('StockDetail', stock.symbol)
         }

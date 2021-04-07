@@ -1,35 +1,28 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
-// import { useEffect } from 'react/cjs/react.development';
 import { getStockProfile, getStockQuote } from '../../api/stockapi';
 
-export default function StockListItem({onPress, symbol, navigation}) {
+export default function StockListItem({ symbol, navigation }) {
 
-    const [loaded, setLoaded] = useState(false)
-    // const [stockSymbol, setStockSymbol] = useState(symbol)
     const [description, setDescription] = useState("")
     const [currentPrice, setCurrentPrice] = useState("")
-    useEffect(() => {
-      if (symbol) {
-        (async () => {
-          const profileResult = await getStockProfile(symbol);
-          // console.log('profileResult: ', profileResult)
-          setDescription(profileResult.name)
-        })();
-      }
+    
+	useEffect(() => {
+      	if (symbol) {
+			(async () => {
+				const profileResult = await getStockProfile(symbol);
+				// console.log('profileResult: ', profileResult)
+				setDescription(profileResult.name)
+			})();
+			(async () => {
+				const quoteResult = await getStockQuote(symbol);
+				// console.log('quoteResult: ', quoteResult)
+				setCurrentPrice(quoteResult.c)
+			})();
+      	}
     }, [])
 
-    useEffect(() => {
-      if (symbol) {
-        (async () => {
-          const quoteResult = await getStockQuote(symbol);
-          // console.log('quoteResult: ', quoteResult)
-          setCurrentPrice(quoteResult.c)
-        })();
-      }
-    }, [])
-
-    function toStockDetail() {
+    const toStockDetail = () => {
       if (symbol) {
         navigation.navigate('StockDetail', symbol)
       }
@@ -54,20 +47,20 @@ export default function StockListItem({onPress, symbol, navigation}) {
 const styles = StyleSheet.create({
     // ...
     itemContainer: {
-      // marginTop: 5,
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-between',
+		// marginTop: 5,
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
     },
     itemInfoSection: {
         flexDirection: 'column',
         justifyContent: 'space-around',
     },
     itemSymbol: {
-      fontSize: 32,
-      fontWeight: "bold",
-    //   alignSelf: "flex-start",
-      textTransform: "uppercase"
+		fontSize: 32,
+		fontWeight: "bold",
+		//   alignSelf: "flex-start",
+      	textTransform: "uppercase"
     },
     itemDescription: {
         fontSize: 24,
@@ -80,8 +73,8 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         // alignSelf: "flex-end",
         textTransform: "uppercase"
-      },
+	},
       priceDetail: {
-        fontSize: 18,
-      }
-  });
+		fontSize: 18,
+	}
+});
