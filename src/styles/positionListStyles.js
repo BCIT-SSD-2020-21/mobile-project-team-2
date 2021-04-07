@@ -5,24 +5,31 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        borderWidth: 1,
-        margin: 2,
+        borderTopWidth: 0.4,
+        borderLeftWidth: 0.2,
+        borderColor: '#cbdae4',
+        borderRadius: 5,
+        padding: 5,
+        marginBottom: 10,
+        marginHorizontal: 10,
+        backgroundColor: '#5584a466',
     },
     profile: {
         flexDirection: 'column',
-        justifyContent: 'space-around',
+        justifyContent: 'flex-start',
+        marginVertical: 15,
     },
     symbol: {
         textAlign: 'left',
         fontSize: 24,
         fontWeight: "bold",
-        textTransform: "uppercase"
+        textTransform: "uppercase",
+        color: '#cbdae466', //
     },
-    
     name: {
         textAlign: 'left',
         fontSize: 18,
-        color: "#000",
+        color: '#cbdae4', // white
     },
     amounts: {
         flexDirection: 'column',
@@ -38,7 +45,8 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: 'center',
         color: "#000",
-        textTransform: "uppercase"
+        textTransform: "uppercase",
+        color: '#f1e9d1BF', // white
     },
     currentPriceDecimal: {
         fontSize: 14,
@@ -76,6 +84,34 @@ const styles = StyleSheet.create({
         color: "#000",
         textTransform: "uppercase"
     },
+
+
+
+    quantityBox: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        // width: '97%',
+        padding: 4,
+    }, 
+    quantityLabel: {
+        fontFamily: 'sans-serif',
+        fontSize: 12,
+        opacity: 0.8,
+        fontStyle: 'italic',
+        color: '#adcef7',
+    },
+    quantityValue: {
+        fontFamily: 'sans-serif',
+        opacity: 0.9,
+        marginRight: 30,
+        fontSize: 18,
+        color: '#e2e2e9',
+        transform: [{ rotate: "3deg" }]
+    },
+
+
 });
 
 export default styles
