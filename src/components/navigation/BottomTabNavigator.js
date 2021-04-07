@@ -43,13 +43,11 @@ function PortfolioScreenNavigator() {
 				options={{ 
 					headerTitle: 'PORTFOLIO',
 					headerStyle: {
-                        textAlign: 'center',
 						backgroundColor: '#082a53', // dark-blue
 					  },
 					headerTintColor: '#adcef7',
 					headerTitleStyle: {
 						// fontFamily: 'Garamond',
-						textAlign: 'center',
 						fontWeight: 'bold',
                     },
 					headerRight: () => (
@@ -69,7 +67,6 @@ function PortfolioScreenNavigator() {
 				options={{ 
 				headerTitle: 'Stock Detail',
 				headerTitleStyle: {
-					textAlign: 'center',
 					fontWeight: 'bold',
 				},
 				headerRight: () => (
@@ -134,7 +131,6 @@ function SearchScreenNavigator() {
 					headerTitle: 'Stock Detail',
 
 					headerTitleStyle: {
-						textAlign: 'center',
 						fontWeight: 'bold',
 					  },
 					headerRight: () => (
