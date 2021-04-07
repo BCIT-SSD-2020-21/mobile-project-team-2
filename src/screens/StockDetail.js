@@ -128,11 +128,10 @@ const StockDetail = ({ route, navigation}) => {
     ];        
 
 	// console.log("StocKDetial, route: ", route.params)
-	console.log("StocKDetial, symbol: ", symbol)
-	console.log("StocKDetial, stockProfile: ", stockProfile)
-	console.log("StocKDetial, stockQuote: ", stockQuote)
-	console.log("user position: ", position)	
-	
+	// console.log("StocKDetial, symbol: ", symbol)
+	// console.log("StocKDetial, stockProfile: ", stockProfile)
+	// console.log("StocKDetial, stockQuote: ", stockQuote)
+	// console.log("user position: ", position)	
     return (
 		<ScrollView contentContainerStyle ={styles.scrollContainer}>
 			<SafeAreaView style={styles.safeAreaContainer}>
@@ -187,7 +186,9 @@ const StockDetail = ({ route, navigation}) => {
 
 						 <View style={styles.company}> 				
 							<Text style={styles.companyInfo} numberOfLines={1}>Company Info&nbsp;</Text>
-							<Image style={styles.companyLogo} source={{ uri: stockProfile.logo}}/>
+                            {
+                                !!stockProfile.logo && <Image style={styles.companyLogo} source={{ uri: stockProfile.logo}}/>
+                            }
 						</View>
 					
 						<View style={styles.card}>

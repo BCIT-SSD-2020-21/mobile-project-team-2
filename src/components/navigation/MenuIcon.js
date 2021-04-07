@@ -3,7 +3,7 @@ import { TouchableOpacity } from 'react-native';
 import { EvilIcons } from '@expo/vector-icons';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 
-export default function MenuIcon() {
+export default function MenuIcon({color}) {
     const navigation = useNavigation();
   
     const openDrawer = useCallback(() => {
@@ -12,7 +12,7 @@ export default function MenuIcon() {
   
     return (
         <TouchableOpacity onPress={openDrawer}>
-            <EvilIcons name="navicon" size={30} color="black" style={{marginLeft:10}} />
+            <EvilIcons name="navicon" size={30} color={color} style={{marginLeft:10}} />
         </TouchableOpacity>
     );
 };

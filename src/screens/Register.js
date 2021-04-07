@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect } from 'react';
-import { SafeAreaView, Text, Image, TextInput, Button, View } from 'react-native';
+import { SafeAreaView, Text, Image, TextInput, Button, View, ScrollView } from 'react-native';
 import { firebase } from '../firebase/config';
 import {resetPassword} from './ResetPassword'
 import styles from '../styles/authStyles'
@@ -47,26 +47,28 @@ export default function Register({navigation}) {
 	  }
 
     return (
-      	<SafeAreaView style={styles.container}>
-			<Image style={styles.image} source={require('../../assets/images/logo.png')} />
-			<View style={{marginBottom: 30}}>
-				<Text>{error}</Text>
-				<View>
-					<Text style={styles.label}>Email Address</Text>
-					<TextInput style={styles.input} autoCorrect={false} autoCapitalize={'none'} onChangeText={(email) => setEmail(email.trim())} />
-				</View>
-				<View>
-					<Text style={styles.label}>Password</Text>
-					<TextInput style={styles.input} secureTextEntry={true} onChangeText={pw => setPassword(pw)} />
-				</View>	
-				<View>
-					<Text style={styles.label}>Confirm Password</Text>
-					<TextInput style={styles.input} secureTextEntry={true} onChangeText={pw => setConfirmPassword(pw)} />
-				</View>				
-				<Text style={styles.forgot} onPress={() => resetPassword(email)}>Forgot password or email?</Text>	
-				<Button style={styles.button} onPress={() => onSignUp()} title="Sign Up" />
-			</View>								
-		</SafeAreaView>
+        <ScrollView>
+            <SafeAreaView style={styles.container}>
+                <Image style={styles.image} source={require('../../assets/images/logo.png')} />
+                <View style={{marginBottom: 30}}>
+                    <Text>{error}</Text>
+                    <View>
+                        <Text style={styles.label}>Email Address</Text>
+                        <TextInput style={styles.input} autoCorrect={false} autoCapitalize={'none'} onChangeText={(email) => setEmail(email.trim())} />
+                    </View>
+                    <View>
+                        <Text style={styles.label}>Password</Text>
+                        <TextInput style={styles.input} secureTextEntry={true} onChangeText={pw => setPassword(pw)} />
+                    </View>	
+                    <View>
+                        <Text style={styles.label}>Confirm Password</Text>
+                        <TextInput style={styles.input} secureTextEntry={true} onChangeText={pw => setConfirmPassword(pw)} />
+                    </View>				
+                    <Text style={styles.forgot} onPress={() => resetPassword(email)}>Forgot password or email?</Text>	
+                    <Button style={styles.button} onPress={() => onSignUp()} title="Sign Up" />
+                </View>								
+            </SafeAreaView>
+        </ScrollView>
     )
 }
 
