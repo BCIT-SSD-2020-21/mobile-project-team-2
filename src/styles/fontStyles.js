@@ -15,7 +15,6 @@ export const headerValueStyles = StyleSheet.create({
 
     }, 
     label: {
-        fontFamily: 'sans-serif',
         fontSize: 18,
         margin: 4,
         opacity: 0.8,
@@ -28,7 +27,6 @@ export const headerValueStyles = StyleSheet.create({
         alignItems: 'center',
     },
     currencySymbol: {
-        fontFamily: 'sans-serif',
         fontSize: 20,
         fontWeight: 'bold',
         fontStyle: 'italic',
@@ -43,14 +41,12 @@ export const headerValueStyles = StyleSheet.create({
         ]
     },
     integer: {
-        fontFamily: 'sans-serif',
         opacity: 0.9,
         fontSize: 38,
         color: '#e2e2e9',
         transform: [{ rotate: "3deg" }]
     },
     decimal: {
-        fontFamily: 'sans-serif',
         opacity: 0.8,
         fontSize: 22,
         color: '#e2e2e9',
@@ -75,7 +71,6 @@ export const priceStyles = StyleSheet.create({
 
     }, 
     label: {
-        fontFamily: 'sans-serif',
         fontSize: 12,
         margin: 4,
         opacity: 0.8,
@@ -88,7 +83,6 @@ export const priceStyles = StyleSheet.create({
         alignItems: 'center',
     },
     currencySymbol: {
-        fontFamily: 'sans-serif',
         fontSize: 18,
         fontWeight: 'bold',
         fontStyle: 'italic',
@@ -102,14 +96,12 @@ export const priceStyles = StyleSheet.create({
         ]
     },
     integer: {
-        fontFamily: 'sans-serif',
         opacity: 0.9,
         fontSize: 18,
         color: '#e2e2e9',
         transform: [{ rotate: "3deg" }]
     },
     decimal: {
-        fontFamily: 'sans-serif',
         opacity: 0.8,
         fontSize: 12,
         color: '#e2e2e9',
@@ -134,7 +126,6 @@ export const walletStyles = StyleSheet.create({
 
     }, 
     walletLabel: {
-        fontFamily: 'sans-serif',
         fontSize: 16,
         margin: 4,
         opacity: 0.8,
@@ -147,7 +138,6 @@ export const walletStyles = StyleSheet.create({
         alignItems: 'center',
     },
     walletAmountSymbol: {
-        fontFamily: 'sans-serif',
         fontSize: 16,
         fontWeight: 'bold',
         fontStyle: 'italic',
@@ -162,14 +152,12 @@ export const walletStyles = StyleSheet.create({
         ]
     },
     walletAmountInteger: {
-        fontFamily: 'sans-serif',
         opacity: 0.9,
         fontSize: 32,
         color: '#e2e2e9',
         transform: [{ rotate: "3deg" }]
     },
     walletAmountDecimal: {
-        fontFamily: 'sans-serif',
         opacity: 0.8,
         fontSize: 16,
         color: '#e2e2e9',
