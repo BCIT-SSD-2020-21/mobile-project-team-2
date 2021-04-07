@@ -58,7 +58,7 @@ function PortfolioScreenNavigator() {
                             title="Log out"
                             color="#147DF0"
                         >
-                            <AntDesign name="logout" size={28} style={{ marginRight: 10 }} color="#adcef7" />
+                            <AntDesign name="logout" size={24} style={{ marginRight: 10 }} color="#adcef7" />
                         </TouchableOpacity>
 					),
 				}}
@@ -68,6 +68,10 @@ function PortfolioScreenNavigator() {
 				component={StockDetail} 
 				options={{ 
 				headerTitle: 'Stock Detail',
+                headerStyle: {
+                    backgroundColor: '#082a53'
+                },
+                headerTintColor: '#adcef7',
 				headerTitleStyle: {
 					textAlign: 'center',
 					fontWeight: 'bold',
@@ -79,7 +83,7 @@ function PortfolioScreenNavigator() {
                         color="#147DF0"
                         margin="20px"
                     >
-                        <AntDesign name="logout" size={24} style={{ marginRight: 10 }} color="black" />
+                        <AntDesign name="logout" size={24} style={{ marginRight: 10 }} color="#adcef7" />
                     </TouchableOpacity>
 				),
 			}}				
@@ -114,6 +118,14 @@ function SearchScreenNavigator() {
 				component={Search}
 				options={{ 
 					headerTitle: 'Search Stocks',
+                    headerStyle: {
+                        backgroundColor: '#082a53'
+                    },
+                    headerTintColor: '#adcef7',
+                    headerTitleStyle: {
+                        textAlign: 'center',
+                        fontWeight: 'bold',
+                    },
 					headerRight: () => (
                         <TouchableOpacity
                             onPress={() => userSignOut()}
@@ -121,7 +133,7 @@ function SearchScreenNavigator() {
                             color="#147DF0"
                             margin="20px"
                         >
-                            <AntDesign name="logout" size={24} style={{ marginRight: 10 }} color="black" />
+                            <AntDesign name="logout" size={24} style={{ marginRight: 10 }} color="#adcef7" />
                         </TouchableOpacity>
 					),
 				}}
@@ -132,11 +144,14 @@ function SearchScreenNavigator() {
 				component={StockDetail} 
 				options={{ 
 					headerTitle: 'Stock Detail',
-
-					headerTitleStyle: {
-						textAlign: 'center',
-						fontWeight: 'bold',
-					  },
+                    headerStyle: {
+                        backgroundColor: '#082a53'
+                    },
+                    headerTintColor: '#adcef7',
+                    headerTitleStyle: {
+                        textAlign: 'center',
+                        fontWeight: 'bold',
+                    },
 					headerRight: () => (
                         <TouchableOpacity
                             onPress={() => userSignOut()}

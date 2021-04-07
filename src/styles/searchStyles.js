@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+        backgroundColor: '#1C1C1E'
 	},
 
 	promptText: {
@@ -20,6 +21,7 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 		marginHorizontal: 3,
 		marginTop: 5,
+        backgroundColor: '#6a6a6a'
 	},
 
 	searchIcon: {

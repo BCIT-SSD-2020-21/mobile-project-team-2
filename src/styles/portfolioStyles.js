@@ -54,6 +54,8 @@ const styles = StyleSheet.create({
 	},
 	fundingLabel: {
 		fontSize: 20,
+        color: '#cbdae466',
+        marginTop: 10
 		// color: '#abd4b4', // lightGreen
 	},
 	fundingAmount: {
@@ -72,6 +74,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
 	},
+    fundingFormButtons: {
+        display: 'flex',
+        flexDirection: 'row'
+    },
 	fundingButtonText: {
 		textAlign: 'center',
 		textAlignVertical: 'center',
@@ -80,22 +86,41 @@ const styles = StyleSheet.create({
 	},
 	fundingForm: {
 		display: 'flex',
-		flexDirection: 'row',
+		flexDirection: 'column',
 		justifyContent: 'space-between',
 		alignItems: 'center',
+        width: '100%',
+        // marginLeft: 50
 	},
 	fundingFormField: {
 		// fontFamily: 'Roboto',
 		height: 40,
 		fontSize: 24,
 		// marginTop: 8,
-		marginVertical: 10,
 		paddingLeft: 3,
 		paddingRight: 3,
-		color: '#000000',
-		borderColor: '#9b9b9b',
-		borderBottomWidth: 2,	
+		color: '#9b9b9b',
+        minWidth: '33%',
+        maxWidth: '80%',	
+        textAlign: 'center',
 	},
+    fundingInput: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#9b9b9b',
+		borderBottomWidth: 2,
+        marginVertical: 10,
+    },
+    fundingCurrencySign: {
+        color: '#777698',
+        fontWeight: 'bold',
+        fontSize: 30,
+        transform: [
+            { translateX: 2 },
+        ]
+    },
 	listingContainer: {
 		// borderRadius: 5,
 		minWidth: 320,

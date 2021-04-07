@@ -247,8 +247,11 @@ export default function Portfolio({navigation}) {
                     { depositing && 
                         <View style={styles.fundingForm}>
                             <Text style={styles.fundingLabel}>{'Enter amount to deposit: '}</Text>
-                            <TextInput style={styles.fundingFormField} placeholder ="$" onChangeText={(amount) => setDepositAmount(amount)} />
-                            <View>
+                            <View style={styles.fundingInput}>
+                                <Text style={styles.fundingCurrencySign}> $ </Text>
+                                <TextInput style={styles.fundingFormField} placeholder ="0" onChangeText={(amount) => setDepositAmount(amount)} />
+                            </View>
+                            <View style={styles.fundingFormButtons}>
                                 <TouchableOpacity
                                     style={styles.fundingButton} 
                                     onPress={() => depositFunds()} 
@@ -268,8 +271,11 @@ export default function Portfolio({navigation}) {
                     { withdrawing && 
                         <View style={styles.fundingForm}>
                             <Text style={styles.fundingLabel}>{'Enter amount to withdraw: '}</Text>
-                            <TextInput style={styles.fundingFormField} placeholder ="$" onChangeText={(amount) => setWithdrawAmount(amount)} />
-                            <View>
+                            <View style={styles.fundingInput}>
+                                <Text style={styles.fundingCurrencySign}> $ </Text>
+                                <TextInput style={styles.fundingFormField} placeholder ="0" onChangeText={(amount) => setWithdrawAmount(amount)} />
+                            </View>
+                            <View style={styles.fundingFormButtons}>
                                 <TouchableOpacity 
                                     style={styles.fundingButton} 
                                     onPress={() => withdrawFunds()} 
