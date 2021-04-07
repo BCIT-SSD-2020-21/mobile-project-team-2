@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { SafeAreaView, View, Vibration, TouchableOpacity, Text } from 'react-native';
+import { SafeAreaView, View, Vibration, TouchableOpacity, Text, ImageBackground, ScrollView } from 'react-native';
 import {getStockProfile, getStockQuote} from '../api/stockapi';
 import {firebase} from '../firebase/config';
 import styles from '../styles/tradeScreen'
@@ -196,36 +196,40 @@ export default function Trade({ route, navigation }) {
     }
 
     return (
+ 		// <ScrollView contentContainerStyle={styles.scrollContainer}>     
+        <ImageBackground style={styles.background} source={{ uri: 'https://images.unsplash.com/photo-1520269604827-3a85b49d6c76?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=673&q=80' }}>
         <SafeAreaView style={styles.container}>
             {/* Heading */}
-            <View style={styles.blueContainer}>
-                <View style={styles.results}>
+            <View style={styles.BuySellContainer}>
+                <View style={styles.headerContainer}>
                     <Text style={styles.companyName}>{stockProfile.name}</Text>
-                    <Text style={styles.howMany}>{`How many shares of ${symbol} do you want to ${transactionType}?`}</Text>
-                    <Text style={styles.resultText}>{currentNumber}</Text>
+                    <Text style={styles.question}>{`How many shares of ${symbol} do you want to ${transactionType}?`}</Text>
+                    <Text style={styles.inputNumber}>{currentNumber}</Text>
                 </View>
 
                 {/* Transaction Info */}
                 <Text style={{color: 'white'}}>{positionDocumentId && `You own ${position.quantity} stocks`}</Text>
                 <View style={styles.wallet}>
-                    <Text style={styles.renderValues}>Available funds: </Text> 
-                    <Text style={styles.renderValues}>{`$${Math.round(user?.cashOnHand).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
+                    <Text style={styles.renderValueLeft}>Available funds: </Text> 
+                    <Text style={styles.renderValueRight}>{`$${Math.round(user?.cashOnHand).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
                 </View>
                 <View style={styles.wallet}>
-                    <Text style={styles.renderValues}>Current price: </Text> 
-                    <Text style={styles.renderValues}>{`$${Math.round(stockQuote.c).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
+                    <Text style={styles.renderValueLeft}>Current price: </Text> 
+                    <Text style={styles.renderValueRight}>{`$${Math.round(stockQuote.c).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
                 </View>
                 <View style={styles.wallet}>
-                    <Text style={styles.renderValues}>Total cost: </Text> 
-                    <Text style={styles.renderValues}>{`$${Math.round(totalAmount).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
+                    <Text style={styles.renderValueLeft}>Total cost: </Text> 
+                    <Text style={styles.renderValueRight}>{`$${Math.round(totalAmount).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
                 </View>
             </View>
 
             {/* Keypad */}
             <View style={styles.buttons}>
                 { 
-                    buttons.map(button =>
-                        <TouchableOpacity key={button} style={styles.button} onPress={() => handleInput(button)}>
+                    buttons.map(button => 
+                        <TouchableOpacity key={button} style={{...styles.button, borderColor: '#cbdae466'}} onPress={() => handleInput(button)}>
+{/* 
+                                                    <TouchableOpacity key={button} style={{...styles.button, borderColor: '#cbdae466'}} onPress={() => handleInput(button)}></TouchableOpacity> */}
                             <Text style={styles.textButton}>{button}</Text>
                         </TouchableOpacity>
                 )}
@@ -235,5 +239,7 @@ export default function Trade({ route, navigation }) {
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
+        </ImageBackground>
+        // </ScrollView>  
     )
 }
