@@ -15,18 +15,18 @@ export default function BottomTabNavigator() {
 	return (
 		<BottomTab.Navigator initialRouteName= {"Portfolio"}>
 			<BottomTab.Screen
-					name="Portfolio"
-					component={PortfolioScreenNavigator}
-					options={{
-						tabBarIcon: () => <EvilIcons name="user" size={30} color="black" />,
-					}}
+                name="Portfolio"
+                component={PortfolioScreenNavigator}
+                options={{
+                    tabBarIcon: () => <EvilIcons name="user" size={30} color="black" />,
+                }}
 			/>
 			<BottomTab.Screen
-					name="Search"
-					component={SearchScreenNavigator}
-					options={{
-						tabBarIcon: () => <EvilIcons name="search" size={30} color="black" />,
-					}}
+                name="Search"
+                component={SearchScreenNavigator}
+                options={{
+                    tabBarIcon: () => <EvilIcons name="search" size={30} color="black" />,
+                }}
 			/>
 	</BottomTab.Navigator>
 	)
@@ -49,7 +49,7 @@ function PortfolioScreenNavigator() {
 						// fontFamily: 'Garamond',
 						textAlign: 'center',
 						fontWeight: 'bold',
-					  },
+                    },
 					headerRight: () => (
 						<Button
 							onPress={() => userSignOut()}
@@ -137,7 +137,7 @@ function SearchScreenNavigator() {
 						/>
 					),
 				}}				
-				/>
+            />
 			<SearchScreenStack.Screen
 				name="Trade"
 				component={Trade}
