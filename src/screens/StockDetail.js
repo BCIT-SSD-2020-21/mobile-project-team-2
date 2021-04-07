@@ -77,7 +77,33 @@ const StockDetail = ({ route, navigation}) => {
 			} catch(err) {
 				console.log(err)
 			}
-		}			
+		}	
+        
+        // Sample data from Victory
+        const data2017 = [
+            {quarter: 1, earnings: 29000},
+            {quarter: 2, earnings: 16500},
+            {quarter: 3, earnings: 14250},
+            {quarter: 4, earnings: 19000}
+          ];
+          const data2018 = [
+            {quarter: 1, earnings: 17000},
+            {quarter: 2, earnings: 11500},
+            {quarter: 3, earnings: 16800},
+            {quarter: 4, earnings: 13000}
+          ];
+          const data2019= [
+            {quarter: 1, earnings: 13500},
+            {quarter: 2, earnings: 11550},
+            {quarter: 3, earnings: 18950},
+            {quarter: 4, earnings: 15070}
+          ];
+          const data2020 = [
+            {quarter: 1, earnings: 11001},
+            {quarter: 2, earnings: 14510},
+            {quarter: 3, earnings: 17150},
+            {quarter: 4, earnings: 14960}
+          ];        
 
 	// console.log("StocKDetial, route: ", route.params)
 	console.log("StocKDetial, symbol: ", symbol)
