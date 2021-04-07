@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
 	listingTitle: {
 		fontSize: 26,
 		color: '#cbdae466', //
+        marginVertical: 10
 	},
 	listingButton: {
 		width: 80,
