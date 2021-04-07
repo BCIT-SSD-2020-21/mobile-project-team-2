@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
 	// CONTAINER
-    scrollContainer: {
+    background: {
         backgroundColor: '#082b56', // dark-blue
 	},
     container: {
@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
         width: '100%',
+        // opacity: 0.5,
     },
     // GREET
 	greetContainer: {
