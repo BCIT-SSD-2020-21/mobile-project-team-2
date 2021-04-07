@@ -50,9 +50,9 @@ A minimal implementation of each milestone feature must exist before any team me
 ### Milestone 4
 - Add “Stock Watchlist”
 - User Interface
-    - Add an icon by stock symbols on the Search/Quote Screen to add/remove from watchlist.
-    - Display the watched symbols on the Search/Quote Screen when not displaying a search result.
-    - Link to search result screen for a stock when user clicks on a symbol in the Portfolio Screen or the Watchlist.
+    - ✅Add an icon by stock symbols on the Search/Quote Screen to add/remove from watchlist.
+    - ✅Display the watched symbols on the Search/Quote Screen when not displaying a search result.
+    - ✅Link to search result screen for a stock when user clicks on a symbol in the Portfolio Screen or the Watchlist.
 ### Milestone 5
 - Add performance Charts (price over time) Line chart on the
 - User Interface
