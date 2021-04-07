@@ -18,7 +18,7 @@ import { EvilIcons } from '@expo/vector-icons';
 import { firebase } from '../firebase/config';
 import { getStockQuantity } from '../firebase/service';
 import { getStockProfile, getStockQuote } from '../api/stockapi';
-import { VictoryBar, VictoryChart, VictoryTheme } from 'victory-native'
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryStack, VictoryTheme } from 'victory-native'
 
 
 
@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',	
 		justifyContent: 'center',
 		alignItems: 'center',
+        flex: 1
 	},		
 	titleContainer: {	
 		width: '100%',
@@ -261,21 +262,39 @@ const StockDetail = ({ route, navigation}) => {
 		}
         
         // Sample request from Finnhub
-        const request = require('request')
+        // const request = require('request')
 
-        request('https://finnhub.io/api/v1/stock/candle?symbol=AAPL&resolution=5&from=1615298999&to=1615302599&token=c1hkcon48v6q1s3o2kmg', { json: true }, (err, res, body) => {
-        if (err) { return console.log(err) }
-        console.log(body.url)
-        console.log(body.explanation)
-        })
+        // request('https://finnhub.io/api/v1/stock/candle?symbol=AAPL&resolution=5&from=1615298999&to=1615302599&token=c1hkcon48v6q1s3o2kmg', { json: true }, (err, res, body) => {
+        // if (err) { return console.log(err) }
+        // console.log(body.url)
+        // console.log(body.explanation)
+        // })
 
         // Sample data from Victory
-        // const data = [
-        //     {quarter: 1, earnings: 13000},
-        //     {quarter: 2, earnings: 16500},
-        //     {quarter: 3, earnings: 14200},
-        //     {quarter: 4, earnings: 19000},
-        // ]
+        const data2018 = [
+            {quarter: 1, earnings: 13000},
+            {quarter: 2, earnings: 16500},
+            {quarter: 3, earnings: 14250},
+            {quarter: 4, earnings: 19000}
+          ];
+          const data2019 = [
+            {quarter: 1, earnings: 17000},
+            {quarter: 2, earnings: 11500},
+            {quarter: 3, earnings: 16800},
+            {quarter: 4, earnings: 13000}
+          ];
+          const data2020= [
+            {quarter: 1, earnings: 13500},
+            {quarter: 2, earnings: 11550},
+            {quarter: 3, earnings: 18950},
+            {quarter: 4, earnings: 15070}
+          ];
+          const data2021 = [
+            {quarter: 1, earnings: 11001},
+            {quarter: 2, earnings: 14510},
+            {quarter: 3, earnings: 17150},
+            {quarter: 4, earnings: 19560}
+          ];
 
 	// console.log("StocKDetial, route: ", route.params)
 	console.log("StocKDetial, symbol: ", symbol)
@@ -285,8 +304,9 @@ const StockDetail = ({ route, navigation}) => {
 	
     return (
 		<ScrollView contentContainerStyle ={styles.scrollContainer}>
-		
 
+            
+	
 			<SafeAreaView style={styles.safeAreaContainer}>
 				<View style={styles.container}>
 					<View style={styles.titleContainer}>
@@ -298,7 +318,21 @@ const StockDetail = ({ route, navigation}) => {
 						</View>
 						<Text style={styles.companyName}>{stockProfile.name}</Text>
 						<Text style={styles.portfolio}>{stockQuote?.c ? `$${parseFloat(stockQuote.c).toFixed(2)}`:""} {stockProfile?.currency} </Text>
-						<EvilIcons name='chart' size={300} color='white' />
+
+						<View style={styles.container}>
+                            <VictoryChart domainPadding={20} width={350} theme={VictoryTheme.material}>
+                                <VictoryAxis tickValues={[ 1, 2, 3, 4 ]} tickFormat={[ "Quarter 1", "Quarter 2", "Quarter 3", "Quarter 4"]} />
+                                <VictoryAxis dependentAxis tickFormat={(x) => (`$${x / 1000}k`)} />
+                                    <VictoryStack colorScale={"warm"}>
+                                        <VictoryBar data={data2018} x="quarter" y="earnings" />
+                                        <VictoryBar data={data2019} x="quarter" y="earnings" />
+                                        <VictoryBar data={data2020} x="quarter" y="earnings" />
+                                        <VictoryBar data={data2021} x="quarter" y="earnings" />
+                                    </VictoryStack>
+                            </VictoryChart>
+                        </View>
+
+                        {/* <EvilIcons name='chart' size={300} color='white' /> */}
 					</View>
 					<View style={styles.bodyContainer}>
 						<View><Text style={styles.activities}>Stats</Text></View>	
@@ -323,13 +357,11 @@ const StockDetail = ({ route, navigation}) => {
 							<Text style={{...styles.itemDescription, fontSize: 20, marginLeft: 20, maxWidth: '50%',} }> {stockProfile.exchange}</Text>
 						</View>							
 
-
 						 <View style={styles.company}> 				
 							<Text style={styles.companyInfo} numberOfLines={1} >Company Info</Text>
 							<Image style={styles.companyLogo} source={{ uri: stockProfile.logo}} />
 						</View>
 					
-
 						<View style={styles.card}>
 							<Text style={styles.cardHeader}>Exchange:</Text>
 							<Text style={styles.cardDetail}>{stockProfile.exchange}</Text>
@@ -345,7 +377,6 @@ const StockDetail = ({ route, navigation}) => {
 							<Text style={styles.cardDetail}>{stockProfile.country}</Text>
 						</View>	
 																	
-
 						<View style={styles.card}>
 							<Text style={styles.cardHeader}>IPO:</Text>
 							<Text style={styles.cardDetail}>{stockProfile.ipo}</Text>
@@ -378,8 +409,6 @@ const StockDetail = ({ route, navigation}) => {
 							</Text>
 						</View>								
 
-
-					
 						<View style={styles.buttons}>			
 							<TouchableOpacity style={styles.buttonLeft}	onPress={() => toTradeBuyStock()}>
 								<Text style={styles.buttonText}	>{'Buy'}</Text> 
@@ -392,9 +421,7 @@ const StockDetail = ({ route, navigation}) => {
 					</View>
 				</View>
 			</SafeAreaView>
-
 		</ScrollView>
-		
     )
 }
 
