@@ -227,7 +227,7 @@ const StockDetail = ({ route, navigation}) => {
                                     <Text style={styles.buttonText}>Buy</Text> 
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => position && toTradeSaleStock()} disabled={!position} 
-                                style={{...styles.buttonLeft, display: position ? 'block' : 'none', backgroundColor: position ? '#147DF0':'#555555'}} >
+                                style={{...styles.buttonLeft, display: position ? 'block' : 'none', backgroundColor: position ? '#5584a466':'#555555'}} >
                                     <Text style={styles.buttonText}>Sell</Text>
                                 </TouchableOpacity>		
                             </View>			 
