@@ -4,6 +4,7 @@ import { EvilIcons } from '@expo/vector-icons';
 import { firebase } from '../firebase/config';
 import { getStockProfile, getStockQuote } from '../api/stockapi';
 import styles from '../styles/stockDetailsStyles'
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryStack, VictoryTheme } from 'victory-native'
 
 const StockDetail = ({ route, navigation}) => {
 	//  const {symbol} = route.params
