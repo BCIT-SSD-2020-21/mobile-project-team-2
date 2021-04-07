@@ -117,7 +117,7 @@ function SearchScreenNavigator() {
 				name="Search"
 				component={Search}
 				options={{ 
-					headerTitle: 'Search Stocks',
+					headerTitle: 'Search',
                     headerStyle: {
                         backgroundColor: '#082a53'
                     },
@@ -159,7 +159,7 @@ function SearchScreenNavigator() {
                             color="#147DF0"
                             margin="20px"
                         >
-                            <AntDesign name="logout" size={24} style={{ marginRight: 10 }} color="black" />
+                            <AntDesign name="logout" size={24} style={{ marginRight: 10 }} color="#adcef7" />
                         </TouchableOpacity>
 					),
 				}}				
