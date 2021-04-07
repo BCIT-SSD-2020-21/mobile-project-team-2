@@ -271,29 +271,29 @@ const StockDetail = ({ route, navigation}) => {
         // })
 
         // Sample data from Victory
-        const data2018 = [
-            {quarter: 1, earnings: 13000},
+        const data2017 = [
+            {quarter: 1, earnings: 29000},
             {quarter: 2, earnings: 16500},
             {quarter: 3, earnings: 14250},
             {quarter: 4, earnings: 19000}
           ];
-          const data2019 = [
+          const data2018 = [
             {quarter: 1, earnings: 17000},
             {quarter: 2, earnings: 11500},
             {quarter: 3, earnings: 16800},
             {quarter: 4, earnings: 13000}
           ];
-          const data2020= [
+          const data2019= [
             {quarter: 1, earnings: 13500},
             {quarter: 2, earnings: 11550},
             {quarter: 3, earnings: 18950},
             {quarter: 4, earnings: 15070}
           ];
-          const data2021 = [
+          const data2020 = [
             {quarter: 1, earnings: 11001},
             {quarter: 2, earnings: 14510},
             {quarter: 3, earnings: 17150},
-            {quarter: 4, earnings: 19560}
+            {quarter: 4, earnings: 14960}
           ];
 
 	// console.log("StocKDetial, route: ", route.params)
@@ -324,10 +324,10 @@ const StockDetail = ({ route, navigation}) => {
                                 <VictoryAxis tickValues={[ 1, 2, 3, 4 ]} tickFormat={[ "Quarter 1", "Quarter 2", "Quarter 3", "Quarter 4"]} />
                                 <VictoryAxis dependentAxis tickFormat={(x) => (`$${x / 1000}k`)} />
                                     <VictoryStack colorScale={"warm"}>
+                                        <VictoryBar data={data2017} x="quarter" y="earnings" />
                                         <VictoryBar data={data2018} x="quarter" y="earnings" />
                                         <VictoryBar data={data2019} x="quarter" y="earnings" />
                                         <VictoryBar data={data2020} x="quarter" y="earnings" />
-                                        <VictoryBar data={data2021} x="quarter" y="earnings" />
                                     </VictoryStack>
                             </VictoryChart>
                         </View>
