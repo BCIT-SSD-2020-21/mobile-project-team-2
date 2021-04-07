@@ -63,8 +63,8 @@ function PortfolioScreenNavigator() {
 						textAlign: 'center',
 						fontWeight: 'bold',
 					},
-					headerRight: () => <LogOut color="#adcef7"/>,
-                    headerLeft: () => <MenuIcon color="#adcef7"/> 
+					headerRight: () => <LogOut color="black"/>,
+                    headerLeft: () => <MenuIcon color="black"/> 
 				}}				
 			/>
 			<PortfolioScreenStack.Screen
