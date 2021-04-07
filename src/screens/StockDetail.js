@@ -11,9 +11,6 @@ const StockDetail = ({ route, navigation}) => {
 
 	//  const {symbol} = route.params
 	const [symbol, setSymbol] = useState(route.params)
-	const [stock, setStock] = useState({})
-	const [error, setError] = useState('')
-	const [currentPrice, setCurrentPrice] = useState(null)
 	const [stockProfile, setStockProfile] = useState({})	
 	const [stockQuote, setStockQuote] = useState({})
 	const [position, setPosition] = useState(false)
@@ -31,6 +28,7 @@ const StockDetail = ({ route, navigation}) => {
 			}
 		})()
 	}, [symbol])
+	    
 
 	useEffect(() => {
 		// find if the current user has the stock
@@ -38,72 +36,87 @@ const StockDetail = ({ route, navigation}) => {
 		const userUID = firebase.auth().currentUser.uid
 		// get user document by user UID; setUser		
 		const userDoc = firebase.firestore().collection('users')
-						.doc(userUID)
-						.onSnapshot((doc) => {
-							const {positions} = doc?.data()
-							positions?.map( positionId => {  
-								const positions = firebase.firestore().collection('positions')
-									.doc(positionId)
-									.onSnapshot((doc) => {
-										if (doc?.data().symbol === symbol && doc?.data().quantity > 0) 
-										{ 
-											setPosition(true) 
-											console.log("position", doc.data())
-										}							
-									})
-								
-							})
-						})	
+            .doc(userUID)
+            .onSnapshot((doc) => {
+                const {positions} = doc?.data()
+                positions?.map( positionId => {  
+                    const positions = firebase.firestore().collection('positions')
+                        .doc(positionId)
+                        .onSnapshot((doc) => {
+                            if (doc?.data().symbol === symbol && doc?.data().quantity > 0) 
+                            { 
+                                setPosition(true) 
+                                console.log("position", doc.data())
+                            }							
+                        })
+                    
+                })
+            })	
 	},[])	  
 
-	const toTrade = () => {
-		if (symbol) {
-			navigation.navigate('Trade', symbol)
-		}
-	}
+    function toTradeBuyStock() {
+        if (symbol) {
+            const params = {
+                symbol: symbol,
+                type: 'buy',
+            }
+            navigation.navigate('Trade', params)
+        }
+    }
 
-		function toAddWatch() {
-			try {
-				const userUID = firebase.auth().currentUser?.uid
-				if(userUID) {
-					console.log('toAddWatch userUID:', userUID)
-					console.log('toAddWatch symbol:', symbol)
-					const userRef = firebase.firestore().collection('users').doc(userUID)
-					userRef.update({
-						watchlist: position ? firebase.firestore.FieldValue.arrayRemove(symbol) : firebase.firestore.FieldValue.arrayUnion(symbol)
-					});
-					setPosition(!position)
-				}
-			} catch(err) {
-				console.log(err)
-			}
-		}	
+    function toTradeSaleStock() {
+        if (symbol) {
+            const params = {
+                symbol: symbol,
+                type: 'sell',
+            }
+            navigation.navigate('Trade', params)
+        }
+    }
+
+    function toAddWatch() {
+        try {
+            const userUID = firebase.auth().currentUser?.uid
+            if(userUID) {
+                console.log('toAddWatch userUID:', userUID)
+                console.log('toAddWatch symbol:', symbol)
+                const userRef = firebase.firestore().collection('users').doc(userUID)
+                userRef.update({
+                    watchlist: position ? firebase.firestore.FieldValue.arrayRemove(symbol) : firebase.firestore.FieldValue.arrayUnion(symbol)
+                });
+                setPosition(!position)
+            }
+        } catch(err) {
+            console.log(err)
+        }
+	}	
         
-        // Sample data from Victory
-        const data2017 = [
-            {quarter: 1, earnings: 29000},
-            {quarter: 2, earnings: 16500},
-            {quarter: 3, earnings: 14250},
-            {quarter: 4, earnings: 19000}
-          ];
-          const data2018 = [
-            {quarter: 1, earnings: 17000},
-            {quarter: 2, earnings: 11500},
-            {quarter: 3, earnings: 16800},
-            {quarter: 4, earnings: 13000}
-          ];
-          const data2019= [
-            {quarter: 1, earnings: 13500},
-            {quarter: 2, earnings: 11550},
-            {quarter: 3, earnings: 18950},
-            {quarter: 4, earnings: 15070}
-          ];
-          const data2020 = [
-            {quarter: 1, earnings: 11001},
-            {quarter: 2, earnings: 14510},
-            {quarter: 3, earnings: 17150},
-            {quarter: 4, earnings: 14960}
-          ];        
+    // Sample data from Victory
+    const data2017 = [
+        {quarter: 1, earnings: 29000},
+        {quarter: 2, earnings: 16500},
+        {quarter: 3, earnings: 14250},
+        {quarter: 4, earnings: 19000}
+    ];
+    const data2018 = [
+        {quarter: 1, earnings: 17000},
+        {quarter: 2, earnings: 11500},
+        {quarter: 3, earnings: 16800},
+        {quarter: 4, earnings: 13000}
+    ];
+    const data2019= [
+        {quarter: 1, earnings: 13500},
+        {quarter: 2, earnings: 11550},
+        {quarter: 3, earnings: 18950},
+        {quarter: 4, earnings: 15070}
+    ];
+
+    const data2020 = [
+        {quarter: 1, earnings: 11001},
+        {quarter: 2, earnings: 14510},
+        {quarter: 3, earnings: 17150},
+        {quarter: 4, earnings: 14960}
+    ];        
 
 	// console.log("StocKDetial, route: ", route.params)
 	console.log("StocKDetial, symbol: ", symbol)
