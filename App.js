@@ -6,7 +6,8 @@ import AuthStack from './src/components/navigation/AuthStack';
 import BottomTabNavigator from './src/components/navigation/BottomTabNavigator';
 import DrawerNavigator from './src/components/navigation/DrawerNavigator';
 import { firebase } from './src/firebase/config';
-import StockDetail from './src/screens/StockDetail'
+import UserContext from './src/firebase/UserProvider';
+import StockDetail from './src/screens/StockDetail';
 import { Platform} from 'react-native';
 
 const Stack = createStackNavigator()
@@ -32,15 +33,17 @@ export default function App() {
    return subscriber; // unsubscribe on unmount
   }, []);
 
-  console.log("authUser", user)
+  console.log("authUser", user) 
 
   return (
-    <SafeAreaProvider>
+
+    <UserContext.Provider value={user}>
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Root" component={user ? PlatformNavigator : AuthNavigator } />
       </Stack.Navigator>
     </NavigationContainer>
-  </SafeAreaProvider>
+    </UserContext.Provider>
+ 
   );
 }
