@@ -124,7 +124,7 @@ export default function Trade({ route, navigation }) {
                         })
                     })
                 } else {
-                // POSITION - Update quantity, averageCostPerShare, timestamp
+                    // POSITION - Update quantity, averageCostPerShare, timestamp
                     console.log("updating position, Id: ", positionDocumentId)
                     const newAverageCostPerShare = ((position.quantity * position.averageCostPerShare) + (currentNumber * stockQuote.c))/(position.quantity + currentNumber)
                     const newShareQuantity = position.quantity + currentNumber
@@ -135,6 +135,7 @@ export default function Trade({ route, navigation }) {
                         lastUpdated: Date.now()
                     })
                 }
+                
                 // USER - Update cashOnHand (SUBTRACT)
                 const newCashOnHand = user?.cashOnHand ? user.cashOnHand - totalAmount : 0;
                 usersRef.doc(userID).update({

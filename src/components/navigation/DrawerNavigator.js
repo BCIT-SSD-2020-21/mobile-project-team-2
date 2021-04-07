@@ -4,6 +4,11 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { EvilIcons } from '@expo/vector-icons';
 import { userSignOut } from '../../firebase/service';
 import StockDetail from '../../screens/StockDetail'
+import { createStackNavigator } from '@react-navigation/stack';
+import Trade from '../../screens/Trade'
+import Portfolio from '../../screens/Portfolio';
+import Search from '../../screens/Search';
+import MenuIcon from '../navigation/MenuIcon'
 
 const Drawer = createDrawerNavigator();
 
@@ -27,12 +32,6 @@ export default function DrawerNavigator() {
 		</Drawer.Navigator>
 	)
 }
-
-import { createStackNavigator } from '@react-navigation/stack';
-import Trade from '../../screens/Trade'
-import Portfolio from '../../screens/Portfolio';
-import Search from '../../screens/Search';
-import MenuIcon from '../navigation/MenuIcon'
 
 const PortfolioScreenStack = createStackNavigator();
 function PortfolioScreenNavigator() {
