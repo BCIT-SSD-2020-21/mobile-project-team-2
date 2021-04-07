@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react'
 import { SafeAreaView, TouchableOpacity, Text, Image, View, ScrollView, Linking } from 'react-native';
-import { EvilIcons } from '@expo/vector-icons';
 import { firebase } from '../firebase/config';
 import { getStockProfile, getStockQuote } from '../api/stockapi';
 import styles from '../styles/stockDetailsStyles'
@@ -14,6 +13,7 @@ const StockDetail = ({ route, navigation}) => {
 	const [stockProfile, setStockProfile] = useState({})	
 	const [stockQuote, setStockQuote] = useState({})
 	const [position, setPosition] = useState(false)
+    const [watch, setWatch] = useState(false)
 
     useEffect(() => {
 		(async() => {
@@ -34,23 +34,32 @@ const StockDetail = ({ route, navigation}) => {
 		// find if the current user has the stock
 
 		const userUID = firebase.auth().currentUser.uid
-		// get user document by user UID; setUser		
+		// get user document by user UID; setUser	
+         console.log("position userUID", userUID)	
 		const userDoc = firebase.firestore().collection('users')
             .doc(userUID)
             .onSnapshot((doc) => {
-                const {positions} = doc?.data()
+                const {positions, watchlist} = doc?.data()
+
+                // detech position on this stock
                 positions?.map( positionId => {  
                     const positions = firebase.firestore().collection('positions')
                         .doc(positionId)
                         .onSnapshot((doc) => {
-                            if (doc?.data().symbol === symbol && doc?.data().quantity > 0) 
+                            if (doc && doc.data() && (doc.data().symbol === symbol && doc.data().quantity > 0)) 
                             { 
                                 setPosition(true) 
-                                console.log("position", doc.data())
+                                console.log("position", doc?.data())
                             }							
                         })
                     
                 })
+
+                // detech the user watch on this stock
+                console.log("watchlist", watchlist)
+                if(watchlist && watchlist.includes(symbol)) {
+                    setWatch(true)
+                }              
             })	
 	},[])	  
 
@@ -82,9 +91,9 @@ const StockDetail = ({ route, navigation}) => {
                 console.log('toAddWatch symbol:', symbol)
                 const userRef = firebase.firestore().collection('users').doc(userUID)
                 userRef.update({
-                    watchlist: position ? firebase.firestore.FieldValue.arrayRemove(symbol) : firebase.firestore.FieldValue.arrayUnion(symbol)
+                    watchlist: watch ? firebase.firestore.FieldValue.arrayRemove(symbol) : firebase.firestore.FieldValue.arrayUnion(symbol)
                 });
-                setPosition(!position)
+                setWatch(!watch)
             }
         } catch(err) {
             console.log(err)
@@ -129,8 +138,8 @@ const StockDetail = ({ route, navigation}) => {
 			<SafeAreaView style={styles.safeAreaContainer}>
 				<View style={styles.container}>
 					<View style={styles.titleContainer}>
-						<TouchableOpacity style={styles.watch} 	onPress={() => toAddWatch(position)}>
-							{position ? <Watch /> : <WatchOff />}
+						<TouchableOpacity style={styles.watch} 	onPress={() => toAddWatch(watch)}>
+							{watch ? <Watch /> : <WatchOff />}
 						</TouchableOpacity>
 						<View style={styles.companyDefaultLogo}>
 							<Text style={styles.companyLogoName}>{symbol}</Text>
