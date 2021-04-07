@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         marginVertical: 15,
+        width: '36%', 
     },
     symbol: {
         textAlign: 'left',
