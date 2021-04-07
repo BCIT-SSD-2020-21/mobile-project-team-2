@@ -1,10 +1,10 @@
 import React from 'react'
-import { SafeAreaView, ScrollView, TouchableOpacity, Text, TextInput, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { walletStyles } from '../../styles/fontStyles';
 
 import { StyleSheet } from 'react-native';
 
-export default function WalletAmount({ label, amount, scale }) {
+export default function WalletAmount({ label, amount }) {
 
     const integerAmount = `${Math.round(amount).toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`
     const decimalAmount = (amount.toFixed(0)%amount).toFixed(2).substring(1,4)
@@ -26,9 +26,3 @@ export default function WalletAmount({ label, amount, scale }) {
         </View>
     )
 }
-
-const styles = StyleSheet.create({ 
-    container: {
-        backgroundColor: 'red'
-    }
-})
