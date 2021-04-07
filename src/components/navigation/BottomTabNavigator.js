@@ -1,5 +1,4 @@
 import React from 'react'
-import { TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { EvilIcons } from '@expo/vector-icons';
 import { createStackNavigator } from '@react-navigation/stack'
@@ -7,8 +6,7 @@ import Portfolio from '../../screens/Portfolio'
 import Search from '../../screens/Search';
 import Trade from "../../screens/Trade"
 import StockDetail from '../../screens/StockDetail'
-import { userSignOut } from '../../firebase/service';
-import { AntDesign } from '@expo/vector-icons';
+import LogOut from './LogoutIcon';
 
 const BottomTab = createBottomTabNavigator();
 export default function BottomTabNavigator() {
@@ -44,21 +42,12 @@ function PortfolioScreenNavigator() {
 					headerTitle: 'PORTFOLIO',
 					headerStyle: {
 						backgroundColor: '#082a53', // dark-blue
-					  },
+                    },
 					headerTintColor: '#adcef7',
 					headerTitleStyle: {
-						// fontFamily: 'Garamond',
 						fontWeight: 'bold',
                     },
-					headerRight: () => (
-                        <TouchableOpacity
-                            onPress={() => userSignOut()}
-                            title="Log out"
-                            color="#147DF0"
-                        >
-                            <AntDesign name="logout" size={28} color="#adcef7" />
-                        </TouchableOpacity>
-					),
+					headerRight: () => <LogOut color="#adcef7"/>
 				}}
 			/>
 			<PortfolioScreenStack.Screen 
@@ -69,16 +58,7 @@ function PortfolioScreenNavigator() {
 				headerTitleStyle: {
 					fontWeight: 'bold',
 				},
-				headerRight: () => (
-                    <TouchableOpacity
-                        onPress={() => userSignOut()}
-                        title="Log out"
-                        color="#147DF0"
-                        margin="20px"
-                    >
-                        <AntDesign name="logout" size={24} color="black" />
-                    </TouchableOpacity>
-				),
+				headerRight: () => <LogOut color="#000000"/>
 			}}				
 			/>	
 			<PortfolioScreenStack.Screen
@@ -86,16 +66,7 @@ function PortfolioScreenNavigator() {
 				component={Trade}
 				options={{ 
 					headerTitle: 'Trade Screen',
-					headerRight: () => (
-                        <TouchableOpacity
-                            onPress={() => userSignOut()}
-                            title="Log out"
-                            color="#147DF0"
-                            margin="20px"
-                        >
-                            <AntDesign name="logout" size={24} color="black" />
-                        </TouchableOpacity>
-					),
+					headerRight: () => <LogOut color="#000000"/>
 				}}
 			/>
 
@@ -111,16 +82,7 @@ function SearchScreenNavigator() {
 				component={Search}
 				options={{ 
 					headerTitle: 'Search Stocks',
-					headerRight: () => (
-                        <TouchableOpacity
-                            onPress={() => userSignOut()}
-                            title="Log out"
-                            color="#147DF0"
-                            margin="20px"
-                        >
-                            <AntDesign name="logout" size={24} color="black" />
-                        </TouchableOpacity>
-					),
+					headerRight: () => <LogOut color="#000000"/>
 				}}
 			/>
 
@@ -133,16 +95,7 @@ function SearchScreenNavigator() {
 					headerTitleStyle: {
 						fontWeight: 'bold',
 					  },
-					headerRight: () => (
-                        <TouchableOpacity
-                            onPress={() => userSignOut()}
-                            title="Log out"
-                            color="#147DF0"
-                            margin="20px"
-                        >
-                            <AntDesign name="logout" size={24} color="black" />
-                        </TouchableOpacity>
-					),
+					headerRight: () => <LogOut color="#000000"/>
 				}}				
             />
 			<SearchScreenStack.Screen
@@ -150,16 +103,7 @@ function SearchScreenNavigator() {
 				component={Trade}
 				options={{ 
 					headerTitle: 'Trade Screen',
-					headerRight: () => (
-                        <TouchableOpacity
-                            onPress={() => userSignOut()}
-                            title="Log out"
-                            color="#147DF0"
-                            margin="20px"
-                        >
-                            <AntDesign name="logout" size={24} color="black" />
-                        </TouchableOpacity>
-					),
+					headerRight: () => <LogOut color="#000000"/>
 				}}
 			/>
 		</SearchScreenStack.Navigator>
