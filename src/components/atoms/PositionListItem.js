@@ -30,7 +30,7 @@ export default function PositionListItem({ position, navigation}) {
 
     const toStockDetail = () => {
 		if (position) {
-			navigation.navigate('StockDetail', position.symbol)
+			navigation.navigate('StockDetail', position?.symbol)
 		}
     }
 
