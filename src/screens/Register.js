@@ -41,10 +41,7 @@ export default function Register({navigation}) {
 				const usersRef = firebase.firestore().collection('users');
 				usersRef
 				.doc(uid)
-				.set(data)
-				.then(() => {
-					navigation.navigate("Login")
-				})					
+				.set(data)			
 			})
 			.catch((error) => setError(error.message))
 	  }
