@@ -9,24 +9,25 @@ import Trade from "../../screens/Trade"
 import StockDetail from '../../screens/StockDetail'
 import { userSignOut } from '../../firebase/service';
 import { AntDesign } from '@expo/vector-icons';
-
 const BottomTab = createBottomTabNavigator();
 export default function BottomTabNavigator() {
 
 	return (
-		<BottomTab.Navigator initialRouteName= {"Portfolio"}>
+		<BottomTab.Navigator initialRouteName= {"Portfolio"} tabBarOptions={{ style: { backgroundColor: '#244266'}}}> 
+        {/* activeTintColor: '#F9E79F', activeBackgroundColor: '#082a53', inactiveTintColor: '#F9E79F', inactiveBackgroundColor: '#244266' */}
 			<BottomTab.Screen
                 name="Portfolio"
                 component={PortfolioScreenNavigator}
+                style="backgroundColor: #082a53"
                 options={{
-                    tabBarIcon: () => <EvilIcons name="user" size={30} color="black" />,
+                    tabBarIcon: () => <EvilIcons name="user" size={30} color="#F9E79F" />,
                 }}
 			/>
 			<BottomTab.Screen
                 name="Search"
                 component={SearchScreenNavigator}
                 options={{
-                    tabBarIcon: () => <EvilIcons name="search" size={30} color="black" />,
+                    tabBarIcon: () => <EvilIcons name="search" size={30} color="#F9E79F" />,
                 }}
 			/>
 	</BottomTab.Navigator>
@@ -44,7 +45,7 @@ function PortfolioScreenNavigator() {
 					headerTitle: 'Portfolio',
 					headerStyle: {
                         textAlign: 'center',
-						backgroundColor: '#082a53', // dark-blue
+						backgroundColor: '#041C2F', // dark-blue
 					  },
 					headerTintColor: '#adcef7',
 					headerTitleStyle: {
@@ -69,7 +70,7 @@ function PortfolioScreenNavigator() {
 				options={{ 
 				headerTitle: 'Stock Detail',
                 headerStyle: {
-                    backgroundColor: '#082a53'
+                    backgroundColor: '#041C2F'
                 },
                 headerTintColor: '#adcef7',
 				headerTitleStyle: {
@@ -119,7 +120,7 @@ function SearchScreenNavigator() {
 				options={{ 
 					headerTitle: 'Search',
                     headerStyle: {
-                        backgroundColor: '#082a53'
+                        backgroundColor: '#041C2F'
                     },
                     headerTintColor: '#adcef7',
                     headerTitleStyle: {
@@ -145,7 +146,7 @@ function SearchScreenNavigator() {
 				options={{ 
 					headerTitle: 'Stock Detail',
                     headerStyle: {
-                        backgroundColor: '#082a53'
+                        backgroundColor: '#041C2F'
                     },
                     headerTintColor: '#adcef7',
                     headerTitleStyle: {
