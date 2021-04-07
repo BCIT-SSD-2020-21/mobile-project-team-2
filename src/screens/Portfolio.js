@@ -5,7 +5,8 @@ import { EvilIcons } from '@expo/vector-icons';
 import StockList from '../components/atoms/StockList';
 import PositionList from '../components/atoms/PositionList';
 import { getStockQuote } from '../api/stockapi';
-import styles from '../styles/portfolioStyles'
+import styles from '../styles/portfolioStyles';
+import WalletAmount from '../components/atoms/WalletAmount';
 
 export default function Portfolio({navigation}) {
 
@@ -121,14 +122,13 @@ export default function Portfolio({navigation}) {
     return (
 		<ScrollView contentContainerStyle={styles.scrollContainer}>
 			<SafeAreaView style={styles.container}>
+
+                {/* Greeting */}
 				<View style={styles.currentContainer}>
-						{/* Greeting */}
 					<View style={styles.greetContainer}>
 						{/* some indo from firebaseAuth */}
 						<Text style={styles.greetLabel}>{'Your portfolio is valued at'}</Text>
-							{/* some info from firestoreDB */}
-						<Text style={styles.portfolioValue}>{`$${Math.round(portfolioValue).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
-							{/* some info from firestoreDB */}
+						<Text style={styles.portfolioValue}>{`$${Math.round(portfolioValue).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
 						<Text style={styles.status}>{`${portfolioValueDifference > 0 ? "UP" : "DOWN"} ${portfolioValueDifference} in the past week`}</Text> 
 					</View>
 					{/* Chart (Vector??) - Timeline, Changes over last period (1 week? multiple options?)*/}
@@ -138,17 +138,29 @@ export default function Portfolio({navigation}) {
 					</View>
 				</View>
 
+
 				<View style={styles.fundingContainer}>
-					<Text style={styles.fundingLabel}>{'Available funding: '}</Text>
-					<Text style={styles.fundingAmount}>{user?.cashOnHand ? `$${Math.round(user.cashOnHand).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}` : '$0.00'}</Text>
-					{/* INITIALLY: 		Add $50,000 CASH 
-							LATER: 		navigate() to new page?  */}
-					<TouchableOpacity 
+					{/* <Text style={styles.fundingLabel}>{'Available funding: '}</Text>
+					<Text style={styles.fundingAmount}>{user?.cashOnHand ? `$${Math.round(user.cashOnHand).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}` : '$0.00'}</Text> */}
+					
+                    <WalletAmount 
+                        label={'Cash in wallet'}
+                        amount={user?.cashOnHand ? user.cashOnHand : 0}
+                        fontSizeMultiplier={2}
+                        // scale={0}
+                    />
+
+                    <View>
+                        
+                    </View>
+                    
+                    
+					{/* <TouchableOpacity 
 						style={styles.fundingButton} 
 						onPress={toggledepositFunds} 
 					>
 						<Text style={styles.fundingButtonText}>{depositing ? 'CANCEL' : 'ADD $'}</Text>
-					</TouchableOpacity>
+					</TouchableOpacity> */}
 				</View>
 
 				{ depositing && 
