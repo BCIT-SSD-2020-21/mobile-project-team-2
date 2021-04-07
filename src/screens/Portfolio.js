@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { SafeAreaView, ScrollView, TouchableOpacity, Text, TextInput, View } from 'react-native';
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryStack, VictoryTheme } from 'victory-native'
 import { firebase } from '../firebase/config';
 import { EvilIcons } from '@expo/vector-icons';
 import StockList from '../components/atoms/StockList';
@@ -7,6 +8,32 @@ import PositionList from '../components/atoms/PositionList';
 import { getStockQuote } from '../api/stockapi';
 import styles from '../styles/portfolioStyles';
 import WalletAmount from '../components/atoms/WalletAmount';
+
+// Sample data from Victory
+const data2017 = [
+    {quarter: 1, earnings: 29000},
+    {quarter: 2, earnings: 16500},
+    {quarter: 3, earnings: 14250},
+    {quarter: 4, earnings: 19000}
+    ];
+    const data2018 = [
+    {quarter: 1, earnings: 17000},
+    {quarter: 2, earnings: 11500},
+    {quarter: 3, earnings: 16800},
+    {quarter: 4, earnings: 13000}
+    ];
+    const data2019= [
+    {quarter: 1, earnings: 13500},
+    {quarter: 2, earnings: 11550},
+    {quarter: 3, earnings: 18950},
+    {quarter: 4, earnings: 15070}
+    ];
+    const data2020 = [
+    {quarter: 1, earnings: 11001},
+    {quarter: 2, earnings: 14510},
+    {quarter: 3, earnings: 17150},
+    {quarter: 4, earnings: 14960}
+    ];
 
 export default function Portfolio({navigation}) {
 
@@ -132,11 +159,19 @@ export default function Portfolio({navigation}) {
 						<Text style={styles.status}>{`${portfolioValueDifference > 0 ? "UP" : "DOWN"} ${portfolioValueDifference} in the past week`}</Text> 
 					</View>
 					{/* Chart (Vector??) - Timeline, Changes over last period (1 week? multiple options?)*/}
-					<View style={styles.chartContainer}>
-						{/* Placeholder: */}
-						<EvilIcons name='chart' size={300} color='white' />
+					{/* <View style={styles.chartContainer}> */}
+                        <VictoryChart domainPadding={20} width={350} height={200} theme={VictoryTheme.material}>
+                            <VictoryAxis tickValues={[ 1, 2, 3, 4 ]} tickFormat={[ "Quarter 1", "Quarter 2", "Quarter 3", "Quarter 4"]} />
+                            <VictoryAxis dependentAxis tickFormat={(x) => (`$${x / 1000}k`)} />
+                                <VictoryStack colorScale={"warm"}>
+                                    <VictoryBar data={data2017} x="quarter" y="earnings" />
+                                    <VictoryBar data={data2018} x="quarter" y="earnings" />
+                                    <VictoryBar data={data2019} x="quarter" y="earnings" />
+                                    <VictoryBar data={data2020} x="quarter" y="earnings" />
+                                </VictoryStack>
+                        </VictoryChart>
 					</View>
-				</View>
+				{/* </View> */}
 
 
 				<View style={styles.fundingContainer}>
