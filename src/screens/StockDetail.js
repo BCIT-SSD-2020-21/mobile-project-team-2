@@ -18,7 +18,7 @@ import { EvilIcons } from '@expo/vector-icons';
 import { firebase } from '../firebase/config';
 import { getStockQuantity } from '../firebase/service';
 import { getStockProfile, getStockQuote } from '../api/stockapi';
-
+import { Watch, WatchOff } from "../icons/Watch";
 
 
 const styles = StyleSheet.create({
@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		top: 0,
 		right: 0,
-		width: 50,
-		height: 50,
+		width: 40,
+		height: 40,
 	},
 	companyDefaultLogo : {
 		width: 60,
@@ -175,6 +175,7 @@ const styles = StyleSheet.create({
 });
 
 const StockDetail = ({ route, navigation}) => {
+
 	//  const {symbol} = route.params
 	const [symbol, setSymbol] = useState(route.params)
 	const [stock, setStock] = useState({})
@@ -218,11 +219,7 @@ const StockDetail = ({ route, navigation}) => {
 									})
 								
 							})
-						})
-						
-					
-	
-		
+						})	
 	},[])	  
 
 	  function toTrade() {
@@ -250,13 +247,20 @@ const StockDetail = ({ route, navigation}) => {
 		}	
 
 		function toAddWatch() {
-			const userUID = firebase.auth().currentUser.uid
-			console.log('toAddWatch userUID:', userUID)
-			const userRef = firebase.firestore().collection('users').doc(userUID)
-			userRef.update({
-				watchList: firebase.firestore.FieldValue.arrayUnion(symbol)
-			});
-
+			try {
+				const userUID = firebase.auth().currentUser?.uid
+				if(userUID) {
+					console.log('toAddWatch userUID:', userUID)
+					console.log('toAddWatch symbol:', symbol)
+					const userRef = firebase.firestore().collection('users').doc(userUID)
+					userRef.update({
+						watchlist: position ? firebase.firestore.FieldValue.arrayRemove(symbol) : firebase.firestore.FieldValue.arrayUnion(symbol)
+					});
+					setPosition(!position)
+				}
+			} catch(err) {
+				console.log(err)
+			}
 		}			
 
 	// console.log("StocKDetial, route: ", route.params)
@@ -272,8 +276,8 @@ const StockDetail = ({ route, navigation}) => {
 			<SafeAreaView style={styles.safeAreaContainer}>
 				<View style={styles.container}>
 					<View style={styles.titleContainer}>
-						<TouchableOpacity style={styles.watch} 	onPress={() => toAddWatch()}>
-							<EvilIcons  name='eye' size={50} color='white' />
+						<TouchableOpacity style={styles.watch} 	onPress={() => toAddWatch(position)}>
+							{position ? <Watch /> : <WatchOff />}
 						</TouchableOpacity>
 						<View style={styles.companyDefaultLogo}>
 							<Text style={styles.companyLogoName}>{symbol}</Text>
