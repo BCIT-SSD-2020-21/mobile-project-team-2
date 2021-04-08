@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AuthStack from './src/components/navigation/AuthStack';
 import BottomTabNavigator from './src/components/navigation/BottomTabNavigator';
-// import DrawerNavigator from './src/components/navigation/DrawerNavigator';
+import DrawerNavigator from './src/components/navigation/DrawerNavigator';
 import { firebase } from './src/firebase/config';
 // import StockDetail from './src/screens/StockDetail'
 import { Platform} from 'react-native';
@@ -19,7 +19,7 @@ const AuthNavigator = Platform.select({
 
 const PlatformNavigator = Platform.select({
 	ios: () => BottomTabNavigator,
-	android: () => BottomTabNavigator
+	android: () => DrawerNavigator //BottomTabNavigator
 })()
 
 export default function App() {

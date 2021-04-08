@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Text, Image, TextInput, Button, View } from 'react-native';
+import { SafeAreaView,ScrollView, Text, Image, TextInput, Button, View } from 'react-native';
 import {firebase} from '../firebase/config';
 import {resetPassword} from './ResetPassword'
 import styles from '../styles/authStyles'
@@ -13,7 +13,7 @@ export default function Login() {
 
 	const onLogin = () => {
         firebase.auth().signInWithEmailAndPassword(email, password)
-            .then((result) => {setError("sucess")})
+            .then((result) => {setError("success")})
             .catch((error) => {setError(""+error) })
     }	  
 
