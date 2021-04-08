@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 		color: '#999999',
         paddingLeft:10,
         paddingRight:10,
-        paddingTop: 30,
+        paddingTop: 20,
 	},
 	input : {
 		height: 35,
