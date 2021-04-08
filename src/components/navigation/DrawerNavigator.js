@@ -67,21 +67,24 @@ function PortfolioScreenNavigator() {
                     headerLeft: () => <MenuIcon color="black"/> 
 				}}				
 			/>
-			<PortfolioScreenStack.Screen
-				name="Trade"
-				component={Trade}
+
+			<PortfolioScreenStack.Screen 
+				name="Trade" 
+				component={Trade} 
 				options={{ 
 					headerTitle: 'Trade Screen',
-					headerRight: () => (
-						<Button
-							onPress={() => userSignOut()}
-							title="Log out"
-							color="#147DF0"
-							margin="20px"
-						/>
-					), 
-				}}
-			/>
+                    headerStyle: {
+						backgroundColor: '#082a53',
+                    },
+					headerTintColor: '#adcef7',
+					headerTitleStyle: {
+						fontWeight: 'bold',
+                    },
+					headerRight: () => <LogOut color="black"/>,
+                    headerLeft: () => <MenuIcon color="black"/> 
+				}}				
+			/>            
+ 
 		</PortfolioScreenStack.Navigator>
 	);
 }
@@ -117,15 +120,22 @@ function SearchScreenNavigator() {
                     headerLeft: () => <MenuIcon color="black"/> 
 				}}				
 			/>
-			<SearchScreenStack.Screen
-				name="Trade"
-				component={Trade}
+			<PortfolioScreenStack.Screen 
+				name="Trade" 
+				component={Trade} 
 				options={{ 
 					headerTitle: 'Trade Screen',
+                    headerStyle: {
+						backgroundColor: '#082a53',
+                    },
+					headerTintColor: '#adcef7',
+					headerTitleStyle: {
+						fontWeight: 'bold',
+                    },
 					headerRight: () => <LogOut color="black"/>,
-                    headerLeft: () => <MenuIcon color="black"/>  
-				}}
-			/>
+                    headerLeft: () => <MenuIcon color="black"/> 
+				}}				
+			/>  
 				
 		</SearchScreenStack.Navigator>
 	)
