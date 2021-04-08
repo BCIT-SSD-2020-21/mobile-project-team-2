@@ -159,7 +159,11 @@ const styles = StyleSheet.create({
 	},
 	stockList: {
 		height: 100,
-	}
+	},
+    inputError: {
+        textAlign: 'center',
+        color: '#eb4757',
+    }
 });
 
 export default styles
