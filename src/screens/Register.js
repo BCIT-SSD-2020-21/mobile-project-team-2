@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { Keyboard, SafeAreaView, Text, Image, TextInput, Button, View, ScrollView } from 'react-native';
+import { Keyboard, SafeAreaView, Text, Image, TextInput, TouchableOpacity, View } from 'react-native';
 import { firebase } from '../firebase/config';
 import {resetPassword} from './ResetPassword';
 import styles from '../styles/authStyles';
@@ -75,9 +75,9 @@ export default function Register({navigation}) {
             style={styles.background}
             >  
 			{ !isKeyboardVisible && <Image style={styles.image} source={require('../../assets/images/logo.png')} />}
-			<View style={{marginBottom: 30}}>
-				<Text>{error}</Text>
-				<View>
+			<View>
+				{/* <Text>{error}</Text> style={{marginBottom: 30}} */}
+				<View style={{marginTop: 30}}>
 					<Text style={styles.label}>Email Address</Text>
 					<TextInput style={styles.input} autoCorrect={false} autoCapitalize={'none'} onChangeText={(email) => setEmail(email.trim())} />
 				</View>
@@ -90,7 +90,11 @@ export default function Register({navigation}) {
 					<TextInput style={styles.input} secureTextEntry={true} onChangeText={pw => setConfirmPassword(pw)} />
 				</View>				
 				<Text style={styles.forgot} onPress={() => resetPassword(email)}>Forgot password or email?</Text>	
-				<Button style={styles.button} onPress={() => onSignUp()} title="Sign Up" />
+                <Text style={{paddingBottom: 5, color: 'red'}}>{error}</Text>
+                <TouchableOpacity style={styles.button} onPress={() => onSignUp()} title="Sign Up" >
+                    <Text style={styles.buttonText}>REGISTER</Text>
+                </TouchableOpacity>
+                {/* <Button style={styles.button} onPress={() => onSignUp()} title="Sign Up" /> */}
 			    </View>	
             </LinearGradient>							
 		</SafeAreaView>

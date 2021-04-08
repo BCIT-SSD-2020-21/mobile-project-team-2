@@ -6,7 +6,7 @@ export default function PositionList({ navigation, positions }) {
     return (
         <View> 
             {
-                positions.map((position, index) => 
+                positions?.map((position, index) => 
                     <PositionListItem key={index} position={position} navigation={navigation} />
                 )
             }
