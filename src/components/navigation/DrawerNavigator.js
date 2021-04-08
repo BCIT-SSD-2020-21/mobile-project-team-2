@@ -72,14 +72,8 @@ function PortfolioScreenNavigator() {
 				component={Trade}
 				options={{ 
 					headerTitle: 'Trade Screen',
-					headerRight: () => (
-						<Button
-							onPress={() => userSignOut()}
-							title="Log out"
-							color="#147DF0"
-							margin="20px"
-						/>
-					), 
+					headerRight: () => <LogOut color="black"/>,
+                    headerLeft: () => <MenuIcon color="black"/> 
 				}}
 			/>
 		</PortfolioScreenStack.Navigator>
@@ -95,12 +89,15 @@ function SearchScreenNavigator() {
 				component={Search}
 				options={{
                     headerTitle: 'Search',
+                    headerStyle: {
+						backgroundColor: '#082a53',
+                    },
+					headerTintColor: '#adcef7',
 					headerTitleStyle: {
-						textAlign: 'center',
 						fontWeight: 'bold',
                     },
-					headerRight: () => <LogOut color="black"/>,
-                    headerLeft: () => <MenuIcon color="black"/> 
+					headerRight: () => <LogOut color="#adcef7"/>,
+                    headerLeft: () => <MenuIcon color="#adcef7"/> 
                 }}
 			/>
 
@@ -109,12 +106,15 @@ function SearchScreenNavigator() {
 				component={StockDetail} 
 				options={{ 
 					headerTitle: 'Stock Detail',
+                    headerStyle: {
+						backgroundColor: '#082a53',
+                    },
+					headerTintColor: '#adcef7',
 					headerTitleStyle: {
-						textAlign: 'center',
 						fontWeight: 'bold',
                     },
-                    headerRight: () => <LogOut color="black"/>,
-                    headerLeft: () => <MenuIcon color="black"/> 
+                    headerRight: () => <LogOut color="#adcef7"/>,
+                    headerLeft: () => <MenuIcon color="#adcef7"/> 
 				}}				
 			/>
 			<SearchScreenStack.Screen
@@ -122,8 +122,15 @@ function SearchScreenNavigator() {
 				component={Trade}
 				options={{ 
 					headerTitle: 'Trade Screen',
-					headerRight: () => <LogOut color="black"/>,
-                    headerLeft: () => <MenuIcon color="black"/>  
+                    headerStyle: {
+						backgroundColor: '#082a53',
+                    },
+					headerTintColor: '#adcef7',
+					headerTitleStyle: {
+						fontWeight: 'bold',
+                    },
+					headerRight: () => <LogOut color="#adcef7"/>,
+                    headerLeft: () => <MenuIcon color="#adcef7"/>  
 				}}
 			/>
 				
