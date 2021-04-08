@@ -9,7 +9,7 @@ function SearchBox({ searchText, handleChangeSearchText }) {
 	return (
 		<View style={styles.searchSection}>
 			<Ionicons style={styles.searchIcon} name="md-search" />
-			<TextInput style={styles.searchInput} placeholder="Type a company name or stock symbol" defaultValue={searchText} onChangeText={(text) => handleChangeSearchText(text)}
+			<TextInput style={styles.searchInput} placeholder="Type a company name or stock symbol" placeholderTextColor="black" defaultValue={searchText} onChangeText={(text) => handleChangeSearchText(text)}
 			/>
 		</View>
 	)

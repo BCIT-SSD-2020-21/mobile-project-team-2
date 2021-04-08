@@ -1,8 +1,6 @@
 import React from 'react'
-import { Button } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { EvilIcons } from '@expo/vector-icons';
-import { userSignOut } from '../../firebase/service';
 import StockDetail from '../../screens/StockDetail'
 import { createStackNavigator } from '@react-navigation/stack';
 import Trade from '../../screens/Trade'
@@ -80,8 +78,8 @@ function PortfolioScreenNavigator() {
 					headerTitleStyle: {
 						fontWeight: 'bold',
                     },
-					headerRight: () => <LogOut color="black"/>,
-                    headerLeft: () => <MenuIcon color="black"/> 
+                    headerRight: () => <LogOut color="#adcef7"/>,
+                    headerLeft: () => <MenuIcon color="#adcef7"/>
 				}}				
 			/>            
  
@@ -98,12 +96,15 @@ function SearchScreenNavigator() {
 				component={Search}
 				options={{
                     headerTitle: 'Search',
+                    headerStyle: {
+						backgroundColor: '#082a53',
+                    },
+					headerTintColor: '#adcef7',
 					headerTitleStyle: {
-						textAlign: 'center',
 						fontWeight: 'bold',
                     },
-					headerRight: () => <LogOut color="black"/>,
-                    headerLeft: () => <MenuIcon color="black"/> 
+					headerRight: () => <LogOut color="#adcef7"/>,
+                    headerLeft: () => <MenuIcon color="#adcef7"/> 
                 }}
 			/>
 
@@ -112,12 +113,15 @@ function SearchScreenNavigator() {
 				component={StockDetail} 
 				options={{ 
 					headerTitle: 'Stock Detail',
+                    headerStyle: {
+						backgroundColor: '#082a53',
+                    },
+					headerTintColor: '#adcef7',
 					headerTitleStyle: {
-						textAlign: 'center',
 						fontWeight: 'bold',
                     },
-                    headerRight: () => <LogOut color="black"/>,
-                    headerLeft: () => <MenuIcon color="black"/> 
+                    headerRight: () => <LogOut color="#adcef7"/>,
+                    headerLeft: () => <MenuIcon color="#adcef7"/> 
 				}}				
 			/>
 			<PortfolioScreenStack.Screen 
@@ -132,8 +136,8 @@ function SearchScreenNavigator() {
 					headerTitleStyle: {
 						fontWeight: 'bold',
                     },
-					headerRight: () => <LogOut color="black"/>,
-                    headerLeft: () => <MenuIcon color="black"/> 
+                    headerRight: () => <LogOut color="#adcef7"/>,
+                    headerLeft: () => <MenuIcon color="#adcef7"/> 
 				}}				
 			/>  
 				

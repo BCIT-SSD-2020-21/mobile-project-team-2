@@ -27,12 +27,12 @@ const styles = StyleSheet.create({
 	stockSymbol: {
 		paddingHorizontal: 10,
 		paddingTop: 10,
-		color: "blue",
+		color: "#adcef7",
 		fontSize: 20
 	},
 
 	stockName: {
 		paddingHorizontal: 10,
-		color: "black"
+		color: "#818e99"
 	},
 })
