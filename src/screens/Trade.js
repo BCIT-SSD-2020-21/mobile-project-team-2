@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
-import { SafeAreaView, View, Vibration, TouchableOpacity, Text, ImageBackground, ScrollView } from 'react-native';
+import { SafeAreaView, View, Vibration, TouchableOpacity, Text, ImageBackground } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {getStockProfile, getStockQuote} from '../api/stockapi';
 import {firebase} from '../firebase/config';
 import styles from '../styles/tradeScreen'
@@ -231,8 +232,20 @@ export default function Trade({ route, navigation }) {
                 )}
                 {/* Submit */}
                 <TouchableOpacity style={styles.buttonContinue} enabled={ totalAmount <= user?.cashOnHand ? true : false} onPress={() => submitTransaction()}>
+
+                     <MaterialCommunityIcons style={styles.buttonContinueText} name="cash-refund" color="black" />
                     <Text style={styles.buttonContinueText}>Continue</Text>
                 </TouchableOpacity>
+
+
+                            {/* <TouchableOpacity 
+                style={styles.fundingButton} 
+                onPress={toggleWithdrawFunds}
+            >
+                <MaterialCommunityIcons style={styles.fundingButtonText} name="cash-refund" color="black" />
+                <Text style={styles.fundingButtonText}>{depositing ? 'CANCEL' : 'WITHDRAW'}</Text>
+            </TouchableOpacity> */}
+
             </View>
         </SafeAreaView>
         </ImageBackground> 

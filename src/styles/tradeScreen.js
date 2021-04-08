@@ -85,21 +85,21 @@ const styles = StyleSheet.create({
 
     },
 	buttonContinue: {
+		width: '45%',
+		height: 40,
+		marginTop: 30,	
+		padding: 10,
+		borderRadius: 7,
+		alignItems: 'center',
+		backgroundColor: "#5584a466", // blue
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center',
-        padding: 'auto',
-        marginVertical: 10,
-        width: '70%',
-        minHeight: 40,
         flexDirection: 'row',
-        fontSize: 32,
-
+        justifyContent: 'space-around',
 	},
     buttonContinueText: {
         fontSize: 24,
-        textAlign: 'center',
+		textAlign: 'center',
+		textAlignVertical: 'center',
         color: 'white',
     },
 })
