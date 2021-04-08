@@ -13,26 +13,21 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
         width: width,
-        height: height,
+        height: height, 
     },
     BuySellContainer:{
-        flex: 1,
         flexDirection: 'column',        
         alignItems: 'center',
-		justifyContent: 'center',
-        paddingBottom: 5,       
-    },
-    headerContainer: {
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        maxWidth: '100%',
-        height: 200,
+		justifyContent: 'flex-start',
+        padding: 0,
+        margin: 0,
+        marginBottom: 5,  
+        height: '40%',    
     },
 	companyName: {
 		color: '#fff',
 		fontSize: 30,
-		fontWeight: 'bold'
+		fontWeight: 'bold', 
     },   
 	question: {
 		minWidth: 40,
@@ -42,8 +37,6 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },   
     inputNumber: {
-        height:50,
-        maxHeight: 50,
         color: '#ffffff',
         fontSize: 40,
     },      
@@ -73,14 +66,13 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#11111166',
         
     },
     button: {
         alignItems: 'center',
         justifyContent: 'center',
         minWidth: '31%',
-        minHeight: '20%',
+        minHeight: '18%',
         borderRadius: 9,
         color: '#22222266',
         borderColor: '#cbdae466',

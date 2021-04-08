@@ -195,17 +195,14 @@ export default function Trade({ route, navigation }) {
         navigation.navigate("Portfolio")
     }
 
-    return (
- 		// <ScrollView contentContainerStyle={styles.scrollContainer}>     
+    return (    
         <ImageBackground style={styles.background} source={{ uri: 'https://images.unsplash.com/photo-1520269604827-3a85b49d6c76?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=673&q=80' }}>
         <SafeAreaView style={styles.container}>
-            {/* Heading */}
             <View style={styles.BuySellContainer}>
-                <View style={styles.headerContainer}>
-                    <Text style={styles.companyName}>{stockProfile.name}</Text>
-                    <Text style={styles.question}>{`How many shares of ${symbol} do you want to ${transactionType}?`}</Text>
-                    <Text style={styles.inputNumber}>{currentNumber}</Text>
-                </View>
+                {/* Heading */}            
+                <Text style={styles.companyName}>{stockProfile.name}</Text>
+                <Text style={styles.question}>{`How many shares of ${symbol} do you want to ${transactionType}?`}</Text>
+                <Text style={styles.inputNumber}>{currentNumber}</Text>
 
                 {/* Transaction Info */}
                 <Text style={{color: 'white'}}>{positionDocumentId && `You own ${position.quantity} stocks`}</Text>
@@ -220,6 +217,7 @@ export default function Trade({ route, navigation }) {
                 <View style={styles.wallet}>
                     <Text style={styles.renderValueLeft}>Total cost: </Text> 
                     <Text style={styles.renderValueRight}>{`$${Math.round(totalAmount).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`}</Text>
+
                 </View>
             </View>
 
@@ -228,8 +226,6 @@ export default function Trade({ route, navigation }) {
                 { 
                     buttons.map(button => 
                         <TouchableOpacity key={button} style={{...styles.button, borderColor: '#cbdae466'}} onPress={() => handleInput(button)}>
-{/* 
-                                                    <TouchableOpacity key={button} style={{...styles.button, borderColor: '#cbdae466'}} onPress={() => handleInput(button)}></TouchableOpacity> */}
                             <Text style={styles.textButton}>{button}</Text>
                         </TouchableOpacity>
                 )}
@@ -239,7 +235,6 @@ export default function Trade({ route, navigation }) {
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
-        </ImageBackground>
-        // </ScrollView>  
+        </ImageBackground> 
     )
 }
