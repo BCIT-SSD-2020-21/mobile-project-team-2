@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
 	container: {
 		display: 'flex',
 		alignItems: 'center',
-		justifyContent: 'center',
+		justifyContent: 'flex-start',
         width: width,
         height: height, 
     },
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-start',
         padding: 0,
         margin: 0,
-        marginBottom: 5,  
+        margin: 5,  
         height: '40%', 
     },
 	companyName: {
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
 	},         
     buttons: {
         width: width,
-        height: '40%',
+        height: '45%',
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignItems: 'center',
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         minWidth: '32%',
-        minHeight: '9%',
+        minHeight: '13%',
         borderRadius: 9,
         color: '#22222266',
         borderColor: '#cbdae466',
@@ -81,14 +81,14 @@ const styles = StyleSheet.create({
     },
     textButton: {
         color: '#000',
-        fontSize: 32,
+        fontSize: 36,
         color: '#FFFFFF',
 
     },
 	buttonContinue: {
 		width: '45%',
 		height: 40,
-		marginTop: 30,	
+		marginTop: 40,	
 		padding: 10,
 		borderRadius: 7,
 		alignItems: 'center',
