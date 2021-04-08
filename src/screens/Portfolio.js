@@ -24,8 +24,9 @@ export default function Portfolio({navigation}) {
 	const [user, setUser] = useState(0);
 	const [positions, setPositions] = useState([])
 	const [portfolioValue, setPortfolioValue] = useState(0);
+    const [portfolioAverageCost, setPortfolioAverageCost] = useState(0)
 	const [watchList, setWatchList] = useState([])
-	const [portfolioValueDifference, setPortfolioValueDifference] = useState(-34.25);
+	// const [portfolioValueDifference, setPortfolioValueDifference] = useState(-34.25);
     const [portfolioValueSnapshots, setPortfolioValueSnapshots] = useState([])
     
     // Add Fake Data - to render victory chart
@@ -81,6 +82,14 @@ export default function Portfolio({navigation}) {
 		}
 		
 	}, [user])
+    useEffect(() => {
+            let portfolioCostAggregate = user?.cashOnHand
+            positions?.map((position, index) => {
+                portfolioCostAggregate += position.quantity * position.averageCostPerShare
+            })
+            setPortfolioAverageCost(Math.round(portfolioCostAggregate*100)/100)
+    }, [positions])
+    console.log("portfolioAverageCost: ", portfolioAverageCost)
 	// initialize portfolioValue = cashOnHand
 	useEffect(() => {
 		setPortfolioValue(user?.cashOnHand)
@@ -92,7 +101,7 @@ export default function Portfolio({navigation}) {
 			positions.forEach( async (position) => {
 				const quoteResult = await getStockQuote(position.symbol) // from Finnhub
 				portfolioValueAggregate += quoteResult?.c * position?.quantity
-				setPortfolioValue(portfolioValueAggregate)
+				setPortfolioValue(Math.round(portfolioValueAggregate*100)/100)
 			})
 		}
 	}, [positions, user])
@@ -178,7 +187,8 @@ export default function Portfolio({navigation}) {
                         amount={portfolioValue ? portfolioValue : 0 }
                     />
                     <Text style={styles.portfolioVariance}>
-                        {`${portfolioValueDifference > 0 ? "UP" : "DOWN"} ${portfolioValueDifference} in the past week`}
+                        {portfolioAverageCost && portfolioValue && 
+                            `${portfolioValue > portfolioAverageCost ? "UP" : "DOWN"} ${Math.abs(portfolioValue-portfolioAverageCost)} in the past week`}
                     </Text> 
 
 					{/* Chart */}
