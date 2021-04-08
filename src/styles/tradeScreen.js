@@ -1,56 +1,64 @@
 import { Dimensions, StyleSheet } from 'react-native';
 
 const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
 
+    background: {
+        backgroundColor: '#082b56', // dark-blue
+	},    
 	container: {
-		flex: 1,
-        paddingTop: 30,
-        alignItems: 'center',
+		display: 'flex',
+		alignItems: 'center',
 		justifyContent: 'center',
-        backgroundColor:  'white'
+        width: width,
+        height: height, 
     },
-    blueContainer:{
-        backgroundColor: '#147DF0',
-        flex: 1,
+    BuySellContainer:{
+        flexDirection: 'column',        
         alignItems: 'center',
-		justifyContent: 'center',
-        paddingBottom: 10,
-    },
-    results: {
-        backgroundColor:  '#147DF0',
-        maxWidth: width,
-        height: 200,
-	    minHeight: '25%',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-	historyText: {
-		color: '#fff',
-		margin: 15,
-		fontSize: 35,
-	},
-    resultText: {
-        height:50,
-        maxHeight: 50,
-        color: '#fff',
-        fontSize: 45,
+		justifyContent: 'flex-start',
+        padding: 0,
+        margin: 0,
+        marginBottom: 5,  
+        height: '40%',    
     },
 	companyName: {
 		color: '#fff',
-		fontSize: 34,
-		fontWeight: 'bold'
-    },
-	howMany: {
+		fontSize: 30,
+		fontWeight: 'bold', 
+    },   
+	question: {
 		minWidth: 40,
 		color: '#fff',
-		margin: 15,
 		fontSize: 24,
-		alignItems: 'center',
-		justifyContent: 'center',
+		margin: 15,
         textAlign: 'center'
-    },
+    },   
+    inputNumber: {
+        color: '#ffffff',
+        fontSize: 40,
+    },      
+	wallet: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: width,
+        paddingHorizontal: 15,
+ 
+	},    
+	renderValueLeft: {
+        width: '45%',
+		color: 'white',
+		fontSize: 20,
+	}, 
+	renderValueRight: {
+        width: '45%',
+		color: 'white',
+		fontSize: 20,
+        textAlign: 'right',
+	},         
     buttons: {
         width: width,
         height: '50%',
@@ -58,56 +66,42 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'center',
+        
     },
     button: {
-        borderColor: '#fff',
-	    backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
         minWidth: '31%',
-        minHeight: '20%',
+        minHeight: '18%',
+        borderRadius: 9,
+        color: '#22222266',
+        borderColor: '#cbdae466',
+        borderWidth: 1,        
     },
     textButton: {
         color: '#000',
         fontSize: 32,
+        color: '#FFFFFF',
+
     },
 	buttonContinue: {
+		width: '45%',
+		height: 40,
+		marginTop: 30,	
+		padding: 10,
+		borderRadius: 7,
+		alignItems: 'center',
+		backgroundColor: "#5584a466", // blue
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center',
-        padding: 'auto',
-        marginVertical: 10,
-        width: '70%',
-        minHeight: 40,
         flexDirection: 'row',
-        fontSize: 32,
-        backgroundColor: '#147DF0', 
-        color: 'white',
+        justifyContent: 'space-around',
 	},
     buttonContinueText: {
         fontSize: 24,
-        textAlign: 'center',
+		textAlign: 'center',
+		textAlignVertical: 'center',
         color: 'white',
     },
-	renderValues: {
-		maxHeight: 45,
-		color: 'white',
-		fontSize: 20,
-		justifyContent: 'center',
-		flexDirection: 'row',
-	},
-	wallet: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        margin: 'auto',
-        width: width,
-        flexDirection: 'row',
-        paddingLeft: 10,
-        paddingRight: 10
-	}
 })
 
 export default styles

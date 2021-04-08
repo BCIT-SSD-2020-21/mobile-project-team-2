@@ -71,14 +71,22 @@ function PortfolioScreenNavigator() {
 				headerRight: () => <LogOut color="#adcef7"/>
 			}}				
 			/>	
+
 			<PortfolioScreenStack.Screen
 				name="Trade"
 				component={Trade}
 				options={{ 
 					headerTitle: 'Trade Screen',
+					headerStyle: {
+						backgroundColor: '#041C2F', // dark-blue
+                    },
+					headerTintColor: '#adcef7',
+					headerTitleStyle: {
+						fontWeight: 'bold',
+                    },
 					headerRight: () => <LogOut color="#adcef7"/>
 				}}
-			/>
+			/>            
 
 		</PortfolioScreenStack.Navigator>
 	);
@@ -119,14 +127,22 @@ function SearchScreenNavigator() {
 					headerRight: () => <LogOut color="#adcef7"/>
 				}}				
             />
-			<SearchScreenStack.Screen
+            
+			<PortfolioScreenStack.Screen
 				name="Trade"
 				component={Trade}
 				options={{ 
 					headerTitle: 'Trade Screen',
-					headerRight: () => <LogOut color="#000000"/>
+					headerStyle: {
+						backgroundColor: '#041C2F', // dark-blue
+                    },
+					headerTintColor: '#adcef7',
+					headerTitleStyle: {
+						fontWeight: 'bold',
+                    },
+					headerRight: () => <LogOut color="#adcef7"/>
 				}}
-			/>
+			/>    
 		</SearchScreenStack.Navigator>
 	);
 }
