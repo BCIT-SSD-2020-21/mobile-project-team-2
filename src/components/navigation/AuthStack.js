@@ -1,24 +1,27 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { EvilIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 
 const BottomTab = createBottomTabNavigator();
 
 export default function AuthStack() {
     return (
-        <BottomTab.Navigator initialRouteName={"Login"}>
+        <BottomTab.Navigator initialRouteName={"Login"} tabBarOptions={{ style: { backgroundColor: '#041529', borderTopWidth: 0}}}>
             <BottomTab.Screen
                 name={"Login"}
                 component={LoginScreenNavigator}
                 options={{
-                    tabBarIcon: () => <EvilIcons name="star" size={30} color="black" />,
+                    tabBarIcon: () => <AntDesign name="login" size={30} color="#cbdae4" />,
                 }}
             />
             <BottomTab.Screen
                 name={"Register"}
                 component={RegisterScreenNavigator}
                 options={{
-                    tabBarIcon: () => <EvilIcons name="star" size={30} color="black" />,
+                    tabBarIcon: () => <MaterialCommunityIcons name="pen-plus" size={24} color="#cbdae4" />,
                 }}
             />
         </BottomTab.Navigator>

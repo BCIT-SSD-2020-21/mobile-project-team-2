@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 		color: '#999999',
         paddingLeft:10,
         paddingRight:10,
-        paddingTop: 30,
+        paddingTop: 10,
 	},
 	input : {
 		height: 35,
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         width: '96%',
 		height: 40,
 		margin: 5,	
-		padding: 10,
+		padding: 6,
 		borderRadius: 7,
 		alignItems: 'center',
 		backgroundColor: "#5584a466", // blue
@@ -60,9 +60,24 @@ const styles = StyleSheet.create({
 		color: '#147DF0'		
 	},
 	button: {
-		width: 300,
-		backgroundColor: '#5584a466',
-	}
+		width: '42%',
+		height: 40,
+		marginLeft: 'auto',	
+        marginRight: 'auto',
+		paddingHorizontal: 35,
+		borderRadius: 7,
+		alignItems: 'center',
+		backgroundColor: "#5584a466", // blue
+        display: 'flex',
+        // flexDirection: 'row',
+        justifyContent: 'space-around',
+	},
+    buttonText: {
+		textAlign: 'center',
+		textAlignVertical: 'center',
+		fontSize: 16,
+		color: '#cbdae4', // lightGreen
+	},
 });
 
 export default styles

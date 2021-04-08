@@ -54,7 +54,7 @@ export const headerValueStyles = StyleSheet.create({
         marginBottom: 6.5,
         transform: [
             { rotate: "7deg" },
-            { translateX: -6 }
+            { translateX: -2 }
         ]
     }
 })
@@ -165,7 +165,7 @@ export const walletStyles = StyleSheet.create({
         marginBottom: 6.5,
         transform: [
             { rotate: "7deg" },
-            { translateX: -4 }
+            { translateX: 0 }
         ]
     }
 });

@@ -5,8 +5,9 @@ import { headerValueStyles } from '../../styles/fontStyles';
 
 export default function HeaderValue({ label, amount }) {
     
-    const integerAmount = `${Math.round(amount).toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`
-    const decimalAmount = amount ? (amount.toFixed(0)%amount).toFixed(2).substring(1,4) : (0).toFixed(2).substring(1,4)
+    const roundedAmount = amount ? amount.toFixed(2) : 0
+    const integerAmount = amount ? `${amount?.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}` : 0
+    const decimalAmount = amount ? (roundedAmount.substring(roundedAmount.length-3,roundedAmount.length)) : (0).toFixed(2).substring(1,4)
     
     return (
         <View style={headerValueStyles.container}> 
