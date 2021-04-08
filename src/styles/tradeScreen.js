@@ -1,7 +1,7 @@
 import { Dimensions, StyleSheet } from 'react-native';
 
 const width = Dimensions.get('window').width;
-const height = Dimensions.get('window').height;
+const height = Dimensions.get('window').height - 30;
 
 const styles = StyleSheet.create({
 
@@ -22,23 +22,23 @@ const styles = StyleSheet.create({
         padding: 0,
         margin: 0,
         marginBottom: 5,  
-        height: '40%',    
+        height: '40%', 
     },
 	companyName: {
 		color: '#fff',
-		fontSize: 30,
+		fontSize: 24,
 		fontWeight: 'bold', 
     },   
 	question: {
 		minWidth: 40,
 		color: '#fff',
-		fontSize: 24,
-		margin: 15,
+		fontSize: 20,
+		margin: 5,
         textAlign: 'center'
     },   
     inputNumber: {
         color: '#ffffff',
-        fontSize: 40,
+        fontSize: 30,
     },      
 	wallet: {
         flexDirection: 'row',
@@ -61,18 +61,19 @@ const styles = StyleSheet.create({
 	},         
     buttons: {
         width: width,
-        height: '50%',
+        height: '40%',
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'center',
+        marginTop: 5,
         
     },
     button: {
         alignItems: 'center',
         justifyContent: 'center',
-        minWidth: '31%',
-        minHeight: '18%',
+        minWidth: '32%',
+        minHeight: '9%',
         borderRadius: 9,
         color: '#22222266',
         borderColor: '#cbdae466',
