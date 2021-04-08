@@ -35,7 +35,17 @@ export default function BottomTabNavigator() {
 	</BottomTab.Navigator>
 	)
 }
+const headerElements = {
+    headerStyle: {
+        backgroundColor: '#041C2F'
+    },
+    headerTintColor: '#adcef7',
+    headerTitleStyle: {
+        fontWeight: 'bold',
+    },
+    headerRight: () => <LogOut color="#adcef7"/>
 
+}
 const PortfolioScreenStack = createStackNavigator();
 function PortfolioScreenNavigator() {
 	return (
@@ -45,31 +55,16 @@ function PortfolioScreenNavigator() {
 				component={Portfolio}
 				options={{ 
 					headerTitle: 'Portfolio',
-					headerStyle: {
-                        textAlign: 'center',
-						backgroundColor: '#041C2F', // dark-blue
-					  },
-					headerTintColor: '#adcef7',
-					headerTitleStyle: {
-						fontWeight: 'bold',
-                    },
-					headerRight: () => <LogOut color="#adcef7"/>
+					...headerElements
 				}}
 			/>
 			<PortfolioScreenStack.Screen 
 				name="StockDetail" 
 				component={StockDetail} 
 				options={{ 
-				headerTitle: 'Stock Detail',
-                headerStyle: {
-                    backgroundColor: '#041C2F'
-                },
-                headerTintColor: '#adcef7',
-				headerTitleStyle: {
-					fontWeight: 'bold',
-				},
-				headerRight: () => <LogOut color="#adcef7"/>
-			}}				
+                    headerTitle: 'Stock Detail',
+                    ...headerElements
+                }}				
 			/>	
 
 			<PortfolioScreenStack.Screen
@@ -77,14 +72,7 @@ function PortfolioScreenNavigator() {
 				component={Trade}
 				options={{ 
 					headerTitle: 'Trade Screen',
-					headerStyle: {
-						backgroundColor: '#041C2F', // dark-blue
-                    },
-					headerTintColor: '#adcef7',
-					headerTitleStyle: {
-						fontWeight: 'bold',
-                    },
-					headerRight: () => <LogOut color="#adcef7"/>
+					...headerElements
 				}}
 			/>            
 
@@ -100,15 +88,7 @@ function SearchScreenNavigator() {
 				component={Search}
 				options={{ 
 					headerTitle: 'Search',
-                    headerStyle: {
-                        backgroundColor: '#041C2F'
-                    },
-                    headerTintColor: '#adcef7',
-                    headerTitleStyle: {
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                    },
-					headerRight: () => <LogOut color="#adcef7"/>
+                    ...headerElements
 				}}
 			/>
 			<SearchScreenStack.Screen 
@@ -116,15 +96,7 @@ function SearchScreenNavigator() {
 				component={StockDetail} 
 				options={{ 
 					headerTitle: 'Stock Detail',
-                    headerStyle: {
-                        backgroundColor: '#041C2F'
-                    },
-                    headerTintColor: '#adcef7',
-                    headerTitleStyle: {
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                    },
-					headerRight: () => <LogOut color="#adcef7"/>
+                    ...headerElements
 				}}				
             />
             
@@ -133,14 +105,7 @@ function SearchScreenNavigator() {
 				component={Trade}
 				options={{ 
 					headerTitle: 'Trade Screen',
-					headerStyle: {
-						backgroundColor: '#041C2F', // dark-blue
-                    },
-					headerTintColor: '#adcef7',
-					headerTitleStyle: {
-						fontWeight: 'bold',
-                    },
-					headerRight: () => <LogOut color="#adcef7"/>
+					...headerElements
 				}}
 			/>    
 		</SearchScreenStack.Navigator>
