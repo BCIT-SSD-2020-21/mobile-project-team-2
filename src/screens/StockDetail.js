@@ -134,7 +134,9 @@ const StockDetail = ({ route, navigation}) => {
                                 {watch ? <Watch /> : <WatchOff />}
                             </TouchableOpacity>
                             <View style={styles.companyDefaultLogo}>
-                            <Image style={styles.companyLogo} source={{ uri: stockProfile.logo}}/>
+                                {
+                                    !!stockProfile.logo && <Image style={styles.companyLogo} source={{ uri: stockProfile.logo}}/>
+                                }
                                 {/* <Text style={styles.companyLogoName}>{symbol}</Text> */}
                             </View>
                             <Text style={styles.companyName}>{stockProfile.name}</Text>
@@ -176,7 +178,7 @@ const StockDetail = ({ route, navigation}) => {
 
                             <View style={styles.company}>
                                 {/* <Image style={styles.companyLogo} source={{ uri: stockProfile.logo}}/>				 */}
-                                <Text style={styles.companyInfo} numberOfLines={1}>Company Info&nbsp;</Text> 
+                                <Text style={styles.companyInfo} numberOfLines={1}>Company Info</Text> 
                             </View>
                         
                             <View style={styles.card}>
