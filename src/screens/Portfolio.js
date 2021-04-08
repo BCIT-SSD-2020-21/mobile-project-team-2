@@ -257,13 +257,15 @@ export default function Portfolio({navigation}) {
                                     style={styles.fundingButton} 
                                     onPress={() => depositFunds()} 
                                 >
+                                    <AntDesign name="checkcircleo" size={24} color="#7bc8a1" />
                                     <Text style={styles.fundingButtonText}>{'DEPOSIT'}</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity 
                                     style={styles.fundingButton} 
                                     onPress={() => toggleDepositFunds()} 
                                 >
-                                    <Text style={styles.fundingButtonText}>{'X'}</Text>
+                                    <Text style={styles.fundingButtonText}>{'CANCEL'}</Text>
+                                    <AntDesign name="closecircleo" size={24} color="#98496b" />
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -281,13 +283,15 @@ export default function Portfolio({navigation}) {
                                     style={styles.fundingButton} 
                                     onPress={() => withdrawFunds()} 
                                 >
+                                    <AntDesign name="checkcircleo" size={24} color="#cab44b" />
                                     <Text style={styles.fundingButtonText}>{'WITHDRAW'}</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity 
                                     style={styles.fundingButton} 
                                     onPress={() => toggleWithdrawFunds()} 
                                 >
-                                    <Text style={styles.fundingButtonText}>{'X'}</Text>
+                                    <Text style={styles.fundingButtonText}>{'CANCEL'}</Text>
+                                    <AntDesign name="closecircleo" size={24} color="#98496b" />
                                 </TouchableOpacity>
                             </View>
                         </View>
