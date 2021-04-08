@@ -52,20 +52,24 @@ function PortfolioScreenNavigator() {
                     headerLeft: () => <MenuIcon color="#adcef7"/> 
                 }}
 			/>
+
 			<PortfolioScreenStack.Screen 
 				name="StockDetail" 
 				component={StockDetail} 
 				options={{ 
 					headerTitle: 'Stock Detail',
+                    headerStyle: {
+						backgroundColor: '#082a53',
+                    },
+					headerTintColor: '#adcef7',
 					headerTitleStyle: {
-						// textAlign: 'center',
 						fontWeight: 'bold',
-					},
-					headerRight: () => <LogOut color="black"/>,
-                    headerLeft: () => <MenuIcon color="black"/> 
-				}}				
-			/>
-
+                    },
+                    headerRight: () => <LogOut color="#adcef7"/>,
+                    headerLeft: () => <MenuIcon color="#adcef7"/>
+				}}            
+			/> 
+            
 			<PortfolioScreenStack.Screen 
 				name="Trade" 
 				component={Trade} 
