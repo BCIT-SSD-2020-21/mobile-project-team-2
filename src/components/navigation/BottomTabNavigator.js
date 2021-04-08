@@ -46,7 +46,7 @@ function PortfolioScreenNavigator() {
 				options={{ 
 					headerTitle: 'Portfolio',
 					headerStyle: {
-                        textAlign: 'center',
+                        // textAlign: 'center',
 						backgroundColor: '#041C2F', // dark-blue
 					  },
 					headerTintColor: '#adcef7',

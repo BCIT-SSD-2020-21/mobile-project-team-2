@@ -58,7 +58,7 @@ function PortfolioScreenNavigator() {
 				options={{ 
 					headerTitle: 'Stock Detail',
 					headerTitleStyle: {
-						textAlign: 'center',
+						// textAlign: 'center',
 						fontWeight: 'bold',
 					},
 					headerRight: () => <LogOut color="black"/>,
