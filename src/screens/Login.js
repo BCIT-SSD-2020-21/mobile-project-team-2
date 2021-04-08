@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Keyboard, SafeAreaView, Text, Image, TextInput, TouchableOpacity, View } from 'react-native';
+import { Keyboard, SafeAreaView, Text, Image, TextInput, TouchableOpacity, View, StatusBar } from 'react-native';
 import {firebase} from '../firebase/config';
 import {resetPassword} from './ResetPassword'
 import styles from '../styles/authStyles'
@@ -40,6 +40,7 @@ export default function Login() {
 
     return (
         <SafeAreaView style={styles.container}>
+            <StatusBar backgroundColor="#082b56" barStyle="light-content"/>
             <LinearGradient 
             colors={['#082b56', '#0b3d7a', 'transparent']} 
             style={styles.background}
