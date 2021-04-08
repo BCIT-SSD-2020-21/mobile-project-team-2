@@ -127,7 +127,7 @@ const StockDetail = ({ route, navigation}) => {
 		<ScrollView contentContainerStyle ={styles.scrollContainer}>
             <ImageBackground style={styles.background} source={{ uri: 'https://images.unsplash.com/photo-1520269604827-3a85b49d6c76?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=673&q=80' }}>
                 <SafeAreaView style={styles.safeAreaContainer}>
-                <StatusBar backgroundColor="white" barStyle="light-content"/>
+                <StatusBar backgroundColor="#082b56" barStyle="light-content"/>
                     <View style={styles.container}>
                         <View style={styles.titleContainer}>
                             <TouchableOpacity style={styles.watch} 	onPress={() => toAddWatch(watch)}>

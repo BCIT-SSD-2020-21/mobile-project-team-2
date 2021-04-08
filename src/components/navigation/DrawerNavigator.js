@@ -65,15 +65,24 @@ function PortfolioScreenNavigator() {
                     headerLeft: () => <MenuIcon color="black"/> 
 				}}				
 			/>
-			<PortfolioScreenStack.Screen
-				name="Trade"
-				component={Trade}
+
+			<PortfolioScreenStack.Screen 
+				name="Trade" 
+				component={Trade} 
 				options={{ 
 					headerTitle: 'Trade Screen',
-					headerRight: () => <LogOut color="black"/>,
-                    headerLeft: () => <MenuIcon color="black"/> 
-				}}
-			/>
+                    headerStyle: {
+						backgroundColor: '#082a53',
+                    },
+					headerTintColor: '#adcef7',
+					headerTitleStyle: {
+						fontWeight: 'bold',
+                    },
+                    headerRight: () => <LogOut color="#adcef7"/>,
+                    headerLeft: () => <MenuIcon color="#adcef7"/>
+				}}				
+			/>            
+ 
 		</PortfolioScreenStack.Navigator>
 	);
 }
@@ -115,9 +124,9 @@ function SearchScreenNavigator() {
                     headerLeft: () => <MenuIcon color="#adcef7"/> 
 				}}				
 			/>
-			<SearchScreenStack.Screen
-				name="Trade"
-				component={Trade}
+			<PortfolioScreenStack.Screen 
+				name="Trade" 
+				component={Trade} 
 				options={{ 
 					headerTitle: 'Trade Screen',
                     headerStyle: {
@@ -127,10 +136,10 @@ function SearchScreenNavigator() {
 					headerTitleStyle: {
 						fontWeight: 'bold',
                     },
-					headerRight: () => <LogOut color="#adcef7"/>,
-                    headerLeft: () => <MenuIcon color="#adcef7"/>  
-				}}
-			/>
+                    headerRight: () => <LogOut color="#adcef7"/>,
+                    headerLeft: () => <MenuIcon color="#adcef7"/> 
+				}}				
+			/>  
 				
 		</SearchScreenStack.Navigator>
 	)
