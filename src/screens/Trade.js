@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { SafeAreaView, View, Vibration, TouchableOpacity, Text, ImageBackground } from 'react-native';
+import { SafeAreaView, View, Vibration, TouchableOpacity, Text, ImageBackground, StatusBar } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {getStockProfile, getStockQuote} from '../api/stockapi';
 import {firebase} from '../firebase/config';
@@ -199,6 +199,7 @@ export default function Trade({ route, navigation }) {
     return (    
         <ImageBackground style={styles.background} source={{ uri: 'https://images.unsplash.com/photo-1520269604827-3a85b49d6c76?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=673&q=80' }}>
         <SafeAreaView style={styles.container}>
+        <StatusBar backgroundColor="#082b56" barStyle="light-content"/>
             <View style={styles.BuySellContainer}>
                 {/* Heading */}            
                 <Text style={styles.companyName}>{stockProfile.name}</Text>
