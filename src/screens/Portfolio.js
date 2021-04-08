@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { SafeAreaView, ScrollView, TouchableOpacity, Text, TextInput, ImageBackground, View, StatusBar } from 'react-native';
+import { Keyboard, SafeAreaView, ScrollView, TouchableOpacity, Text, TextInput, ImageBackground, View, StatusBar } from 'react-native';
 import { VictoryBar, VictoryChart, VictoryArea, VictoryAxis, VictoryStack, VictoryTheme } from 'victory-native'
 import { firebase } from '../firebase/config';
 import { EvilIcons } from '@expo/vector-icons';
@@ -26,9 +26,17 @@ export default function Portfolio({navigation}) {
 	const [positions, setPositions] = useState([])
 	const [portfolioValue, setPortfolioValue] = useState(0);
     const [portfolioAverageCost, setPortfolioAverageCost] = useState(0)
-	const [watchList, setWatchList] = useState([])
-	// const [portfolioValueDifference, setPortfolioValueDifference] = useState(-34.25);
     const [portfolioValueSnapshots, setPortfolioValueSnapshots] = useState([])
+    const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => { setKeyboardVisible(true); });
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => { setKeyboardVisible(false); });
+        return () => {
+          keyboardDidHideListener.remove();
+          keyboardDidShowListener.remove();
+        };
+      }, []);
     
     // Add Fake Data - to render victory chart
     useState(() => {
@@ -205,7 +213,7 @@ export default function Portfolio({navigation}) {
                     </Text> 
 
 					{/* Chart */}
-                    { portfolioValueSnapshots?.length > 2 && 
+                    { !isKeyboardVisible && portfolioValueSnapshots?.length > 2 && 
                         <VictoryChart
                             height={200}
                             width={300}
@@ -229,34 +237,33 @@ export default function Portfolio({navigation}) {
                             />
                         </VictoryChart>
                     }
-                        <WalletAmount 
-                            label={'Cash in wallet'}
-                            amount={user?.cashOnHand ? user.cashOnHand : 0}
-                            fontSizeMultiplier={2}
-                        />
-                    {
-                        !depositing && !withdrawing &&
-                        <View style={styles.walletActions}>
+                    {/* Wallet */}
+                    <WalletAmount 
+                        label={'Cash in wallet'}
+                        amount={user?.cashOnHand ? user.cashOnHand : 0}
+                        fontSizeMultiplier={2}
+                    />
+                    { !depositing && !withdrawing &&
+                    <View style={styles.walletActions}>
 
-                            <TouchableOpacity 
-                                style={styles.fundingButton} 
-                                onPress={toggleWithdrawFunds}
-                            >
-                                <MaterialCommunityIcons style={styles.fundingButtonText} name="cash-refund" color="black" />
-                                <Text style={styles.fundingButtonText}>{depositing ? 'CANCEL' : 'WITHDRAW'}</Text>
-                            </TouchableOpacity>
+                        <TouchableOpacity 
+                            style={styles.fundingButton} 
+                            onPress={toggleWithdrawFunds}
+                        >
+                            <MaterialCommunityIcons style={styles.fundingButtonText} name="cash-refund" color="black" />
+                            <Text style={styles.fundingButtonText}>{depositing ? 'CANCEL' : 'WITHDRAW'}</Text>
+                        </TouchableOpacity>
 
-                            <TouchableOpacity 
-                                style={styles.fundingButton} 
-                                onPress={toggleDepositFunds} 
-                            >
-                                <Text style={styles.fundingButtonText}>{depositing ? 'CANCEL' : 'DEPOSIT'}</Text>
-                                <AntDesign style={styles.fundingButtonText} name="wallet" color="black" />
-                            </TouchableOpacity>
-                            
-                        </View>
-                    }
+                        <TouchableOpacity 
+                            style={styles.fundingButton} 
+                            onPress={toggleDepositFunds} 
+                        >
+                            <Text style={styles.fundingButtonText}>{depositing ? 'CANCEL' : 'DEPOSIT'}</Text>
+                            <AntDesign style={styles.fundingButtonText} name="wallet" color="black" />
+                        </TouchableOpacity>
                         
+                    </View>
+                    }
                     { depositing && 
                         <View style={styles.fundingForm}>
                             <Text style={styles.fundingLabel}>{'Enter amount to deposit: '}</Text>
@@ -283,7 +290,6 @@ export default function Portfolio({navigation}) {
                             <Text style={styles.inputError}>{inputError}</Text>
                         </View>
                     }
-
                     { withdrawing && 
                         <View style={styles.fundingForm}>
                             <Text style={styles.fundingLabel}>{'Enter amount to withdraw: '}</Text>
@@ -310,7 +316,6 @@ export default function Portfolio({navigation}) {
                             <Text style={styles.inputError}>{inputError}</Text>
                         </View>
                     }
-
                     {/* Owned Stocks 
                         -- FlatList, limit 6, top change in value */}
                     <View style={styles.listingContainer}>
@@ -344,9 +349,10 @@ export default function Portfolio({navigation}) {
                      </View>
 
                     {/* Footer */}
-                    <Footer />                
-                 </SafeAreaView>
-             </ImageBackground>
+                    <Footer />
+
+                </SafeAreaView>
+            </ImageBackground>
 		</ScrollView>
     )
 }
