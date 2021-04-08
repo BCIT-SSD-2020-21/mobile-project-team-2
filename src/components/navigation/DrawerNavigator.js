@@ -56,6 +56,7 @@ function PortfolioScreenNavigator() {
                     ...headerElements
                 }}
 			/>
+
 			<PortfolioScreenStack.Screen 
 				name="StockDetail" 
 				component={StockDetail} 
