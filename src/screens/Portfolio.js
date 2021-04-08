@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { SafeAreaView, ScrollView, TouchableOpacity, Text, TextInput, ImageBackground, View, StatusBar } from 'react-native';
+import { Keyboard, SafeAreaView, ScrollView, TouchableOpacity, Text, TextInput, ImageBackground, View, StatusBar } from 'react-native';
 import { VictoryBar, VictoryChart, VictoryArea, VictoryAxis, VictoryStack, VictoryTheme } from 'victory-native'
 import { firebase } from '../firebase/config';
 import { EvilIcons } from '@expo/vector-icons';
@@ -20,13 +20,23 @@ export default function Portfolio({navigation}) {
     const [withdrawing, setWithdrawing] = useState(false)
 	const [depositAmount, setDepositAmount] = useState(0)
     const [withdrawAmount, setWithdrawAmount] = useState(0)
+    const [inputError, setInputError] = useState("")
     
 	const [user, setUser] = useState(0);
 	const [positions, setPositions] = useState([])
 	const [portfolioValue, setPortfolioValue] = useState(0);
-	const [watchList, setWatchList] = useState([])
-	const [portfolioValueDifference, setPortfolioValueDifference] = useState(-34.25);
+    const [portfolioAverageCost, setPortfolioAverageCost] = useState(0)
     const [portfolioValueSnapshots, setPortfolioValueSnapshots] = useState([])
+    const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => { setKeyboardVisible(true); });
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => { setKeyboardVisible(false); });
+        return () => {
+          keyboardDidHideListener.remove();
+          keyboardDidShowListener.remove();
+        };
+      }, []);
     
     // Add Fake Data - to render victory chart
     useState(() => {
@@ -81,6 +91,14 @@ export default function Portfolio({navigation}) {
 		}
 		
 	}, [user])
+    useEffect(() => {
+            let portfolioCostAggregate = user?.cashOnHand
+            positions?.map((position, index) => {
+                portfolioCostAggregate += position.quantity * position.averageCostPerShare
+            })
+            setPortfolioAverageCost(Math.round(portfolioCostAggregate*100)/100)
+    }, [positions])
+    console.log("portfolioAverageCost: ", portfolioAverageCost)
 	// initialize portfolioValue = cashOnHand
 	useEffect(() => {
 		setPortfolioValue(user?.cashOnHand)
@@ -92,7 +110,7 @@ export default function Portfolio({navigation}) {
 			positions.forEach( async (position) => {
 				const quoteResult = await getStockQuote(position.symbol) // from Finnhub
 				portfolioValueAggregate += quoteResult?.c * position?.quantity
-				setPortfolioValue(portfolioValueAggregate)
+				setPortfolioValue(Math.round(portfolioValueAggregate*100)/100)
 			})
 		}
 	}, [positions, user])
@@ -101,60 +119,72 @@ export default function Portfolio({navigation}) {
 	// TOGGLE ADD FUNDS FORM
 	const toggleDepositFunds = () => {
 		setDepositing(!depositing)
+        setInputError("")
 	}
     const toggleWithdrawFunds = () => {
         setWithdrawing(!withdrawing)
+        setInputError("")
     }
 	// ADD FUNDS
 	function depositFunds() {
-		// TRANSACTION - Create
-		const transactionsRef = firebase.firestore().collection('transactions'); // to create transaction
-        transactionsRef.add({
-			type: "cash",
-			total: depositAmount,
-			userId: firebase.auth().currentUser.uid,
-			timestamp: Date.now()
-			}).then((docRef) => {
-			// USER - Update transactions
-			const newTransactions = [...user?.transactions, docRef.ZE.path.segments[1]]
-			usersRef.doc(firebase.auth().currentUser.uid).update({
-			  transactions: newTransactions
-			})
-		  })
-		// get current user's UID
-		const db = firebase.firestore();
-		const increment = firebase.firestore.FieldValue.increment(parseFloat(depositAmount));
-		const userRef = db.collection('users').doc(firebase.auth().currentUser.uid);
-		userRef.update({ cashOnHand: increment });
-		setDepositAmount(0)
-        setDepositing(false)
-        setWithdrawing(false)
+        // Validate Input Amount
+        if (depositAmount > 0) {
+            // TRANSACTION - Create
+            const transactionsRef = firebase.firestore().collection('transactions'); // to create transaction
+            transactionsRef.add({
+                type: "cash",
+                total: depositAmount,
+                userId: firebase.auth().currentUser.uid,
+                timestamp: Date.now()
+                }).then((docRef) => {
+                // USER - Update transactions
+                const newTransactions = [...user?.transactions, docRef.ZE.path.segments[1]]
+                usersRef.doc(firebase.auth().currentUser.uid).update({
+                transactions: newTransactions
+                })
+            })
+            // get current user's UID
+            const db = firebase.firestore();
+            const increment = firebase.firestore.FieldValue.increment(parseFloat(depositAmount));
+            const userRef = db.collection('users').doc(firebase.auth().currentUser.uid);
+            userRef.update({ cashOnHand: increment });
+            setDepositAmount(0)
+            setDepositing(false)
+            setWithdrawing(false)
+            setInputError("")
+        } else {
+            setInputError(`Invalid input, please try again.\nDeposit amount must be a valid number.`)
+        }
 	}
 	function withdrawFunds() {
-		// TRANSACTION - Create
-		const transactionsRef = firebase.firestore().collection('transactions'); // to create transaction
-        transactionsRef.add({
-			type: "cash",
-			total: -withdrawAmount,
-			userId: firebase.auth().currentUser.uid,
-			timestamp: Date.now()
-			}).then((docRef) => {
-			// USER - Update transactions
-			const newTransactions = [...user?.transactions, docRef.ZE.path.segments[1]]
-			usersRef.doc(firebase.auth().currentUser.uid).update({
-			  transactions: newTransactions
-			})
-		  })
-		// get current user's UID
-		const db = firebase.firestore();
-		const decrement = firebase.firestore.FieldValue.increment(parseFloat(-withdrawAmount));
-		const userRef = db.collection('users').doc(firebase.auth().currentUser.uid);
-		userRef.update({ cashOnHand: decrement });
-        setDepositAmount(0)
-        setDepositing(false)
-        setWithdrawing(false)
+        if (withdrawAmount > 0) {
+            // TRANSACTION - Create
+            const transactionsRef = firebase.firestore().collection('transactions'); // to create transaction
+            transactionsRef.add({
+                type: "cash",
+                total: -withdrawAmount,
+                userId: firebase.auth().currentUser.uid,
+                timestamp: Date.now()
+                }).then((docRef) => {
+                // USER - Update transactions
+                const newTransactions = [...user?.transactions, docRef.ZE.path.segments[1]]
+                usersRef.doc(firebase.auth().currentUser.uid).update({
+                transactions: newTransactions
+                })
+            })
+            // get current user's UID
+            const db = firebase.firestore();
+            const decrement = firebase.firestore.FieldValue.increment(parseFloat(-withdrawAmount));
+            const userRef = db.collection('users').doc(firebase.auth().currentUser.uid);
+            userRef.update({ cashOnHand: decrement });
+            setDepositAmount(0)
+            setDepositing(false)
+            setWithdrawing(false)
+            setInputError("")
+        } else {
+            setInputError(`Invalid input, please try again.\nWithdraw amount must be a valid number.`)
+        }
 	}
-	
 		
 	// Route to Full Lists:
 	const displayPortfolioList = () => {
@@ -178,11 +208,12 @@ export default function Portfolio({navigation}) {
                         amount={portfolioValue ? portfolioValue : 0 }
                     />
                     <Text style={styles.portfolioVariance}>
-                        {`${portfolioValueDifference > 0 ? "UP" : "DOWN"} ${portfolioValueDifference} in the past week`}
+                        {portfolioAverageCost && portfolioValue && 
+                            `${portfolioValue > portfolioAverageCost ? "UP" : "DOWN"} ${Math.abs(portfolioValue-portfolioAverageCost).toFixed(2)} in the past week`}
                     </Text> 
 
 					{/* Chart */}
-                    { portfolioValueSnapshots?.length > 2 && 
+                    { !isKeyboardVisible && portfolioValueSnapshots?.length > 2 && 
                         <VictoryChart
                             height={200}
                             width={300}
@@ -206,45 +237,33 @@ export default function Portfolio({navigation}) {
                             />
                         </VictoryChart>
                     }
+                    {/* Wallet */}
+                    <WalletAmount 
+                        label={'Cash in wallet'}
+                        amount={user?.cashOnHand ? user.cashOnHand : 0}
+                        fontSizeMultiplier={2}
+                    />
+                    { !depositing && !withdrawing &&
+                    <View style={styles.walletActions}>
 
-                    {/* <View style={styles.fundingContainer}> */}
-                        {/* <Text style={styles.fundingLabel}>{'Available funding: '}</Text>
-                        <Text style={styles.fundingAmount}>{user?.cashOnHand ? `$${Math.round(user.cashOnHand).toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}` : '$0.00'}</Text> */}
+                        <TouchableOpacity 
+                            style={styles.fundingButton} 
+                            onPress={toggleWithdrawFunds}
+                        >
+                            <MaterialCommunityIcons style={styles.fundingButtonText} name="cash-refund" color="black" />
+                            <Text style={styles.fundingButtonText}>{depositing ? 'CANCEL' : 'WITHDRAW'}</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity 
+                            style={styles.fundingButton} 
+                            onPress={toggleDepositFunds} 
+                        >
+                            <Text style={styles.fundingButtonText}>{depositing ? 'CANCEL' : 'DEPOSIT'}</Text>
+                            <AntDesign style={styles.fundingButtonText} name="wallet" color="black" />
+                        </TouchableOpacity>
                         
-                        <WalletAmount 
-                            label={'Cash in wallet'}
-                            amount={user?.cashOnHand ? user.cashOnHand : 0}
-                            fontSizeMultiplier={2}
-                            // scale={0}
-                        />
-                    {/* </View> */}
-
-                    {
-                        !depositing && !withdrawing &&
-                        <View style={styles.walletActions}>
-
-                            <TouchableOpacity 
-                                style={styles.fundingButton} 
-                                onPress={toggleWithdrawFunds}
-                            >
-                                <MaterialCommunityIcons style={styles.fundingButtonText} name="cash-refund" color="black" />
-                                <Text style={styles.fundingButtonText}>{depositing ? 'CANCEL' : 'WITHDRAW'}</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity 
-                                style={styles.fundingButton} 
-                                onPress={toggleDepositFunds} 
-                            >
-                                <Text style={styles.fundingButtonText}>{depositing ? 'CANCEL' : 'DEPOSIT'}</Text>
-                                <AntDesign style={styles.fundingButtonText} name="wallet" color="black" />
-                            </TouchableOpacity>
-                            
-                        </View>
+                    </View>
                     }
-                        
-
-                
-
                     { depositing && 
                         <View style={styles.fundingForm}>
                             <Text style={styles.fundingLabel}>{'Enter amount to deposit: '}</Text>
@@ -268,9 +287,9 @@ export default function Portfolio({navigation}) {
                                     <AntDesign name="closecircleo" size={24} color="#98496b" />
                                 </TouchableOpacity>
                             </View>
+                            <Text style={styles.inputError}>{inputError}</Text>
                         </View>
                     }
-
                     { withdrawing && 
                         <View style={styles.fundingForm}>
                             <Text style={styles.fundingLabel}>{'Enter amount to withdraw: '}</Text>
@@ -294,9 +313,9 @@ export default function Portfolio({navigation}) {
                                     <AntDesign name="closecircleo" size={24} color="#98496b" />
                                 </TouchableOpacity>
                             </View>
+                            <Text style={styles.inputError}>{inputError}</Text>
                         </View>
                     }
-
                     {/* Owned Stocks 
                         -- FlatList, limit 6, top change in value */}
                     <View style={styles.listingContainer}>
@@ -330,9 +349,10 @@ export default function Portfolio({navigation}) {
                      </View>
 
                     {/* Footer */}
-                    <Footer />                
-                 </SafeAreaView>
-             </ImageBackground>
+                    <Footer />
+
+                </SafeAreaView>
+            </ImageBackground>
 		</ScrollView>
     )
 }
