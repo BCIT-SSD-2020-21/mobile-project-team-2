@@ -1,5 +1,5 @@
-import React, { useState, useLayoutEffect } from 'react';
-import { SafeAreaView, Text, Image, TextInput, Button, View, ScrollView } from 'react-native';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
+import { Keyboard, SafeAreaView, Text, Image, TextInput, Button, View, ScrollView } from 'react-native';
 import { firebase } from '../firebase/config';
 import {resetPassword} from './ResetPassword';
 import styles from '../styles/authStyles';
@@ -10,6 +10,27 @@ export default function Register({navigation}) {
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("")
 	const [error, setError] =  useState("");
+    const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener(
+          'keyboardDidShow',
+          () => {
+            setKeyboardVisible(true); // or some other action
+          }
+        );
+        const keyboardDidHideListener = Keyboard.addListener(
+          'keyboardDidHide',
+          () => {
+            setKeyboardVisible(false); // or some other action
+          }
+        );
+    
+        return () => {
+          keyboardDidHideListener.remove();
+          keyboardDidShowListener.remove();
+        };
+      }, []);
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -49,11 +70,11 @@ export default function Register({navigation}) {
 
     return (
       	<SafeAreaView style={styles.container}>
-              <LinearGradient 
-                colors={['#082b56', '#0b3d7a', 'transparent']} 
-                style={styles.background}
-                >  
-			<Image style={styles.image} source={require('../../assets/images/logo.png')} />
+            <LinearGradient 
+            colors={['#082b56', '#0b3d7a', 'transparent']} 
+            style={styles.background}
+            >  
+			{ !isKeyboardVisible && <Image style={styles.image} source={require('../../assets/images/logo.png')} />}
 			<View style={{marginBottom: 30}}>
 				<Text>{error}</Text>
 				<View>
