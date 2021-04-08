@@ -233,18 +233,9 @@ export default function Trade({ route, navigation }) {
                 {/* Submit */}
                 <TouchableOpacity style={styles.buttonContinue} enabled={ totalAmount <= user?.cashOnHand ? true : false} onPress={() => submitTransaction()}>
 
-                     <MaterialCommunityIcons style={styles.buttonContinueText} name="cash-refund" color="black" />
+                     <MaterialCommunityIcons style={styles.buttonContinueText} name="account-arrow-right-outline" color="black" />
                     <Text style={styles.buttonContinueText}>Continue</Text>
                 </TouchableOpacity>
-
-
-                            {/* <TouchableOpacity 
-                style={styles.fundingButton} 
-                onPress={toggleWithdrawFunds}
-            >
-                <MaterialCommunityIcons style={styles.fundingButtonText} name="cash-refund" color="black" />
-                <Text style={styles.fundingButtonText}>{depositing ? 'CANCEL' : 'WITHDRAW'}</Text>
-            </TouchableOpacity> */}
 
             </View>
         </SafeAreaView>
