@@ -1,8 +1,9 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { SafeAreaView, Text, Image, TextInput, Button, View } from 'react-native';
 import { firebase } from '../firebase/config';
-import {resetPassword} from './ResetPassword'
-import styles from '../styles/authStyles'
+import {resetPassword} from './ResetPassword';
+import styles from '../styles/authStyles';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function Register({navigation}) {
 	const [email, setEmail] = useState("");
@@ -48,6 +49,10 @@ export default function Register({navigation}) {
 
     return (
       	<SafeAreaView style={styles.container}>
+              <LinearGradient 
+                colors={['#082b56', '#0b3d7a', 'transparent']} 
+                style={styles.background}
+                >  
 			<Image style={styles.image} source={require('../../assets/images/logo.png')} />
 			<View style={{marginBottom: 30}}>
 				<Text>{error}</Text>
@@ -65,7 +70,8 @@ export default function Register({navigation}) {
 				</View>				
 				<Text style={styles.forgot} onPress={() => resetPassword(email)}>Forgot password or email?</Text>	
 				<Button style={styles.button} onPress={() => onSignUp()} title="Sign Up" />
-			</View>								
+			    </View>	
+            </LinearGradient>							
 		</SafeAreaView>
     )
 }
