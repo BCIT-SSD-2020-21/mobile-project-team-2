@@ -1,8 +1,6 @@
 import React from 'react'
-import { Button } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { EvilIcons } from '@expo/vector-icons';
-import { userSignOut } from '../../firebase/service';
 import StockDetail from '../../screens/StockDetail'
 import { createStackNavigator } from '@react-navigation/stack';
 import Trade from '../../screens/Trade'
