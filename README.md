@@ -8,6 +8,30 @@
 
 </div>
 
+
+## Build Instructions
+
+#### 1. Clone the project on your local machine: 
+```
+git clone https://github.com/BCIT-SSD-2020-21/mobile-project-team-2.git
+```
+
+#### 2. Navigate to the root and add a .env file, containing:     
+```
+API_KEY=c1j225748v6t2bkel640
+BASE_URL=https://finnhub.io/api/v1`
+```
+
+#### 3. Install node_modules: 
+```
+npm start 
+```
+#### 4. Run on Android or iOS via Expo: 
+```
+expo start -c 
+```
+
+
 ## Overview
 In the groups assigned by your instructor, create a mobile application with as many of the features outlined below as possible. You are free to choose whether your group will create your app with Swift, Kotlin, React-Native, or Flutter…but your team must all agree with the decision. Any conflict with making this decision will default to your instructor’s pick of technology at the end of Day 1 (most likely React-Native).
 
