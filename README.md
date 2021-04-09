@@ -24,7 +24,7 @@ BASE_URL=https://finnhub.io/api/v1`
 
 #### 3. Install node_modules: 
 ```
-npm start 
+npm install 
 ```
 #### 4. Run on Android or iOS via Expo: 
 ```
