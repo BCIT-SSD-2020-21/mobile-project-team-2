@@ -126,7 +126,7 @@ export default function Portfolio({navigation}) {
         setInputError("")
     }
 	// ADD FUNDS
-	function depositFunds() {
+	const depositFunds = () => {
         // Validate Input Amount
         if (depositAmount > 0) {
             // TRANSACTION - Create
@@ -156,7 +156,7 @@ export default function Portfolio({navigation}) {
             setInputError(`Invalid input, please try again.\nDeposit amount must be a valid number.`)
         }
 	}
-	function withdrawFunds() {
+	const withdrawFunds = () => {
         if (withdrawAmount > 0) {
             // TRANSACTION - Create
             const transactionsRef = firebase.firestore().collection('transactions'); // to create transaction

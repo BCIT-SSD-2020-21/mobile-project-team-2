@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 		color: '#999999',
         paddingLeft:10,
         paddingRight:10,
-        paddingTop: 10,
+        paddingTop: 7,
 	},
 	input : {
 		height: 35,
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 		paddingRight: 10,
 		color: '#fff',
         width: '96%',
-		height: 40,
+		height: 35,
 		margin: 5,	
 		padding: 6,
 		borderRadius: 7,
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
        	
 	},
 	forgot : {
-		marginBottom: 15,
+		marginBottom: 5,
 		width: 300,
 		color: '#147DF0'		
 	},

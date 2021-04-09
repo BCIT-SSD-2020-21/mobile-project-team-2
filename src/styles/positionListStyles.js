@@ -85,9 +85,6 @@ const styles = StyleSheet.create({
         color: "#000",
         textTransform: "uppercase"
     },
-
-
-
     quantityBox: {
         display: 'flex',
         flexDirection: 'row',

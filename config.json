@@ -1,0 +1,12 @@
+{
+  "firebaseConfig" : {
+      "APIKEY": "AIzaSyDp2Udqm4uibStYRilp9UfdZHSng-odRSQ",
+      "AUTHDOMAIN": "diamondhands-39f0e.firebaseapp.com",
+      "DATABASEURL": "https://diamondhands-39f0e-default-rtdb.firebaseio.com",
+      "PROJECTID": "diamondhands-39f0e",
+      "STORAGEBUCKET": "diamondhands-39f0e.appspot.com",
+      "MESSAGINGSENDERID": "933260084797",
+      "APPID": "1:933260084797:web:5a37a9db296acc1e8c0c54",
+      "MEASUREMENTID": "G-6V576CT2RR"
+  }
+}
