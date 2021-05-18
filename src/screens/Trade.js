@@ -100,7 +100,8 @@ export default function Trade({ route, navigation }) {
                     timestamp: Date.now()
                 }).then(docRef => {
                     // USER - Update transactions
-                    const newTransactions = [...user?.transactions, docRef.ZE.path.segments[1]]
+                    console.log("detech position on this stock", docRef.id)
+                    const newTransactions = [...user?.transactions,  docRef.id]
                     usersRef.doc(userID).update({
                         transactions: newTransactions
                     })
@@ -119,9 +120,10 @@ export default function Trade({ route, navigation }) {
                         userId: userID,
                         createdOn: Date.now()
                     }).then(docRef => {
-                        const newPositions = [...user?.positions, docRef.ZE.path.segments[1]]
+                        console.log("detech position on this stock", docRef.id)
+
                         usersRef.doc(userID).update({
-                            positions: newPositions
+                             positions: firebase.firestore.FieldValue.arrayUnion( docRef.id)                            
                         })
                     })
                 } else {
@@ -157,7 +159,7 @@ export default function Trade({ route, navigation }) {
                     timestamp: Date.now()
                 }).then((docRef) => {
                     // USER - Update transactions
-                    const newTransactions = [...user?.transactions, docRef.ZE.path.segments[1]]
+                    const newTransactions = [...user?.transactions,  docRef.id]
                     usersRef.doc(userID).update({
                         transactions: newTransactions
                     })
@@ -178,7 +180,9 @@ export default function Trade({ route, navigation }) {
                         lastUpdated: Date.now()
                     }).then(docRef => {
                         // USER - Update positions
-                        const newPositions = user?.positions.push(docRef.ZE.path.segments[1])
+                        const newPositions = user?.positions.push( docRef.id)
+
+                        console.log("newPositions", newPositions)
                         usersRef.doc(userID).update({
                             positions: newPositions
                         })

@@ -127,3 +127,6 @@ Clicking on the Watch icon will bring you to the Profile screen, which will rend
 
 ### UI/UX
 Please ensure that the user interface effectively implements the app features in visually pleasing and user-friendly manner.
+
+## Demo
+![](https://i.imgur.com/wlvnNAA.gif)
