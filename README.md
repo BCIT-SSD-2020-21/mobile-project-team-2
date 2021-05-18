@@ -111,11 +111,12 @@ You do not need to handle more complex orders such as limit, stop limit etc. You
 Each team will need to have persistent data storage for your user portfolio data. Please create a remote database along with an API with all appropriate endpoints exposed to your app.
 
 ## Install
-Clone the project
+- Clone the project
 
-create a firebase account
+- create a firebase account
 
-fill the config.json's xxxx with you firebase credentials
+- fill the config.json's xxxx with you firebase credentials
+- ```
 {
     "firebaseConfig" : {
         "APIKEY": "xxxx",
@@ -126,19 +127,20 @@ fill the config.json's xxxx with you firebase credentials
         "APPID": "xxxx"
     }  
 }
+```
 
-npm install
-npm start -c ( or expo start -c)
-select android or iOS emulator
+-npm install
+-npm start -c ( or expo start -c)
+-select android or iOS emulator
 
-after register/login, the app navigates to the Profile screen
-add $5000 cash
-search a stock and select it to open a Stock Detail Screen
-Selecting Buy or Sell on the Stock Detail Screen will bring you to the Trade screen 
-select the number of stocks to buy or sell
-go back to the Profile screen to see the Stock list
-Selecting Buy or Sell on the Stock Detail Screen will bring you to the Trade screen 
-Clicking on the Watch icon will bring you to the Profile screen, which will render the watched stock in the Watch List. 
+- after register/login, the app navigates to the Profile screen
+- add $5000 cash
+- search a stock and select it to open a Stock Detail Screen
+- Selecting Buy or Sell on the Stock Detail Screen will bring you to the Trade screen 
+- select the number of stocks to buy or sell
+- go back to the Profile screen to see the Stock list
+- Selecting Buy or Sell on the Stock Detail Screen will bring you to the Trade screen 
+- Clicking on the Watch icon will bring you to the Profile screen, which will render the watched - stock in the Watch List. 
 
 ### UI/UX
 Please ensure that the user interface effectively implements the app features in visually pleasing and user-friendly manner.
