@@ -6,9 +6,9 @@ export default function StockList({ navigation, stockArray }) {
 
     return (
         <View> 
-            { stockArray?.length > 1 ?
-                stockArray.map((prop, index) => 
-                    <StockListItem key={index} symbol={prop} navigation={navigation} />
+            { stockArray?.length > 0 ?
+                stockArray?.map((prop, index) => 
+                    prop && <StockListItem key={index} symbol={prop} navigation={navigation} />
                 )
                 :
                 <TouchableOpacity style={styles.container}>

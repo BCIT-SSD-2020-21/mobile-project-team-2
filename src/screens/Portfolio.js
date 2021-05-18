@@ -138,7 +138,7 @@ export default function Portfolio({navigation}) {
                 timestamp: Date.now()
                 }).then((docRef) => {
                 // USER - Update transactions
-                const newTransactions = [...user?.transactions, docRef.ZE.path.segments[1]]
+                const newTransactions = [...user?.transactions,  docRef.id]
                 usersRef.doc(firebase.auth().currentUser.uid).update({
                 transactions: newTransactions
                 })
@@ -167,7 +167,7 @@ export default function Portfolio({navigation}) {
                 timestamp: Date.now()
                 }).then((docRef) => {
                 // USER - Update transactions
-                const newTransactions = [...user?.transactions, docRef.ZE.path.segments[1]]
+                const newTransactions = [...user?.transactions,  docRef.id]
                 usersRef.doc(firebase.auth().currentUser.uid).update({
                 transactions: newTransactions
                 })

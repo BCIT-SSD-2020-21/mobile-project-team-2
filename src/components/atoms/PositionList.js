@@ -6,9 +6,9 @@ import PositionListItem from './PositionListItem';
 export default function PositionList({ navigation, positions }) {
     return (
         <View> 
-            {   positions?.length > 1 ?
-                positions.map((position, index) => 
-                    <PositionListItem key={index} position={position} navigation={navigation} />
+            {   positions?.length > 0 ?
+                positions?.map((position, index) => 
+                    position && <PositionListItem key={index} position={position} navigation={navigation} />
                 )
                 :
                 <TouchableOpacity style={styles.container}>
