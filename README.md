@@ -127,7 +127,6 @@ fill the config.json's xxxx with you firebase credentials
     }  
 }
 
-
 npm install
 npm start -c ( or expo start -c)
 select android or iOS emulator
