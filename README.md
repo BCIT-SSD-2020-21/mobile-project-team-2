@@ -116,7 +116,7 @@ Each team will need to have persistent data storage for your user portfolio data
 - create a firebase account
 
 - fill the config.json's xxxx with you firebase credentials
-- ```
+```
 {
     "firebaseConfig" : {
         "APIKEY": "xxxx",
