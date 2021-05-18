@@ -112,6 +112,22 @@ Each team will need to have persistent data storage for your user portfolio data
 
 ## Install
 Clone the project
+
+create a firebase account
+
+fill the config.json's xxxx with you firebase credentials
+{
+    "firebaseConfig" : {
+        "APIKEY": "xxxx",
+        "AUTHDOMAIN": "xxxx",
+        "PROJECTID": "xxxx",
+        "STORAGEBUCKET": "xxxx",
+        "MESSAGINGSENDERID": "xxxx",
+        "APPID": "xxxx"
+    }  
+}
+
+
 npm install
 npm start -c ( or expo start -c)
 select android or iOS emulator
