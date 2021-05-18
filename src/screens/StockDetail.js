@@ -53,31 +53,32 @@ const StockDetail = ({ route, navigation}) => {
 
 		const userUID = firebase.auth().currentUser.uid
 		// get user document by user UID; setUser	
-         console.log("position userUID", userUID)	
+        
 		const userDoc = firebase.firestore().collection('users')
             .doc(userUID)
             .onSnapshot((doc) => {
-                const {positions, watchlist} = doc?.data()
+                const data = doc?.data()
+                if(data) {
+                    const {positions, watchlist} = data
+                    positions?.map( positionId => {  
+                        const positions = firebase.firestore().collection('positions')
+                            .doc(positionId)
+                            .onSnapshot((doc) => {
+                                if (doc && doc.data() && (doc.data().symbol === symbol && doc.data().quantity > 0)) 
+                                { 
+                                    setPosition(true) 
+                                    
+                                }							
+                            })
+                        
+                    })
 
-                // detech position on this stock
-                positions?.map( positionId => {  
-                    const positions = firebase.firestore().collection('positions')
-                        .doc(positionId)
-                        .onSnapshot((doc) => {
-                            if (doc && doc.data() && (doc.data().symbol === symbol && doc.data().quantity > 0)) 
-                            { 
-                                setPosition(true) 
-                                console.log("position", doc?.data())
-                            }							
-                        })
-                    
-                })
-
-                // detech the user watch on this stock
-                console.log("watchlist", watchlist)
-                if(watchlist && watchlist.includes(symbol)) {
-                    setWatch(true)
-                }              
+                    // detech the user watch on this stock
+                    console.log("watchlist", watchlist)
+                    if(watchlist && watchlist.includes(symbol)) {
+                        setWatch(true)
+                    }  
+                }            
             })	
 	},[])	  
 
@@ -122,7 +123,7 @@ const StockDetail = ({ route, navigation}) => {
 	// console.log("StocKDetial, symbol: ", symbol)
 	// console.log("StocKDetial, stockProfile: ", stockProfile)
 	// console.log("StocKDetial, stockQuote: ", stockQuote)
-	// console.log("user position: ", position)	
+	 console.log("user position: ", position)	
     return (
 		<ScrollView contentContainerStyle ={styles.scrollContainer}>
             <ImageBackground style={styles.background} source={{ uri: 'https://images.unsplash.com/photo-1520269604827-3a85b49d6c76?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=673&q=80' }}>

@@ -112,3 +112,6 @@ Each team will need to have persistent data storage for your user portfolio data
 
 ### UI/UX
 Please ensure that the user interface effectively implements the app features in visually pleasing and user-friendly manner.
+
+## Demo
+![](https://i.imgur.com/wlvnNAA.gif)
